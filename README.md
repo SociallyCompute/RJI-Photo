@@ -11,12 +11,29 @@ Matplotlib (graphing)
 pillow (image processing)
 
 ### How to Run:
-This is currently being run in a Python 3.7.1 environment. In order to run the script you execute the run_files.py script after adjusting the root_dir variable located in the main of the file. In addition you need to supply 2 arguments during runtime specifying where to start and which directory to halt searching. Root implies the base directory. Ex:
-- run_files.py root stop_file
-- run_files.py C:\\path\\to\\start stop_file
-You are then prompted to input the n_components for PCA reduction and the number of clusters you want to create
+This is currently being run in a Python 3.7.1 environment. In order to run the script you execute the run_files.py script. It will prompt more user inputs and following the menu will determine the appropriate start, stop, reduction, and clustering numbers. Root implies the base directory.
+The menu is:
+```
+Which algorithm would you like to train?
+1: K-Means
+2: KNN
+3: Convolusional Neural Network
+Your choice: 
+```
+Then:
+```
+What dataset would you like to use?
+1: root
+2: Custom path
+Your choice: 
+```
+Finally
+```
+What folder do you want to stop on?
+Your choice: 
+```
 
-### KMeans Process:
+### Image Processing:
 read in images using pillow and convert to black and white then to numpy array. Store this in a list:
 
 ```python
@@ -40,13 +57,24 @@ np_pics.append(mat) #add to list of numpy arrays n1 x n2
 
 the matrix of each image is variable, n1 x n2. If it is not a black and white image the color has a 3rd dimension.
 
+### K-Means:
+Flatten the matricies into vectors and stack into a single 2D matrix. Follow that with PCA feature selection and run K-Means on this set.
+
 ```python
 km = KMeans(n_clusters=n)
 km.fit(reduced_pics)
 index_set = {i: np.where(km.labels_ == i)[0] for i in range(km.n_clusters)} #index of pictures in data
 ```
-
 fit them into KMeans clusters (will change depending on how it seems to split) then find the indicies of each of the pictures
+
+### KNN:
+Flatten the matricies into vectors and stack into a single 2D matrix. Follow with PCA feature selection and run KNN on this set.
+
+```python
+p = np.vstack(reduced_pics)
+k = knn(clusters)
+k.fit(p, range(p.shape[1])) 
+```
 
 ### Problems:
 - reformatting pictures: at least 1999 has different sizes

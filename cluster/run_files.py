@@ -29,9 +29,12 @@ def run(root, halt, alg):
                 cluster.add_to_list(loc,f)
     n_comp = input("How many n_components would you like to compress: ")
     cluster.pca_compress(n_comp) #param passed is n_components compressed in PCA
-    if(alg == 1 or alg == "K-Means"):
+    if(alg == "1" or alg == "K-Means"):
         n_clus = input("How many clusters would you like to group: ")
         cluster.run_kmeans(n_clus) #param is n_clusters in kmeans
+    elif(alg == "2" or alg == "KNN"):
+        n_clus = input("How many clusters would you like to group: ")
+        cluster.run_knn(n_clus)
     else:
         print("No functionality provided for the algorithm yet")
 

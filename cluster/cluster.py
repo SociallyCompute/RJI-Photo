@@ -1,4 +1,5 @@
 from sklearn.cluster import KMeans
+from sklearn.neighbors import KNeighborsClassifier as knn
 from sklearn.decomposition import PCA
 from sklearn import metrics
 import matplotlib.pyplot as plt
@@ -36,7 +37,11 @@ def run_kmeans(clusters):
     # {i: reduced_pics[np.where(km.labels_ == i)] for i in range(km.n_clusters)} #actual pictures
     print(index_set)
     # print(pics.keys()[index]) #change index to the index you want to see which cluster it is in
-    return
+
+def run_knn(clusters):
+    p = np.vstack(reduced_pics)
+    k = knn(clusters)
+    k.fit(p, range(p.shape[1])) 
 
 def add_to_list(loc,f):
     im = Image.open(loc + '\\' + f)
