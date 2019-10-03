@@ -11,7 +11,10 @@ Matplotlib (graphing)
 pillow (image processing)
 
 ### How to Run:
-This is currently being run in a Python 3.7.1 environment. In order to run the script you execute the run_files.py script after adjusting the root_dir variable located in the main of the file. In addition you need to supply 1 argument during runtime specifying which directory to halt searching.
+This is currently being run in a Python 3.7.1 environment. In order to run the script you execute the run_files.py script after adjusting the root_dir variable located in the main of the file. In addition you need to supply 2 arguments during runtime specifying where to start and which directory to halt searching. Root implies the base directory. Ex:
+- run_files.py root stop_file
+- run_files.py C:\\path\\to\\start stop_file
+You are then prompted to input the n_components for PCA reduction and the number of clusters you want to create
 
 ### KMeans Process:
 read in images using pillow and convert to black and white then to numpy array. Store this in a list:
@@ -38,7 +41,7 @@ np_pics.append(mat) #add to list of numpy arrays n1 x n2
 the matrix of each image is variable, n1 x n2. If it is not a black and white image the color has a 3rd dimension.
 
 ```python
-km = KMeans(n_clusters=15)
+km = KMeans(n_clusters=n)
 km.fit(reduced_pics)
 index_set = {i: np.where(km.labels_ == i)[0] for i in range(km.n_clusters)} #index of pictures in data
 ```

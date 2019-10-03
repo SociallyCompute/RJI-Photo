@@ -1,5 +1,6 @@
 from sklearn.cluster import KMeans
 from sklearn.decomposition import PCA
+from sklearn import metrics
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image
@@ -13,33 +14,22 @@ reduced_pics = []
 color = [0, 0, 0]
 colors = []
 count = 0
-pca = PCA(n_components=25)
 
-def run_knn():
+
+def pca_compress(n):
+    pca = PCA(n_components=n)
     print("np_pics count: " + str(len(np_pics)))
     for i in np_pics:
         i = pca.fit_transform(i) #standardize images to 2000 x 25
         reduced_pics.append(i.flatten()) #flatten so image is a vector
-        #this is disgusting, but it is meant as a quick fix for coloring
-        # if(color[0] > 255):
-        #     color[0] = 0
-        #     color[1] = color[1] + 15
-        #     if(color[1] > 255):
-        #         color[1] = 0
-        #         color[2] = color[2] + 15
-        #         if(color[2] > 255):
-        #             color[2] = 0
-        # colors.append((color[0], color[1], color[2])) 
 
-
-    print(len(reduced_pics))
+def run_kmeans(clusters):
+    #print(len(reduced_pics))
     p = np.vstack(reduced_pics)
     print("Shape of p: " + str(p.shape))
-    # for i in colors:
-    #     count = count + 1
-    plt.scatter(p[:,0], p[:,1], label='True Position')
-    plt.show()
-    km = KMeans(n_clusters=15)
+    # plt.scatter(p[:,0], p[:,1], label='True Position')
+    # plt.show()
+    km = KMeans(n_clusters=clusters)
     km.fit(reduced_pics)
 
     index_set = {i: np.where(km.labels_ == i)[0] for i in range(km.n_clusters)} #index of pictures in data
