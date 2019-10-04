@@ -19,7 +19,7 @@ def print_menu():
 def run(root, halt, alg):
     for(loc,dirs,files) in os.walk(root,topdown=True):
         # print(loc)
-        print(dirs)
+        # print(dirs)
         # print(files)
         # print('-------')
         if(loc == (root + '\\' + halt)):
@@ -28,10 +28,10 @@ def run(root, halt, alg):
             if(f.lower().endswith('.jpg')):
                 cluster.add_to_list(loc,f)
     n_comp = input("How many n_components would you like to compress: ")
-    cluster.pca_compress(n_comp) #param passed is n_components compressed in PCA
+    cluster.pca_compress(int(n_comp)) #param passed is n_components compressed in PCA
     if(alg == "1" or alg == "K-Means"):
         n_clus = input("How many clusters would you like to group: ")
-        cluster.run_kmeans(n_clus) #param is n_clusters in kmeans
+        cluster.run_kmeans(int(n_clus)) #param is n_clusters in kmeans
     elif(alg == "2" or alg == "KNN"):
         n_clus = input("How many clusters would you like to group: ")
         cluster.run_knn(n_clus)
@@ -44,8 +44,11 @@ def run(root, halt, alg):
 #have argv[1] be the root folder and argv[2] be the first folder we don't want to pull from
 if(__name__ == "__main__"):
     alg, data, stop = print_menu()
+    # print(alg)
+    # print(data)
+    # print(stop)
     #how can I generalize this without requiring people type this out?
-    if(data == "root"):
+    if(data == "root" or data == '1'):
         root_dir = 'D:\\College\\RJI\\pics\\1999\\Fall\\Dump'
     else:
         root_dir = data

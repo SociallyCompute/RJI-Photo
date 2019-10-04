@@ -12,36 +12,41 @@ index_set = {}
 np_pics = []
 second_pics = []
 reduced_pics = []
-color = [0, 0, 0]
-colors = []
-count = 0
 
 
 def pca_compress(n):
     pca = PCA(n_components=n)
-    print("np_pics count: " + str(len(np_pics)))
     for i in np_pics:
         i = pca.fit_transform(i) #standardize images to 2000 x 25
         reduced_pics.append(i.flatten()) #flatten so image is a vector
 
 def run_kmeans(clusters):
-    #print(len(reduced_pics))
-    p = np.vstack(reduced_pics)
-    print("Shape of p: " + str(p.shape))
-    # plt.scatter(p[:,0], p[:,1], label='True Position')
-    # plt.show()
     km = KMeans(n_clusters=clusters)
     km.fit(reduced_pics)
 
     index_set = {i: np.where(km.labels_ == i)[0] for i in range(km.n_clusters)} #index of pictures in data
     # {i: reduced_pics[np.where(km.labels_ == i)] for i in range(km.n_clusters)} #actual pictures
-    print(index_set)
-    # print(pics.keys()[index]) #change index to the index you want to see which cluster it is in
+    files = list(pics)
+    for i in range(len(index_set)):
+        c = index_set[i]
+        for v in c:
+            print(files[v])
+        print('------------')
+    # print(pics.keys()[index_set[1]) #change index to the index you want to see which cluster it is in
 
 def run_knn(clusters):
     p = np.vstack(reduced_pics)
     k = knn(clusters)
-    k.fit(p, range(p.shape[1])) 
+    print(p)
+    print(p.shape)
+    k.fit(p, p.shape) 
+    index_set = {i: np.where(k.classes_ == i)[0] for i in range(clusters)}
+    files = list(pics)
+    for i in range(len(index_set)):
+        c = index_set[i]
+        for v in c:
+            print(files[v])
+        print('------------')
 
 def add_to_list(loc,f):
     im = Image.open(loc + '\\' + f)
@@ -61,5 +66,5 @@ def add_to_list(loc,f):
             np_pics.append(mat)
         else:
             second_pics.append(mat)
-    print(f + " : " + str(np_pics[-1].shape))
+    # print(f + " : " + str(np_pics[-1].shape))
     return
