@@ -92,3 +92,19 @@ k.fit(p, range(p.shape[1]))
 - permissions issues with pictures
   * waiting on chmod to be run (read permission denied)
   * over 15000 images in 2017
+
+
+# Login on server as newmatt
+```
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+newmatt@mudcats:~$ source rji/bin/activate
+(rji) newmatt@mudcats:~$ cd github/RJI-Photo/
+(rji) newmatt@mudcats:/home/newmatt/github/RJI-Photo$ git status
+On branch goggins
+Your branch is up to date with 'origin/goggins'.
+
+nothing to commit, working tree clean
+(rji) newmatt@mudcats:/home/newmatt/github/RJI-Photo$ 
+```
