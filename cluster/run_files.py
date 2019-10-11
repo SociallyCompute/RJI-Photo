@@ -49,7 +49,7 @@ if(__name__ == "__main__"):
     # print(stop)
     #how can I generalize this without requiring people type this out?
     if(data == "root" or data == '1'):
-        root_dir = 'D:\\College\\RJI\\pics\\1999\\Fall\\Dump'
+        root_dir = '/mnt/md0/mysql-dump-economists/Archives/2017/Spring/Dump/'
     else:
         root_dir = data
     run(root_dir, stop, alg)
