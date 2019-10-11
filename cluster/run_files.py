@@ -44,13 +44,9 @@ def run(root, halt, alg):
                 mat2d = mat3d.reshape((mat3d.shape[1] * mat3d.shape[2]), mat3d.shape[0])
                 # print(mat.shape)
                 if mat2d.shape[1] == (7360 * 4912):
-                    pics[f] = im
-                    mat2d = mat2d.transpose()
-                    np_pics.append(mat2d)
-                    print(f + " : " + str(np_pics[-1].shape))
+                    cluster.add_to_list(loc,f)
                 else:
                     break
-                # cluster.add_to_list(loc,f)
     n_comp = input("How many n_components would you like to compress: ")
     cluster.pca_compress(int(n_comp)) #param passed is n_components compressed in PCA
     if(alg == "1" or alg == "K-Means"):
