@@ -1,6 +1,14 @@
 import sys
 import os
 import cluster
+from PIL import Image
+import numpy as np
+
+pics = {}
+index_set = {}
+np_pics = []
+second_pics = []
+reduced_pics = []
 
 def print_menu():
     print("Which algorithm would you like to train?")
@@ -26,7 +34,23 @@ def run(root, halt, alg):
         #     break
         for f in files:
             if(f.lower().endswith('.jpg')):
-                cluster.add_to_list(loc,f)
+                im = Image.open(loc + '/' + f)
+                #this should never fire, it would mean there is a duplicate picture
+                if(f in pics):
+                    return
+                #add to pics dictionary with file name for key and add to np list
+                # im = im.convert('1') #convert to grayscale
+                mat3d = np.array(im)
+                mat2d = mat3d.reshape((mat3d.shape[1] * mat3d.shape[2]), mat3d.shape[0])
+                # print(mat.shape)
+                if mat2d.shape[1] == (7360 * 4912):
+                    pics[f] = im
+                    mat2d = mat2d.transpose()
+                    np_pics.append(mat2d)
+                    print(f + " : " + str(np_pics[-1].shape))
+                else:
+                    break
+                # cluster.add_to_list(loc,f)
     n_comp = input("How many n_components would you like to compress: ")
     cluster.pca_compress(int(n_comp)) #param passed is n_components compressed in PCA
     if(alg == "1" or alg == "K-Means"):
