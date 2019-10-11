@@ -54,14 +54,15 @@ def add_to_list(loc,f):
     if(f in pics):
         return
     #add to pics dictionary with file name for key and add to np list
-    im = im.convert('1')
+    # im = im.convert('1') #convert to grayscale
     mat = np.array(im)
-    if mat.shape[1] == 2000:
+    print(mat.shape)
+    if mat.shape[1] == 7360:
         pics[f] = im
         mat = mat.transpose()
         np_pics.append(mat)
     else:
-        if mat.shape[0] == 2000:
+        if mat.shape[0] == 7360:
             pics[f] = im
             np_pics.append(mat)
         else:
