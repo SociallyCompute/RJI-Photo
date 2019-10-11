@@ -22,7 +22,7 @@ def run(root, halt, alg):
         # print(dirs)
         print(files)
         print('-------')
-        # if(loc == (root + '\\' + halt)):
+        # if(loc == (root + '/' + halt)):
         #     break
         for f in files:
             if(f.lower().endswith('.jpg')):
