@@ -18,8 +18,8 @@ def print_menu():
 
 def run(root, halt, alg):
     for(loc,dirs,files) in os.walk(root,topdown=True):
-        print(loc)
-        print(dirs)
+        # print(loc)
+        # print(dirs)
         print(files)
         print('-------')
         # if(loc == (root + '\\' + halt)):

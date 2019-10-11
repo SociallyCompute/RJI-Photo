@@ -67,5 +67,5 @@ def add_to_list(loc,f):
             np_pics.append(mat)
         else:
             second_pics.append(mat)
-    # print(f + " : " + str(np_pics[-1].shape))
+    print(f + " : " + str(np_pics[-1].shape))
     return
