@@ -43,7 +43,7 @@ def run(root, halt, alg):
                 mat3d = np.array(im)
                 mat2d = mat3d.reshape((mat3d.shape[1] * mat3d.shape[2]), mat3d.shape[0])
                 # print(mat.shape)
-                if mat2d.shape[1] == (7360 * 4912):
+                if (mat2d.shape[1] == (7360 * 4912) or mat2d.shape[0] == (7360 * 4912)):
                     cluster.add_to_list(loc,f)
                 else:
                     break
