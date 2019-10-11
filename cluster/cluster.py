@@ -62,11 +62,12 @@ def add_to_list(loc,f):
         pics[f] = im
         mat2d = mat2d.transpose()
         np_pics.append(mat2d)
+        print(f + " : " + str(np_pics[-1].shape))
     else:
         if mat2d.shape[0] == (7360 * 4912):
             pics[f] = im
             np_pics.append(mat2d)
+            print(f + " : " + str(np_pics[-1].shape))
         else:
             second_pics.append(mat2d)
-    print(f + " : " + str(np_pics[-1].shape))
     return
