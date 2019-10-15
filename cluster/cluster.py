@@ -37,8 +37,8 @@ def run_kmeans(clusters):
 def run_knn(clusters):
     p = np.vstack(reduced_pics)
     k = knn(clusters)
-    print(p)
-    print(p.shape)
+    # print(p)
+    # print(p.shape)
     k.fit(p, p.shape) 
     index_set = {i: np.where(k.classes_ == i)[0] for i in range(clusters)}
     files = list(pics)

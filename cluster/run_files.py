@@ -28,8 +28,8 @@ def run(root, halt, alg):
     for(loc,dirs,files) in os.walk(root,topdown=True):
         # print(loc)
         # print(dirs)
-        print(files)
-        print('-------')
+        # print(files)
+        # print('-------')
         # if(loc == (root + '/' + halt)):
         #     break
         for f in files:
@@ -44,6 +44,8 @@ def run(root, halt, alg):
                 mat2d = mat3d.reshape((mat3d.shape[1] * mat3d.shape[2]), mat3d.shape[0])
                 # print(mat.shape)
                 if (mat2d.shape[1] == (7360 * 4912) or mat2d.shape[0] == (7360 * 4912)):
+                    print(files)
+                    print('-------')
                     cluster.add_to_list(loc,f)
                 else:
                     break
