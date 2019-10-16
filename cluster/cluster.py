@@ -58,16 +58,16 @@ def add_to_list(loc,f):
     mat3d = np.array(im)
     mat2d = mat3d.reshape((mat3d.shape[1] * mat3d.shape[2]), mat3d.shape[0])
     # print(mat.shape)
-    if mat2d.shape[1] == (7360 * 4912):
+    if mat2d.shape[1] == 22080:
         pics[f] = im
         mat2d = mat2d.transpose()
         np_pics.append(mat2d)
-        print(f + " : " + str(np_pics[-1].shape))
+        #print(f + " : " + str(np_pics[-1].shape))
     else:
-        if mat2d.shape[0] == (7360 * 4912):
+        if mat2d.shape[0] == 22080:
             pics[f] = im
             np_pics.append(mat2d)
-            print(f + " : " + str(np_pics[-1].shape))
+            #print(f + " : " + str(np_pics[-1].shape))
         else:
             second_pics.append(mat2d)
     return
