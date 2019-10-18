@@ -37,6 +37,8 @@ def run(root, halt, alg):
             if(f.lower().endswith('.jpg')):
                 im = Image.open(loc + '/' + f)
                 f = open("22080files.txt", "w")
+                fi = open("18048files.txt", "w")
+                fil = open("9024files.txt", "w")
                 #this should never fire, it would mean there is a duplicate picture
                 if(f in pics):
                     return
@@ -44,11 +46,16 @@ def run(root, halt, alg):
                 # im = im.convert('1') #convert to grayscale
                 mat2d = np.array(im)
                 #print(mat3d.shape)
-                if(mat2d.ndim != 3):
+                if(mat2d.ndim == 3):
                     mat2d = mat2d.reshape((mat2d.shape[1] * mat2d.shape[2]), mat2d.shape[0])
                 print(mat2d.shape)
                 if(mat2d.shape[0] == 22080):
                     f.write(loc + "/" + f + "\n")
+                elif(mat2d.shape[0] == 18048):
+                    fi.write(loc + "/" + f + "\n")
+                elif(mat2d.shape[0] == 9024):
+                    fil.write(loc + "/" + f + "\n")
+
                 count = count + 1
                 #if (mat2d.shape[1] == 22080 or mat2d.shape[0] == 22080):
                     #print(files)
