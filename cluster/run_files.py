@@ -36,15 +36,19 @@ def run(root, halt, alg):
         for f in files:
             if(f.lower().endswith('.jpg')):
                 im = Image.open(loc + '/' + f)
+                f = open("22080files.txt", "w")
                 #this should never fire, it would mean there is a duplicate picture
                 if(f in pics):
                     return
                 #add to pics dictionary with file name for key and add to np list
                 # im = im.convert('1') #convert to grayscale
-                mat3d = np.array(im)
+                mat2d = np.array(im)
                 #print(mat3d.shape)
-                mat2d = mat3d.reshape((mat3d.shape[1] * mat3d.shape[2]), mat3d.shape[0])
+                if(mat2d.ndim != 3):
+                    mat2d = mat2d.reshape((mat2d.shape[1] * mat2d.shape[2]), mat2d.shape[0])
                 print(mat2d.shape)
+                if(mat2d.shape[0] == 22080):
+                    f.write(loc + "/" + f + "\n")
                 count = count + 1
                 #if (mat2d.shape[1] == 22080 or mat2d.shape[0] == 22080):
                     #print(files)
@@ -56,6 +60,7 @@ def run(root, halt, alg):
         #if(count >= 250):
             #print(count)
             #break
+    f.close()
     print(count)
     n_comp = input("How many n_components would you like to compress: ")
     cluster.pca_compress(int(n_comp)) #param passed is n_components compressed in PCA
