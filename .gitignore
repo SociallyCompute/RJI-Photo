@@ -6,6 +6,8 @@ __pycache__/
 # VSCode
 .vscode/
 
+# Text Files we keep out of repo
+
 # C extensions
 *.so
 
