@@ -42,17 +42,21 @@ def run(root, halt, alg):
                 #add to pics dictionary with file name for key and add to np list
                 # im = im.convert('1') #convert to grayscale
                 mat3d = np.array(im)
+                #print(mat3d.shape)
                 mat2d = mat3d.reshape((mat3d.shape[1] * mat3d.shape[2]), mat3d.shape[0])
                 print(mat2d.shape)
-                if (mat2d.shape[1] == 22080 or mat2d.shape[0] == 22080):
+                count = count + 1
+                #if (mat2d.shape[1] == 22080 or mat2d.shape[0] == 22080):
                     #print(files)
                     #print('-------')
-                    cluster.add_to_list(loc,f)
-                    count = count + 1
-                else:
-                    break
-        if(count >= 250):
-            break
+                    #cluster.add_to_list(loc,f)
+                    #count = count + 1
+                #else:
+                   # break
+        #if(count >= 250):
+            #print(count)
+            #break
+    print(count)
     n_comp = input("How many n_components would you like to compress: ")
     cluster.pca_compress(int(n_comp)) #param passed is n_components compressed in PCA
     if(alg == "1" or alg == "K-Means"):
