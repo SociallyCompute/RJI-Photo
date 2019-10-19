@@ -36,9 +36,9 @@ def run(root, halt, alg):
         for f in files:
             if(f.lower().endswith('.jpg')):
                 im = Image.open(loc + '/' + f)
-                fl = open("22080files.txt", "w")
-                fi = open("18048files.txt", "w")
-                fil = open("9024files.txt", "w")
+                fl = open("22080files.txt", "a")
+                fi = open("18048files.txt", "a")
+                fil = open("9024files.txt", "a")
                 #this should never fire, it would mean there is a duplicate picture
                 if(f in pics):
                     return
@@ -50,11 +50,14 @@ def run(root, halt, alg):
                     mat2d = mat2d.reshape((mat2d.shape[1] * mat2d.shape[2]), mat2d.shape[0])
                 print(mat2d.shape)
                 if(mat2d.shape[0] == 22080):
-                    fl.write(loc + "/" + f + "\n")
+                    print("test")
+                    fl.write(str(loc) + "/" + str(f) + "\n")
                 elif(mat2d.shape[0] == 18048):
-                    fi.write(loc + "/" + f + "\n")
+                    print('test2')
+                    fi.write(str(loc) + "/" + str(f) + "\n")
                 elif(mat2d.shape[0] == 9024):
-                    fil.write(loc + "/" + f + "\n")
+                    print('test3')
+                    fil.write(str(loc) + "/" + str(f) + "\n")
 
                 count = count + 1
                 #if (mat2d.shape[1] == 22080 or mat2d.shape[0] == 22080):
