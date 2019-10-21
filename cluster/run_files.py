@@ -86,7 +86,7 @@ def run(root, halt, alg):
 def run_files():
     f = open("22080files.txt", "r")
     for line in f:
-        line = "." + line.rstrip()
+        line = "../../../../.." + line.rstrip()
         print(line)
         mat3d = np.array(Image.open(line))
         mat2d = mat3d.reshape((mat3d[0] * mat3d[1]), mat3d[2])
