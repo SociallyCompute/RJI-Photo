@@ -84,14 +84,18 @@ def run(root, halt, alg):
         print("No functionality provided for the algorithm yet")
 
 def run_files():
-    f = open("22080files.txt", "r")
+    count = 0
+    f = open("9024files.txt", "r")
     for line in f:
+        count = count + 1
         line = "../../../../.." + line.rstrip()
         print(line)
         mat3d = np.array(Image.open(line))
         mat2d = mat3d.reshape((mat3d.shape[0] * mat3d.shape[1]), mat3d.shape[2])
         # print(mat2d.shape)
         cluster.add_to_list_file(line, mat2d)
+        if(count >= 350):
+            break
     matrix = cluster.pca_file(int(input("How many components would you like to compress: ")))
     cluster.run_kmeans_file(matrix, int(input("How many clusters would you like to group: ")))
 

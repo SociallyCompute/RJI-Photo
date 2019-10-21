@@ -74,6 +74,7 @@ def add_to_list(loc,f):
 
 def pca_file(n):
     all_samples = np.vstack(np_pics)
+    print(all_samples.shape)
     pca = PCA(n_components=n)
     return pca.fit_transform(all_samples)
 
@@ -94,5 +95,6 @@ def run_kmeans_file(matrix, clusters):
 def add_to_list_file(f, im):
     # pca = PCA(n_components=250)
     pics[f] = im
-    np_pics.append(im)
+    print(im.shape)
+    np_pics.append(im.flatten())
     # reduced_pics.append(pca.fit_transform(im).flatten()) 

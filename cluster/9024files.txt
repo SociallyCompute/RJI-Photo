@@ -43,7 +43,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_voxeateryart2_nc/20171009_voxeateryart2_nc_038.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_voxeateryart2_nc/20171009_voxeateryart2_nc_013.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_voxeateryart2_nc/20171009_voxeateryart2_nc_014.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_voxeateryart2_nc/20171009_voxeateryart2_nc_030.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_voxeateryart2_nc/20171009_voxeateryart2_nc_025.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171005_allypanel_nc/20171005_allypanel_nc_005.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171005_allypanel_nc/20171005_allypanel_nc_076.JPG
@@ -170,7 +169,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_080.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_194.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_258.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_138.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_257.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_246.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_201.JPG
@@ -199,7 +197,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_116.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_220.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_044.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_242.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_059.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_018.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_145.JPG
@@ -208,7 +205,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_228.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_069.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_170.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_243.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_025.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_281.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_081.JPG
@@ -218,20 +214,15 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_245.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_043.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_003.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_141.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_111.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_209.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_260.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_142.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_032.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_130.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_184.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_002.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_239.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_075.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_183.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_241.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_095.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_189.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_049.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_155.JPG
@@ -261,8 +252,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_185.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_011.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_009.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_244.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_096.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_074.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_186.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_283.JPG
@@ -304,7 +293,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_221.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_166.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_164.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_139.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_173.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_071.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_133.JPG
@@ -333,7 +321,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_159.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_262.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_227.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_140.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_051.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_279.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_229.JPG
@@ -349,7 +336,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_161.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_215.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_253.JPG
-/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_238.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_203.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_276.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171009_welders_nc/20171009_welding_nc_024.JPG
