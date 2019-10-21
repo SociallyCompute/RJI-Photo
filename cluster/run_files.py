@@ -85,11 +85,12 @@ def run(root, halt, alg):
 
 def run_files():
     f = open("22080files.txt", "r")
-    for line in f.readline():
-        mat3d = np.array(Image.open(line))
-        mat2d = mat3d.reshape((mat3d[0] * mat3d[1]), mat3d[2])
-        print(mat2d.shape)
-        cluster.add_to_list_file(mat2d)
+    line = f.readline()
+    print(line)
+    mat3d = np.array(Image.open(line))
+    mat2d = mat3d.reshape((mat3d[0] * mat3d[1]), mat3d[2])
+    print(mat2d.shape)
+    cluster.add_to_list_file(mat2d)
     cluster.run_kmeans(int(input("How many clusters would you like to group: ")))
 
 
@@ -107,7 +108,7 @@ if(__name__ == "__main__"):
     else:
         root_dir = data
     
-    if alg == 1:
+    if alg == "1":
         run_files()
     else:
         run(root_dir, stop, alg)
