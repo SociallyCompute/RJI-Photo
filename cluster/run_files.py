@@ -89,9 +89,8 @@ def run_files():
         line = "../../../../.." + line.rstrip()
         print(line)
         mat3d = np.array(Image.open(line))
-        mat2d = mat3d.reshape((mat3d[0] * mat3d[1]), mat3d[2])
-        print(mat2d.shape)
-        cluster.add_to_list_file(mat2d)
+        print(mat3d.shape)
+        cluster.add_to_list_file(mat3d)
     cluster.run_kmeans(int(input("How many clusters would you like to group: ")))
 
 

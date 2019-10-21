@@ -73,6 +73,8 @@ def add_to_list(loc,f):
     return
 
 def add_to_list_file(im):
-    pca = PCA(n_components=250)
+    pca = PCA(n_components=2)
+    im = pca.fit_transform(im)
+    im = im.reshape((im[0] * im[1]), im[2])
     np_pics.append(im)
-    reduced_pics.append(pca.fit_transform(im).flatten()) 
+    reduced_pics.append(im.flatten()) 
