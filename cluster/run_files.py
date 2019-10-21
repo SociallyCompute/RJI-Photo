@@ -89,10 +89,11 @@ def run_files():
         line = "../../../../.." + line.rstrip()
         print(line)
         mat3d = np.array(Image.open(line))
-        mat2d = mat3d.reshape((mat3d[0] * mat3d[1]), mat3d[2])
-        print(mat2d.shape)
-        cluster.add_to_list_file(mat2d)
-    cluster.run_kmeans(int(input("How many clusters would you like to group: ")))
+        mat2d = mat3d.reshape((mat3d.shape[0] * mat3d.shape[1]), mat3d.shape[2])
+        # print(mat2d.shape)
+        cluster.add_to_list_file(line, mat2d)
+    matrix = cluster.pca_file(int(input("How many components would you like to compress: ")))
+    cluster.run_kmeans_file(matrix, int(input("How many clusters would you like to group: ")))
 
 
 #split into 5 groups of 4 years apiece?

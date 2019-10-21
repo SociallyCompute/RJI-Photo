@@ -72,7 +72,27 @@ def add_to_list(loc,f):
             second_pics.append(mat2d)
     return
 
-def add_to_list_file(im):
-    pca = PCA(n_components=250)
+def pca_file(n):
+    all_samples = np.vstack(np_pics)
+    pca = PCA(n_components=n)
+    return pca.fit_transform(all_samples)
+
+def run_kmeans_file(matrix, clusters):
+    km = KMeans(n_clusters=clusters)
+    km.fit(matrix)
+
+    index_set = {i: np.where(km.labels_ == i)[0] for i in range(km.n_clusters)} #index of pictures in data
+    # {i: reduced_pics[np.where(km.labels_ == i)] for i in range(km.n_clusters)} #actual pictures
+    files = list(pics)
+    for i in range(len(index_set)):
+        c = index_set[i]
+        for v in c:
+            print(files[v])
+        print('------------')
+    # print(pics.keys()[index_set[1]) #change index to the index you want to see which cluster it is in
+
+def add_to_list_file(f, im):
+    # pca = PCA(n_components=250)
+    pics[f] = im
     np_pics.append(im)
-    reduced_pics.append(pca.fit_transform(im).flatten()) 
+    # reduced_pics.append(pca.fit_transform(im).flatten()) 
