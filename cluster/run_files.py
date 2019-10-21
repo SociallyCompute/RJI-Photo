@@ -83,6 +83,15 @@ def run(root, halt, alg):
     else:
         print("No functionality provided for the algorithm yet")
 
+def run_files():
+    f = open("22080files.txt", "r")
+    for line in f.readline():
+        mat3d = np.array(Image.open(line))
+        mat2d = mat3d.reshape((mat3d[0] * mat3d[1]), mat3d[2])
+        print(mat2d.shape)
+        cluster.add_to_list_file(mat2d)
+    cluster.run_kmeans(int(input("How many clusters would you like to group: ")))
+
 
 #split into 5 groups of 4 years apiece?
 #keep relevance in the pictures, was there a specific point in the last 20 years cameras improved?
@@ -97,4 +106,8 @@ if(__name__ == "__main__"):
         root_dir = '/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/'
     else:
         root_dir = data
-    run(root_dir, stop, alg)
+    
+    if alg == 1:
+        run_files()
+    else:
+        run(root_dir, stop, alg)

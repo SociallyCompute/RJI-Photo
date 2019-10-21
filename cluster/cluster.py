@@ -71,3 +71,7 @@ def add_to_list(loc,f):
         else:
             second_pics.append(mat2d)
     return
+
+def add_to_list_file(im):
+    np_pics.append(im)
+    reduced_pics.append(im.flatten())
