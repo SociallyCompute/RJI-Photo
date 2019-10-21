@@ -91,6 +91,7 @@ def run_files():
         line = "../../../../.." + line.rstrip()
         print(line)
         mat3d = np.array(Image.open(line))
+        mat3d = mat3d[0::2,0::2,:]
         mat2d = mat3d.reshape((mat3d.shape[0] * mat3d.shape[1]), mat3d.shape[2])
         # print(mat2d.shape)
         cluster.add_to_list_file(line, mat2d)
