@@ -15872,3 +15872,6 @@
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171201_progressawards_JJ/20171201_progressawards_JJ_035.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171201_progressawards_JJ/20171201_progressawards_JJ_064.JPG
 /mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171201_progressawards_JJ/20171201_progressawards_JJ_041.JPG
+/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171201_progressawards_JJ/20171201_progressawards_JJ_032.JPG
+/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171201_progressawards_JJ/20171201_progressawards_JJ_022.JPG
+/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171201_progressawards_JJ/20171201_progressawards_JJ_084.JPG
