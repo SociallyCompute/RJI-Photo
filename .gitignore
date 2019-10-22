@@ -2,11 +2,21 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
 
 # VSCode
 .vscode/
 
 # Text Files we keep out of repo
+9024files.txt
+18048files.txt
+22080files.txt
+edited9024files.txt
+edited18048files.txt
+edited22080files.txt
+grouping9024files.txt
+grouping18048files.txt
+grouping22080files.txt
 
 # C extensions
 *.so

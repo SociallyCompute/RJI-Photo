@@ -9,6 +9,9 @@ index_set = {}
 np_pics = []
 second_pics = []
 reduced_pics = []
+dump_files = []
+edited_files = []
+files = {}
 
 def print_menu():
     print("Which algorithm would you like to train?")
@@ -25,36 +28,47 @@ def print_menu():
     return alg, data, stop
 
 def run(root, halt, alg):
-    count = 0
-    for(loc,dirs,files) in os.walk(root,topdown=True):
+    # count = 0
+    fi = open('labels.txt', 'a')
+    for(loc,dirs,files) in os.walk('/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/',topdown=True):
         for f in files:
             if(f.lower().endswith('.jpg')):
-                im = Image.open(loc + '/' + f)
-                fl = open("edited22080files.txt", "a")
-                fi = open("edited18048files.txt", "a")
-                fil = open("edited9024files.txt", "a")
-                #this should never fire, it would mean there is a duplicate picture
-                if(f in pics):
-                    return
-                #add to pics dictionary with file name for key and add to np list
-                # im = im.convert('1') #convert to grayscale
-                mat2d = np.array(im)
-                print(mat2d.shape)
-                if(mat2d.ndim == 3):
-                    mat2d = mat2d.reshape((mat2d.shape[1] * mat2d.shape[2]), mat2d.shape[0])
-                if(mat2d.shape[0] == 22080):
-                    print("test")
-                    fl.write(str(loc) + "/" + str(f) + "\n")
-                elif(mat2d.shape[0] == 18048):
-                    print('test2')
-                    fi.write(str(loc) + "/" + str(f) + "\n")
-                elif(mat2d.shape[0] == 9024):
-                    print('test3')
-                    fil.write(str(loc) + "/" + str(f) + "\n")
-                else:
-                    print(mat2d.shape)
-                count = count + 1
-    f.close()
+                dump_files.append(f.lower())
+    
+    for(loc,dir,files) in os.walk('/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/',topdown=True):
+        for f in files:
+            if f in dump_files:
+                files[f] = 1
+                fi.write(str(f) + " 1\n")
+            else:
+                files[f] = 0
+                fi.write(str(f) + " 0\n")
+                # im = Image.open(loc + '/' + f)
+                # fl = open("edited22080files.txt", "a")
+                # fi = open("edited18048files.txt", "a")
+                # fil = open("edited9024files.txt", "a")
+                # #this should never fire, it would mean there is a duplicate picture
+                # if(f in pics):
+                #     return
+                # #add to pics dictionary with file name for key and add to np list
+                # # im = im.convert('1') #convert to grayscale
+                # mat2d = np.array(im)
+                # print(mat2d.shape)
+                # if(mat2d.ndim == 3):
+                #     mat2d = mat2d.reshape((mat2d.shape[1] * mat2d.shape[2]), mat2d.shape[0])
+                # if(mat2d.shape[0] == 22080):
+                #     print("test")
+                #     fl.write(str(loc) + "/" + str(f) + "\n")
+                # elif(mat2d.shape[0] == 18048):
+                #     print('test2')
+                #     fi.write(str(loc) + "/" + str(f) + "\n")
+                # elif(mat2d.shape[0] == 9024):
+                #     print('test3')
+                #     fil.write(str(loc) + "/" + str(f) + "\n")
+                # else:
+                #     print(mat2d.shape)
+                # count = count + 1
+    # f.close()
     # print(count)
     # cluster.pca_compress(int(input("How many n_components would you like to compress: "))) #param passed is n_components compressed in PCA
     # if(alg == "1" or alg == "K-Means"):
