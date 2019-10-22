@@ -11,7 +11,7 @@ second_pics = []
 reduced_pics = []
 dump_files = []
 edited_files = []
-files = {}
+labels = {}
 
 def print_menu():
     print("Which algorithm would you like to train?")
@@ -38,11 +38,13 @@ def run(root, halt, alg):
     for(loc,dir,files) in os.walk('/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/',topdown=True):
         for f in files:
             if f in dump_files:
-                files[f] = 1
+                labels[f] = 1
                 fi.write(str(f) + " 1\n")
             else:
-                files[f] = 0
+                labels[f] = 0
                 fi.write(str(f) + " 0\n")
+
+    print(labels.values())
                 # im = Image.open(loc + '/' + f)
                 # fl = open("edited22080files.txt", "a")
                 # fi = open("edited18048files.txt", "a")
