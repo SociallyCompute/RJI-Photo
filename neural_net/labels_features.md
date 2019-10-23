@@ -30,3 +30,14 @@
 #### Possible Feature Reduction
 - PCA reduction? 
     - If so, how many features?
+
+#### EXIF Metadata
+- Using PIL to pull metadata out of edited images
+    - Compare to dump files
+
+
+## What's Next
+- Resize all images
+- explore image metadata
+- form clusters/create subtitle for clusters
+- Possibly apply fuzzy set theory to determine memberships to "good" or "bad" images?
