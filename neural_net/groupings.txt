@@ -1,200 +1,420 @@
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_312.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170922_hookah_JJ/20170922_hookah_JJ_019.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_700.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_1175.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20171002_MissouriHonorFlight_jd/20171002MissouriHonorFlight_jd_011.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171206_NancyThompsonProfile_Shoot2_EJ/20171206_NancyThompsonProfile_Shoot2_EJ_040.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_812.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_2330.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170930_girlswhogame_JJ/20170930_girlswhogame_JJ_134.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_743.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171025_MKT_FH_EJ/20171025_MKT_FH_EJ_065.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170929_MUbbpress_JJ/20170928_mubbpress_JJ_456.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_1017.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171024_academyofrock_ec/20171024_academyofrock_ec_238.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170901_VoxFall_JJ/20170901_VoxFall_JJ_038.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_1328.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_771.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_326.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Summer/Summer INT 07_Dump/Krane, Meghan/20070523_firstward_MK.jpg
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170929_MUbbpress_JJ/20170928_mubbpress_JJ_589.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_2194.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170913_ShawnVeronika_OL/20170913_ShawnVeronika_OL_519.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Mallory Benedict/111810_Cunningham1.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171111_robotics_Ec/20171111_robotics_Ec_124.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171106_MUHealth-a-Copter_EJ/20171106_MUHealth-a-Copter_EJ_319.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Brenner, Dan/20100918_HumaneSociety005.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171027_RockBridge_ec/20171027_rockbridge_Ec_0166.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170919_rbvolleyball_ec/20170919_rbvolleyball_Ec_ 349.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170927_tuckerbattle_JJ/20170927_tuckerbattle_JJ_202.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_910.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170915_MUSoccer_OL/20170915_MUSoccer_OL_320.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171027_RockBridge_ec/20171027_rockbridge_Ec_0483.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171002_toltonsoftball_EJ/20171002_toltonsoftball_EJ_253.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170922_ToltonFNSfb_EJ/20170922_ToltonFNSfb_EJ656.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_1228.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Payne, Marta/20171126_vbwatch_MP_118.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171027_RockBridge_ec/20171027_rockbridge_Ec_0439.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171002_toltonsoftball_EJ/20171002_toltonsoftball_EJ_255.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170910_defenddaca_JJ/20170910_defenddaca_jj_057.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171028_StephensCollegeSoccer_EJ/20171028_StephensCollegeSoccer_EJ_087.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170901_BattleRockbridgeFootball_OL/20170901_BattleRockbridgeFootball_OL_089.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170901_BattleRockbridgeFootball_OL/20170901_BattleRockbridgeFootball_OL_249.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170829_ShermanHighway_ec/20170829_shermanhighway_ec_183.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171113_InHomeImpact_EJ/20171113_InHomeImpact_EJ_055.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170915_stlouisprotest_ec/20170915_STLOUISPROTEST_ec_277.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170922_battlefootball_Ec/20170922_fridaynightsights_ec_021.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170908_BooneFootball_OL/20170908_BooneFootball_OL_712.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170906_MarchingMizzouVox_EJ/20170906_MarchingMizzouVox_EJ_473.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170911_unitedwaydayofcaring_nc/20170911_unitedwaydayofcaring_nc_008.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171016_featurehuntbindersschisler_nc/20171016_featurehuntbinderschisler_nc_024.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170906_CartwrightPresser_EJ/20170906_CartwrightPresser_EJ_242.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171001_carshow_JJ/20171001_carshow_JJ_031.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171008_crushfestival_JJ/20171008_crushfestival_JJ_458.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170902_CCvolleyball_JJ/20170902_CCvolleyball_JJ_218.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_298.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Spring/Dump/Mcglaughlin, Clay/031809_VOX_ARTS_ballet4.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170907_ShawnVeronika_OL/20170907_ShawnVeronica_OL_344.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170904_HeartofAmericaMarathon_EJ/20170904_HeartofAmericaMarathon_EJ_811.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171112_MUwrestling_JJ/20171112_MUwrestling_JJ_091.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Summer/Dump/Tatarsky, Lesia/080908_buses1.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171030_featurehunt_nc/20171031_featurehunt_nc_019.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170823_BattleSoftball_OL/20170823_Battlesoftball_OL_390.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170921_mktbridges_nc/20170921_mktbridges_nc_034.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170828_StephensVolleyball_jd/20170828_StephensVolleyball_jd_233.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171207_rbhoops_ec/20171207_rbhoops_ec_169.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171202_voxspasalon-ashowofhands_NC/20171202_voxspasalon-ashowofhands_NC_056.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170928_hallsvillecarnival_nc/20170928_hallsvillecarnival_nc_171.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Summer/Dump/Denny, Beverly/061208_graffiti_15.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_DouglassSisters_EJ/20170830_DouglassSisters_EJ_004.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170917_boonevilleservice_JJ/20170917_boonvilleservice_JJ_301.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170920_MUVolleyball_OL/20170920_MUVolleyball_OL_517.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171021_madness_nc/20171021_madness_nc_172.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171203_nightbball_JJ/20171203_normstewartlate_JJ_087.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_033.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171206_VoxQAStephenGraves_EJ/20171206_VoxQAStephenGraves_EJ_011.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171101_VoxRadioArchives_EJ/20171101_VoxRadioArchive_EJ_109.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171113_InHomeImpact_EJ/20171113_InHomeImpact_EJ_014.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_1004.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171008_crushfestival_JJ/20171008_crushfestival_JJ_136.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20171014_StableTour_jd/20171014_stabletour_JD_090.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/Spring/Edited/zzHandouts/20170228_Stone obit.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171210_starrpines_JJ/20171210_starrpines_JJ_251.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Cloud, Matt/091409_BreakingNewsWreck_2.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171213_SturgeonFire_EJ/20171213_SturgeonFire_EJ_099.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170901_musoc_ec/20170901_musoc_Ec_081.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171127_ApartmentMugs_EJ/20171127_ApartmentMugs_EJ_220.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_274.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170911_HickmanVolleyball_jd/20170911_HickmanVolleyball_jd_057.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_1014.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_HickmanFBPractice_EJ/20170830_HickmanFBPractice_EJ_039.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170908_BooneFootball_OL/20170908_BooneFootball_OL_284.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170922_Twiddlemuffs_JJ/20170922_twiddlemuffs_JJ_290.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170906_CartwrightPresser_EJ/20170906_CartwrightPresser_EJ_119.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_75.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Summer/Dump/Stogner, Sara/071008_plan 9 musical 2.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Spring/Dump/Berr, Jakob/050809_BreakfastStation_01.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170901_BattleRockbridgeFootball_OL/20170901_BattleRockbridgeFootball_OL_244.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170915_Novakannouncement_JJ/20170915_novakannouncement_JJ_137.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171210_starrpines_JJ/20171210_starrpines_JJ_173.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/Pittman, Mike/121808_muswimhalvorson01.jpg
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171209_KwanzaaCelebration_EJ/20171209_KwanzaaCelebration_EJ_028.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170927_tuckerbattle_JJ/20170927_tuckerbattle_JJ_108.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_480.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170906_ToltonFootballPractice_OL/20170906_ToltonFootballPractice_OL_041.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170829_ShermanHighway_ec/20170829_shermanhighway_ec_196.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170904_HeartofAmericaMarathon_EJ/20170904_HeartofAmericaMarathon_EJ_881.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171013_helicoptertraining_JJ/20171013_helicoptertraining_JJ_002.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170906_StephensSoccer_jd/20170906_HickmanSoccer_JD_209.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171208_barredowlholiday_JJ/20171208_coleysholidaydrinks_JJ_077.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20171015_MuslimFoodFest_jd/20171015FoodFest_jd_072.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171101_VoxRadioArchives_EJ/20171101_VoxRadioArchive_EJ_128.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170907_ShawnVeronika_OL/20170907_ShawnVeronica_OL_1033.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_638.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Edited/Benedict, Mallory/111810_HarryPotter7.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Liu, Olivia/20170922_RockbridgeFootball_OL_414.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171206_NancyThompsonProfile_Shoot2_EJ/20171206_NancyThompsonProfile_Shoot2_EJ_113.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171025_MKT_FH_EJ/20171025_MKT_FH_EJ_040.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_2248.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171206_NancyThompsonProfile_Shoot2_EJ/20171206_NancyThompsonProfile_Shoot2_EJ_115.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_581.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_644.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170904_HickmanSoccer_jd/20170906_HickmanSoccer_JD_169.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Cherry, Jessica/102009_HickamCabin1.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_543.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170904_HeartofAmericaMarathon_EJ/20170904_HeartofAmericaMarathon_EJ_543.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20171011_Vox_BeerStudio_jd/20171011_Voxbeer_jd_243.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171127_featurehunt_nc/20171127_featurehunt_nc_006.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_974.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170823_BattleSoftball_OL/20170823_Battlesoftball_OL_371.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Summer/Summer INT 07_Dump/Morrow, Sally/20070531_01 purpleheart2_SM.tif
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170904_EStCharlesRdFeatureHunt/20170904_EStCharlesRdFeatureHunt_EJ_018.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170920_toltongolf_EJ/20170920_toltongolf_EJ_034.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Truong, Huong/20170928_ToltonFB_ht_058.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170906_MarchingMizzouVox_EJ/20170906_MarchingMizzouVox_EJ_428.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Summer/Summer INT 07_Dump/Grigsby, Alex/20070805_whitecoats1_AG.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171025_Rockclimbing_ec/20171025_rockclimbing_177.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Glascock, Taylor/20101107_SingleParent_06.jpg
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0278.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170906_ToltonVolleyball_OL/20170906_ToltonVolleyball_OL_434.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171031_BruceWallace_ec/20171031_BruceWallace_ec_101.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0241.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Lenhart, Jason/111609_FireTraining_04.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_442.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_476.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171014_Hiberniancup_JJ/20171014_hiberniancup_JJ_123.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Manolis, Christina/090810_RichardsonImpact_2.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/zz_Trump/trump_4410_print.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170828_StephensVolleyball_jd/20170828_StephensVolleyball_jd_374.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Houser, Pam/20171005_Anger_ph_025.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171028_StephensCollegeSoccer_EJ/20171028_StephensCollegeSoccer_EJ_226.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171014tigerhacks_jj/20171014_tigerhacks_jj_182.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170922_Twiddlemuffs_JJ/20170922_twiddlemuffs_JJ_277.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171128_hickmanwrestling_ec/20171128_hickmanwrestling_ec_251.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Edited/Edelheit, Eve/09052010_skydiving_0277.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_HickmanFBPractice_EJ/20170830_HickmanFBPractice_EJ_340.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170913_ShawnVeronika_OL/20170913_ShawnVeronika_OL_190.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171105_skeetshoot_JJ/20171105_skeetshooting_JJ172.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170913_ShawnVeronika_OL/20170913_ShawnVeronika_OL_249.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171027_BattleFB_FNS_EJ/20171027_BattleFB_FNS_EJ_485.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170904_HeartofAmericaMarathon_EJ/20170904_HeartofAmericaMarathon_EJ_454.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170918_Hickmansoccer_jd/20170918HickmanSoccer_jd_147.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Ziemba, Allison/20101037_RockBridgeSoccer01.jpg
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Williams, Andrew/20101116_Comedor_Popular_002.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170913_PlaneCrash_jd/20170913_planecrash_jd_024.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0247.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170918_DonLove_nc/20170918_donlove_nc_025.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170914_hickmanvrockbridgesoftball_nc/20170914_hickmanvrockbridgesoftball_nc_181.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/Spradley, Kyle/090208_poochesatpool_01.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170906_MarchingMizzouVox_EJ/20170906_MarchingMizzouVox_EJ_600.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Anderson, Ally/20101205_voxlizziandroccosanta_02.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171116_muwbb_Ec/20171116_muwbb_ec_136.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171013_helicoptertraining_JJ/20171013_helicoptertraining_JJ_150.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171002_toltonsoftball_EJ/20171002_toltonsoftball_EJ_840.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_447.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170909_BoonevilleFootball_ec/1070909_BoonevilleFootball_Ec_182.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171201_progressawards_JJ/20171201_progressawards_JJ_069.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170920_ccVolleyball_jd/20170920_ccVolleyball_jd_104.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171116_muwbb_Ec/20171116_muwbb_ec_096.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171108_PoachingStory_EJ/20171108_PoachingStory_EJ_051.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171207_rbhoops_ec/20171207_rbhoops_ec_068.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171002_toltonsoftball_EJ/20171002_toltonsoftball_EJ_994.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170906_StephensSoccer_jd/20170906_StephensSoccer_JD_148.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171014hickmansoccer/20171014_hickmansoccer_jj_262.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171027_BattleFB_FNS_EJ/20171027_BattleFB_FNS_EJ_180.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171202_toltongbb_NC/20171202_gbb_nc_120.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170906_StephensSoccer_jd/20170906_StephensSoccer_JD_029.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170911_unitedwaydayofcaring_nc/20170911_unitedwaydayofcaring_nc_119.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171202_toltongbb_NC/20171202_gbb_nc_105.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Winter/Dump/081907_bookstore/_MG_1409.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170829_ShermanHighway_ec/20170829_shermanhighway_ec_168.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/Spring/Edited/zzHandouts/20170220_floydoursler.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170827_unificasian_JJ/20170827_unificasian_JJ_107.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170829_ShermanHighway_ec/20170829_shermanhighway_ec_137.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170904_HeartofAmericaMarathon_EJ/20170904_HeartofAmericaMarathon_EJ_781.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171113_humansoffifthegrade_nc/20171113_humansoffifthgrade_nc_119.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170828_FeatureLeeStreetDeli/20170828_FeatureLeeStreetDeli_EJ_050.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170910_steamengineshow_jj/20170910_steamengineshow_jj_076.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_486.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171116_muwbb_Ec/20171116_muwbb_ec_163.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171001_carshow_JJ/20171001_carshow_JJ_051.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Edited/Benedict, Mallory/110810_WeatherArt.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20171004_RockBridgeVolleyball_jd/20171004_RockBridgeVolleyball_jd_092.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170914_hickmanvrockbridgesoftball_nc/20170914_hickmanvrockbridgesoftball_nc_184.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170919_rbvolleyball_ec/20170919_rbvolleyball_Ec_ 080.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170919_rbvolleyball_ec/20170919_rbvolleyball_Ec_ 533.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170829_Hickmanboyssoccer_ec/20170829_hickmansoccerboys_ec_595.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171102_VOXgrannybasketball_JJ/20171102_VOXgrannybasketball_JJ_163.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171008_crushfestival_JJ/20171008_crushfestival_JJ_120.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Liu, Olivia/20171201_QuinnCunningham_OL_096.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170830_Trump_EC/20170830_Trump_EC_592.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170823_BattleHSFootballPractice_jd/20170823_BattlefootballPractice_jd_0226.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_HickmanFBPractice_EJ/20170830_HickmanFBPractice_EJ_298.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170901_musoc_ec/20170901_musoc_Ec_558.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_HickmanFBPractice_EJ/20170830_HickmanFBPractice_EJ_160.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171028_StephensCollegeSoccer_EJ/20171028_StephensCollegeSoccer_EJ_792.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171028_StephensCollegeSoccer_EJ/20171028_StephensCollegeSoccer_EJ_298.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/Cipponeri, Angie/120408_Environ-Phytoremediation2.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170906_MarchingMizzouVox_EJ/20170906_MarchingMizzouVox_EJ_420.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Spring/Dump/Volpe, Gianna/042009_fieldtrip_3.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170925_chip_nc/20170925_chip_nc_007.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170918HickmanSoftball_jd/20170918HickmanSoftball_jd_111.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/Summer/Edited/zzHandouts/20170608_Tilmon.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Bratney, Rob/20101009_DSC4035.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170906_ToltonVolleyball_OL/20170906_ToltonVolleyball_OL_375.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171203_nightbball_JJ/20171203_normstewartlate_JJ_177.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171110_girlsbasketballshowcase_Ec/20171110_bballjambore_ec_007.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171207_rbhoops_ec/20171207_rbhoops_ec_112.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170929_MUbbpress_JJ/20170928_mubbpress_JJ_586.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Winter/Dump/zzNew Years Quote/Peters, Chris.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171013_featurehunt_JJ/20171013_featurehunt_JJ_061.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170929_MUbbpress_JJ/20170928_mubbpress_JJ_047.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Payne, Marta/20170830_ClaireMcDaniel_MP_335A.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/zz_Mugs/20170820_MissourianMugs_WM_205.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_858.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170913_ShawnVeronika_OL/20170913_ShawnVeronika_OL_648.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_1275.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170901_BattleRockbridgeFootball_OL/20170901_BattleRockbridgeFootball_OL_648.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_1570.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/O'Keefe, Sam/092408_pcpaularobinson8.jpg
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_tailgate_ec/20170916_tailgate_ec_051.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171108_HickmanWrestling_EJ/20171108_HickmanWrestling_EJ_248.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171116_muwbb_Ec/20171116_muwbb_ec_356.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Lautenberger, Jeff/20101002_RNBNBBQ 02.jpg
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171102_VOXgrannybasketball_JJ/20171102_VOXgrannybasketball_JJ_164.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Williams, Andrew/20101102_Carnahan_001.jpg
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170905_PouchPool_ec/20170905_poochplunge_EC_521.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170923_voxdesignerqa_nc/20170923_voxdesignerqa_nc_004.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170905_PouchPool_ec/20170905_poochplunge_EC_704.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_675.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0495.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_HickmanFBPractice_EJ/20170830_HickmanFBPractice_EJ_195.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170921_mktbridges_nc/20170921_mktbridges_nc_142.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170907_ShawnVeronika_OL/20170907_ShawnVeronica_OL_026.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Brenner, Dan/20100907_PoochPlunge TONED_006.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170906_StephensSoccer_jd/20170906_StephensSoccer_JD_159.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171009_PaigeBedsworth_EJ/20171009_PaigeBedsworth_EJ_979.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Houser, Pam/20171205_musical_ph_096.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171130_rabbi_nc/20171130_chabadhouse_nc_019.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170916_Tailgate_OL/20170916_Tailgating_OL_155.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170825_Pitbulls_EJ/20170825_voxPitbulls_EJ_635.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Giddings, Alex/20101012_MediaDay_Giddings_01.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_690.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/zz_File/08252017_BattleFootball_OL_490.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170907_ShawnVeronika_OL/20170907_ShawnVeronica_OL_270.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0373.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170910_steamengineshow_jj/20170910_steamengineshow_jj_152.JPG
-../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Williams, Andrew/20101023_ESPN_CollegeGameDay_001.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/Szalkowski, Cat/092908_PCtheatermakeup16.jpg
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Ilea, Calin/1022MUWomensSoccer01V1.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170924_DDfarm_JJ/20170924_DDfarm_JJ_060.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170910_steamengineshow_jj/20170910_steamengineshow_jj_198.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Summer/Dump/Stogner, Sara/062808_butterfliesandmoths 4.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170907_ShawnVeronika_OL/20170907_ShawnVeronica_OL_695.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170903_horseshoe_JJ/20170903_Horseshoe_JJ_045.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171004_healthcoaches_EJ/20171004_HealthCoaches_EJ_073.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PetExpo_OL/20170826_PetExpo_OL_070.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171028_StephensCollegeSoccer_EJ/20171028_StephensCollegeSoccer_EJ_711.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171028_StephensCollegeSoccer_EJ/20171028_StephensCollegeSoccer_EJ_493.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170906_MarchingMizzouVox_EJ/20170906_MarchingMizzouVox_EJ_443.JPG
 -----------
-../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170920_ccVolleyball_jd/20170920_ccVolleyball_jd_087.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170929_MUbbpress_JJ/20170928_mubbpress_JJ_611.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171106_MUHealth-a-Copter_EJ/20171106_MUHealth-a-Copter_EJ_229.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171110_GirlsOnTheRun_EJ/20171111_GirlsOnTheRun_EJ_366.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171008_crushfestival_JJ/20171008_crushfestival_JJ_027.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Winter/Dump/013007_garageband/_MG_6717.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170910_defenddaca_JJ/20170910_defenddaca_jj_125.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Lenhart, Jason/120909_GreekSalad_VOX.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Spring/Dump/Cavanah, Matthew/032009_ShelterInsuranceFountain1.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Mallory Benedict/111010_MUWrestling5.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Winter/Dump/Schwartz, Erin/123009_MunicipalCourt_02.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Summer/Dump/Denny, Beverly/062708_teeball02.tif
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170905_PouchPool_ec/20170905_poochplunge_EC_580.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Sektnan, Chelsea/103009_HickmanFootball_06.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170929_MUbbpress_JJ/20170928_mubbpress_JJ_519.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Cherry, Jessica/092509_R&BSetUp3.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170907_ShawnVeronika_OL/20170907_ShawnVeronica_OL_127.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Edelheit, Eve/20101002_smokestack_01.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Winter/Dump/zzNew Years Quote/LinnemanJessie.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Edited/Edelheit, Eve/10282010_medzou_01.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171202_voxspasalon-ashowofhands_NC/20171202_voxspasalon-ashowofhands_NC_086.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170903_horseshoe_JJ/20170903_Horseshoe_JJ_074.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171101_VoxRadioArchives_EJ/20171101_VoxRadioArchive_EJ_309.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170907_tomatofest_nc/20170907_tomatofestival_nc_036.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171126_kerripolicy_JJ/20171126_kerripolicy_JJ_006.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170929_MUbbpress_JJ/20170928_mubbpress_JJ_630.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Fallon, Patrick/090709_BoonesLick_2.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170922_ToltonFNSfb_EJ/20170922_ToltonFNSfb_EJ123.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Summer/Summer INT 07_Dump/Hodgson, Alison/20070616_douglasspool_AH.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171009_PaigeBedsworth_EJ/20171009_PaigeBedsworth_EJ_842.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170912_Toltonsoftball_ec/20170912_toltonsoftball_ec_033.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Summer/Dump/McDevitt, Colleen/070308_regionalairport2.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171013_helicoptertraining_JJ/20171013_helicoptertraining_JJ_285.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170914_usscolumbia_nc/20170914_usscolumbia_nc_083.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170918_Hickmansoccer_jd/20170918HickmanSoccer_jd_018.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171209_KwanzaaCelebration_EJ/20171209_KwanzaaCelebration_EJ_183.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_1804.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170901_BattleRockbridgeFootball_OL/20170901_BattleRockbridgeFootball_OL_607.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171013_craftbeer_JJ_VOX/20171013_craftbeer_JJ_VOX_036.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171027_BattleFB_FNS_EJ/20171027_BattleFB_FNS_EJ_1015.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170919_rbvolleyball_ec/20170919_rbvolleyball_Ec_ 002.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171209_KwanzaaCelebration_EJ/20171209_KwanzaaCelebration_EJ_186.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170915_stlouisprotest_ec/20170915_STLOUISPROTEST_ec_209.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170901_BattleRockbridgeFootball_OL/20170901_BattleRockbridgeFootball_OL_510.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_827.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Spring/Dump/zzAP/030509Chemotherapy Scans_Miss.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0832.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170831_HickmanSoccer_OL/20170831_HickmanSoccer_OL_166.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171005_voxgreenhalloween_nc/20171005_voxgreenhalloween_nc_114.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_1893.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_1192.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170929_fridaynightsights_nc/20170929_fridaynightsights_nc_133.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_1947.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_1005.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170917_boonevilleservice_JJ/20170917_boonvilleservice_JJ_067.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_2200.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0780.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_934.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Summer/Summer INT 07_Dump/Kanki, Jamie/20070516_Tigertreasuresrummagesale2_JK.tif
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170922_ToltonFNSfb_EJ/20170922_ToltonFNSfb_EJ529.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171116_muwbb_Ec/20171116_muwbb_ec_710.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170825_Pitbulls_EJ/20170825_voxPitbulls_EJ_1046.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171106_MUHealth-a-Copter_EJ/20171106_MUHealth-a-Copter_EJ_260.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170922_ToltonFNSfb_EJ/20170922_ToltonFNSfb_EJ447.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_071.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171014_Hiberniancup_JJ/20171014_hiberniancup_JJ_041.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170901_EidAlAdha_JJ/20170901_EidAlAdha_JJ_062.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_993.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_919.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170930_storybookfarms_JJ/20170930_storybookfarms_JJ_216.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170911_Cartwright1on1_EJ/20170911_Cartwright1on1_EJ_153.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171029_Electricracingportraits_JJ/20171029_electricracingportraits_JJ_017.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171110_flagraisingfeature_JJ/2071110_flagraising_JJ_056.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170825_Pitbulls_EJ/20170825_voxPitbulls_EJ_499.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170828_StephensVolleyball_jd/20170828_StephensVolleyball_jd_402.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171027_RockBridge_ec/20171027_rockbridge_Ec_0502.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Winter/Dump/081907_bookstore/_MG_1459.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Winter/Dump/081907_bookstore/_MG_1387.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Edelheit, Eve/20101118_KMurder_02.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171008_crushfestival_JJ/20171008_crushfestival_JJ_228.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PrideFest_OL/20170826_PrideFest_OL_682.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Spring/Dump/Mosley, Valerie/040209_FredParry4.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171027_RockBridge_ec/20171027_rockbridge_Ec_0188.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_681.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_262.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Liu, Olivia/20170922_RockbridgeFootball_OL_173.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_DouglassSisters_EJ/20170830_DouglassSisters_EJ_124.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Winter/Dump/013007_garageband/_MG_6654.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171008_crushfestival_JJ/20171008_crushfestival_JJ_179.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171110_GirlsOnTheRun_EJ/20171111_GirlsOnTheRun_EJ_196.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170920_MUVolleyball_OL/20170920_MUVolleyball_OL_476.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Winter/Dump/013007_garageband/_MG_6432.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170922_battlefootball_Ec/20170922_fridaynightsights_ec_127.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170830_StephensSoccor_OL/20170830_StephensSoccer_OL_1086.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Lautenberger, Jeff/20101110_CC Soccer Final Prev 02.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171114_trappkickoff_ec/20171114_trappkickoff_ec_018.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170825_Pitbulls_EJ/20170825_voxPitbulls_EJ_1212.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Cloud, Matt/102409_BasketballScrimmage_1.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Spring/Dump/zzStaff Mugs/_DSC5101.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170825_Rodeo_Ashland_ec/20170825_rodeo_EC_0880.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171023_ShirtWorksFH_EJ/20171023_ShirtworksFH_EJ_427.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Spring/Dump/Volpe, Gianna/022609_HipHop Talent Show7.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170906_ToltonVolleyball_OL/20170906_ToltonVolleyball_OL_654.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171018_DerbyRidgePieAssembly_EJ/20171018_DerbyRidgePieAssembly_EJ_045.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Houser, Pam/20171102_sharpend_ph_028.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20171202_voxspasalon-ashowofhands_NC/20171202_voxspasalon-ashowofhands_NC_158.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171107_honorflight_ec/20171107_honorflight_ec_191.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170823_gradrally_EJ/20170823_gradrally_EJ406.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PetExpo_OL/20170826_PetExpo_OL_247.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170830_RockbridgeSoccer_jd/20170830_RockbridgeSoccer_jd_209.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2007/Summer/Summer INT 07_Dump/Krane, Meghan/20070707_RiverRace_Swafford_3_MK.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171009_PaigeBedsworth_EJ/20171009_PaigeBedsworth_EJ_471.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_958.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_353.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170823_BattleSoftball_OL/20170823_Battlesoftball_OL_205.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Spring/Dump/zzStaff Mugs/_DSC5086.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171201_voxsalon_ec/20121201_voxsaloon_ec_014.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170903_horseshoe_JJ/20170903_Horseshoe_JJ_189.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170928_hallsvillecarnival_nc/20170928_hallsvillecarnival_nc_012.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171025_Rockclimbing_ec/20171025_rockclimbing_366.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Cherryhomes, Ellie/20170822_NAACPForum_EC_232.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_481.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171025_Rockclimbing_ec/20171025_rockclimbing_088.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170828_AccidentTraffic_EJ/20170828_FeatureTraffic_EJ_361.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171101_VoxRadioArchives_EJ/20171101_VoxRadioArchive_EJ_151.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171108_PoachingStory_EJ/20171108_PoachingStory_EJ_164.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/O'Neill/DSC_0139.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171101_VoxRadioArchives_EJ/20171101_VoxRadioArchive_EJ_154.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171107_choir_ec/20171107_choir_ec_053.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Lenhart, Jason/100709_VOXEG2BethPike_05.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170825_BattleFootball_OL/08252017_BattleFootball_OL_128.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170826_PetExpo_OL/20170826_PetExpo_OL_152.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170823_gradrally_EJ/20170823_gradrally_EJ351.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/Cipponeri, Angie/121808_xmasdepression1.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170823_gradrally_EJ/20170823_gradrally_EJ952.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170829_Hickmanboyssoccer_ec/20170829_hickmansoccerboys_ec_526.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170902_FootballTrash_jd/20170902_FootballTrash_jd_020.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_248.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_251.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171210_starrpines_JJ/20171210_starrpines_JJ_086.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171025_Rockclimbing_ec/20171025_rockclimbing_159.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170915_stlouisprotest_ec/20170915_STLOUISPROTEST_ec_035.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171004_healthcoaches_EJ/20171004_HealthCoaches_EJ_070.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_HickmanFBPractice_EJ/20170830_HickmanFBPractice_EJ_433.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171203_nightbball_JJ/20171203_normstewartlate_JJ_525.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170920_MUVolleyball_OL/20170920_MUVolleyball_OL_126.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/Spradley, Kyle/101508_MUVolleyball_1.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Summer/Dump/Denny, Beverly/060508_twilight06.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170922_ToltonFNSfb_EJ/20170922_ToltonFNSfb_EJ466.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170911_Cartwright1on1_EJ/20170911_Cartwright1on1_EJ_193.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171116_muwbb_Ec/20171116_muwbb_ec_640.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171008_crushfestival_JJ/20171008_crushfestival_JJ_224.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171007_toltonsoftball_EJ/20171007_toltonsoftball_EJ_805.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170918HickmanSoftball_jd/20170918HickmanSoftball_jd_017.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20171013_helicoptertraining_JJ/20171013_helicoptertraining_JJ_139.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2008/Fall/Dump/Spradley, Kyle/101408_localjazzband_02.jpg
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/zz_Mugs/20170820_MissourianMugs_WM_073.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Compton, Nate/20170929_fridaynightsights_nc/20170929_fridaynightsights_nc_029.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170916_stlprotest2_Ec/2017091_stlprotest_ec_2529.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170830_Trump_EC/20170830_Trump_EC_233.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170901_musoc_ec/20170901_musoc_Ec_026.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171009_PaigeBedsworth_EJ/20171009_PaigeBedsworth_EJ_095.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170930_girlswhogame_JJ/20170930_girlswhogame_JJ_260.JPG
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Dodge, Jessi/20170904_HickmanSoccer_jd/20170906_HickmanSoccer_JD_107.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170913_DreamersSolidarityDay_EJ/20170913_DreamersSolidarityDay_EJ_223.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2010/Fall/Dump/Stubblefield, Erin/_DSC7500.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Jeremy/20170924_DDfarm_JJ/20170924_DDfarm_JJ_021.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2009/Fall/Dump/Hurtle, Esten/090609_voxfiddlecontest2.jpg
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20171108_HickmanWrestling_EJ/20171108_HickmanWrestling_EJ_291.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Johnson, Emily/20170830_HickmanFBPractice_EJ/20170830_HickmanFBPractice_EJ_651.JPG
+-----------
+../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Liu, Olivia/20170906_Cartwright_OL/20170906_Cartwright_OL_033.JPG
 -----------
