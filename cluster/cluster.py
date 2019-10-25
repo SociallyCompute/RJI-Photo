@@ -17,7 +17,7 @@ reduced_pics = []
 def pca_compress(n):
     pca = PCA(n_components=n)
     for i in np_pics:
-        i = pca.fit_transform(i) #standardize images to 2000 x 25
+        i = pca.fit_transform(i)
         reduced_pics.append(i.flatten()) #flatten so image is a vector
 
 def run_kmeans(clusters):
