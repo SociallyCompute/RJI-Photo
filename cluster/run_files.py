@@ -144,19 +144,20 @@ def add_to_list_file(line, matrix):
     np_pics.append(matrix.flatten())
 
 def run_kmeans_file(matrix, clusters):
-    f = open('groupings.txt', 'a')
+    # f = open('groupings.txt', 'a')
     km = KMeans(n_clusters=clusters) # establishing the KMeans model
     km.fit(matrix)
     index_set = {i: np.where(km.labels_ == i)[0] for i in range(km.n_clusters)} #index of pictures in data
-    files = list(pics)
-    for i in range(len(index_set)):
-        c = index_set[i]
-        for v in c:
-            f.write(files[v] + "\n")
-            print(files[v])
-        f.write('-----------')
-        print('------------')
-    f.close()
+    print(index_set)
+    # files = list(pics)
+    # for i in range(len(index_set)):
+        # c = index_set[i]
+        # for v in c:
+            # f.write(files[v] + "\n")
+            # print(files[v])
+        # f.write('-----------')
+        # print('------------')
+    # f.close()
 
 def pca_file(n):
     all_samples = np.vstack(np_pics)
