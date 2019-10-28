@@ -145,7 +145,7 @@ def add_to_list_file(line, matrix):
 
 def run_kmeans_file(matrix, clusters):
     f = open('groupings.txt', 'a')
-    km = KMeans(n_clusters=clusters)
+    km = KMeans(n_clusters=clusters) # establishing the KMeans model
     km.fit(matrix)
     index_set = {i: np.where(km.labels_ == i)[0] for i in range(km.n_clusters)} #index of pictures in data
     files = list(pics)
@@ -161,7 +161,7 @@ def run_kmeans_file(matrix, clusters):
 def pca_file(n):
     all_samples = np.vstack(np_pics)
     print(all_samples.shape)
-    pca = PCA(n_components=n)
+    pca = PCA(n_components=n) # establish the PCA model
     return pca.fit_transform(all_samples)
 
 def run_with_trainloader():    
@@ -172,9 +172,13 @@ def run_with_trainloader():
     count = 0
     for inputs, labels in trainloader:
         count = count + 1
+        print(inputs)
         line = "../../../../.." + inputs.rstrip()
-        mat3d = np.array(Image.open(line))
-        mat3d = mat3d[0::2,0::2,:]
+        im = Image.open(line)
+        exif_data = im._getexif() # pulling out exif data from image and printing
+        print(exif_data)
+        mat3d = np.array(im) # convert image to numpy matrix
+        mat3d = mat3d[0::2,0::2,:] # cutting image pixels in half
         mat2d = mat3d.reshape((mat3d.shape[0] * mat3d.shape[1]), mat3d.shape[2])
         add_to_list_file(line, mat2d)
         if(count >= 250):
