@@ -170,7 +170,6 @@ def run_with_trainloader():
     count = 0
     for inputs, labels in trainloader:
         count = count + 1
-        print(inputs)
         line = "../../../../.." + inputs.rstrip()
         im = Image.open(line)
         exif_data = im._getexif() # pulling out exif data from image and printing
