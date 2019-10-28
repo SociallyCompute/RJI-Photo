@@ -75,6 +75,8 @@ def load_split_train_test(datadir, valid_size = .2):
     # load data and apply the transforms on contained pictures
     train_data = datasets.ImageFolder(datadir, transform=train_transforms)
     test_data = datasets.ImageFolder(datadir, transform=test_transforms)   
+
+    print("data: " + train_data[0])
     
     maxh = 0
     minh = 10000
@@ -171,14 +173,16 @@ def run_with_trainloader():
     for inputs, labels in trainloader:
         count = count + 1
         print(inputs)
-        line = "../../../../.." + inputs.rstrip()
-        im = Image.open(line)
-        exif_data = im._getexif() # pulling out exif data from image and printing
-        print(exif_data)
-        mat3d = np.array(im) # convert image to numpy matrix
-        mat3d = mat3d[0::2,0::2,:] # cutting image pixels in half
-        mat2d = mat3d.reshape((mat3d.shape[0] * mat3d.shape[1]), mat3d.shape[2])
-        add_to_list_file(line, mat2d)
+        print(labels)
+        # line = "../../../../.." + inputs.rstrip()
+        # im = Image.open(line)
+        # exif_data = im._getexif() # pulling out exif data from image and printing
+        # print(exif_data)
+        # mat3d = np.array(im) # convert image to numpy matrix
+        # mat3d = mat3d[0::2,0::2,:] # cutting image pixels in half
+        # mat2d = mat3d.reshape((mat3d.shape[0] * mat3d.shape[1]), mat3d.shape[2])
+        # add_to_list_file(line, mat2d)
+        add_to_list_file(count, inputs)
         if(count >= 250):
             break
     matrix = pca_file(int(input("How many components would you like to compress: ")))
