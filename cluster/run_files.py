@@ -3,8 +3,6 @@ import os
 import cluster
 from PIL import Image
 import numpy as np
-import pandas as pd
-from torch.nn import Module
 import torch
 import torch.nn.functional as func
 import matplotlib.pyplot as plt
