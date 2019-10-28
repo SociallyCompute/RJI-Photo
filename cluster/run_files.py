@@ -218,11 +218,7 @@ if(__name__ == "__main__"):
     else:
         im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
         img = Image.open(im)
-        exif = {
-            PIL.ExifTags.TAGS[k]: v
-            for k, v in img._getexif().items()
-            if k in PIL.ExifTags.TAGS
-        }
+        exif = img._getexif()
         print(exif)
     # alg, data, stop = print_menu()
     #how can I generalize this without requiring people type this out?
