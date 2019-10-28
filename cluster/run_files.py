@@ -223,7 +223,7 @@ if(__name__ == "__main__"):
             for k, v in img._getexif().items()
             if k in PIL.ExifTags.TAGS
         }
-        print(exif)
+        print(exif.tems())
     # alg, data, stop = print_menu()
     #how can I generalize this without requiring people type this out?
     # if(data == "root" or data == '1'):
