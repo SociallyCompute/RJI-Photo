@@ -211,7 +211,14 @@ def run_with_trainloader():
 #keep relevance in the pictures, was there a specific point in the last 20 years cameras improved?
 #have argv[1] be the root folder and argv[2] be the first folder we don't want to pull from
 if(__name__ == "__main__"):
-    run_with_trainloader()
+    choice = input('1 for training 2 for printing exif example: ')
+    if choice == '1':
+        run_with_trainloader()
+    else:
+        im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
+        img = Image.open(im)
+        exif_data = img._getexif()
+        print(exif_data)
     # alg, data, stop = print_menu()
     #how can I generalize this without requiring people type this out?
     # if(data == "root" or data == '1'):
