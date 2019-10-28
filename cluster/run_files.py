@@ -76,7 +76,7 @@ def load_split_train_test(datadir, valid_size = .2):
     train_data = datasets.ImageFolder(datadir, transform=train_transforms)
     test_data = datasets.ImageFolder(datadir, transform=test_transforms)   
 
-    print("data: " + train_data[0])
+    print("data: " + str(train_data[0]))
     
     maxh = 0
     minh = 10000
