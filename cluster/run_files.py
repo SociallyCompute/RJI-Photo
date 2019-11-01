@@ -286,12 +286,17 @@ def load_split_train_test(datadir, valid_size = .2):
     return trainloader, testloader
 
 def get_exif_data():
-    exif_data = []
+    exif_data = list()
     paths_file = open("paths.txt", "r")
     for line in paths_file:
-        im = Image.open(line)
-        exif_data = exif_data.append(im._getexif())
-        print(exif_data[-1] + "\n\n\n")
+        im = Image.open(line.rstrip())
+        exif = { 
+                PIL.ExifTags.TAGS[k]:v 
+                for k, v in im._getexif().items() 
+                if k in PIL.ExifTags.TAGS 
+        }
+        exif_data.append(exif)
+        print(str(exif['ColorSpace']) + "\n\n\n")
     return exif_data
 
 # def run_with_trainloader():    
@@ -349,7 +354,8 @@ if(__name__ == "__main__"):
         data_dir = "../../../../../mnt/md0/mysql-dump-economists/Archives"#/Fall"#/Dump"
         trainloader, testloader = load_split_train_test(data_dir, .2)
         run_files()
-        exif_data = get_exif_data()
+        exif_d = get_exif_data()
+        print(exif_d)
     else:
         im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
         img = Image.open(im)
