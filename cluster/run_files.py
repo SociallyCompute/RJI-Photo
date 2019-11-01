@@ -167,12 +167,14 @@ def pca_file(n):
     return pca.fit_transform(all_samples)
 
 def run_with_trainloader():    
+    path_file = open("paths.txt", "a")
     """define the train / validation dataset loader, using the SubsetRandomSampler for the split"""
 
     data_dir = "../../../../../mnt/md0/mysql-dump-economists/Archives"#/Fall"#/Dump"
     trainloader, testloader = load_split_train_test(data_dir, .2)
     count = 0
-    for inputs, labels in trainloader:
+    for inputs, labels, paths in trainloader:
+        path_file.write(paths)
         count = count + 1
         # print(inputs)
         # print(labels)
@@ -187,6 +189,7 @@ def run_with_trainloader():
         add_to_list_file(count, inputs)
         if(count >= 250):
             break
+    path_file.close()
     matrix = pca_file(int(input("How many components would you like to compress: ")))
     run_kmeans_file(matrix, int(input("How many clusters would you like to group: ")))
 
