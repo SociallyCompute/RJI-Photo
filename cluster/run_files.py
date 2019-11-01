@@ -188,7 +188,7 @@ def run_files():
     print("Percent done: {}%".format(count/limit*100))
     for inputs, labels, paths in trainloader:
         print('\n{}'.format(paths))
-        path_files.write(paths)
+        path_files.write(str(paths[0]))
         
 #         line = "../../../../.." + labels.rstrip()
 #         mat3d = np.array(Image.open(line))
