@@ -66,7 +66,7 @@ class ImageFolderWithPaths(datasets.ImageFolder):
         original_tuple = super(ImageFolderWithPaths, self).__getitem__(index)
         # the image file path
         path = self.imgs[index][0]
-        if torchvision.datasets.folder.has_file_allowed_extension(path, (".jpg", ".JPG")):
+        if datasets.folder.has_file_allowed_extension(path, (".jpg", ".JPG")):
             # make a new tuple that includes original and the path
             tuple_with_path = (original_tuple + (path,))
             return tuple_with_path
@@ -179,14 +179,20 @@ def get_exif_data():
     exif_data = list()
     paths_file = open("paths.txt", "r")
     for line in paths_file:
-        im = Image.open(line.rstrip())
-        exif = { 
-                PIL.ExifTags.TAGS[k]:v 
-                for k, v in im._getexif().items() 
-                if k in PIL.ExifTags.TAGS 
-        }
-        exif_data.append(exif)
-        print(str(exif['ColorSpace']) + "\n\n\n")
+        if line.rstrip().lower().endswith('.jpg'): 
+            im = Image.open(line.rstrip())
+            print(line.rstrip())
+            if im._getexif() is None:
+                continue
+            else:
+                exif = { 
+                        PIL.ExifTags.TAGS[k]:v 
+                        for k, v in im._getexif().items() 
+                        if k in PIL.ExifTags.TAGS 
+                }
+                exif_data.append(exif)
+                print(str(exif.keys()) + "\n")
+                print(str(exif['ColorSpace']) + "\n\n\n")
     return exif_data
 
 #split into 5 groups of 4 years apiece?
