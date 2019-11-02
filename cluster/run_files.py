@@ -217,7 +217,7 @@ if(__name__ == "__main__"):
         data_dir = "../../../../../mnt/md0/mysql-dump-economists/Archives"#/Fall"#/Dump"
         trainloader, testloader = load_split_train_test(data_dir, .2)
         run_files()
-        exif_d = get_exif_data()
+        # exif_d = get_exif_data()
         iptc_d = get_iptc_data()
         print(exif_d)
     else:
