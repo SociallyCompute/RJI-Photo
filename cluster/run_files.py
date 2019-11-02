@@ -193,7 +193,8 @@ def get_exif_data():
                 }
                 exif_data.append(exif)
                 print(str(exif.keys()) + "\n")
-                print(str(exif['ColorSpace']) + "\n\n\n")
+                if 'ColorSpace' in exif:
+                    print(str(exif['ColorSpace']) + "\n\n\n")
     return exif_data
 
 def get_iptc_data():
