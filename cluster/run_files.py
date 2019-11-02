@@ -208,15 +208,23 @@ def get_iptc_data():
             print(str(info._data))
             print(str(info._data.keys()))
             print(str(info._data['nonstandard_221']) + "\n\n")
-            # decoded = base64.decodebytes(info._data['nonstandard_221'])
             iptc_data.append(info)
             if info._data['nonstandard_221'] is None:
                 continue
             else:
-                decoded = base64.decodebytes(info._data['nonstandard_221'])
-                print(decoded)
+                '''
+                    Photomechanic stores editor preference tags in 221. These values are stored in base64
+                    which is 4 strings of 6 numbers, and all images have the format 0:0:0:xxxxxx. 
+                    Because the last values are the only ones that change we decode the bit stream into 
+                    a string and chop the front off. After we re-encode the data back into a bit stream
+                    and attempt to decode the base64 into binary. This can then be converted into usable ASCII
+                '''
                 val = info._data['nonstandard_221'].decode('utf-8')
-                print(str(val) + "\n\n")
+                pref = val[-6:]
+                pref = pref.encode('utf-8')
+                decoded = base64.decodebytes(pref)
+                print(decoded)
+                print(str(pref) + "\n\n")
             # iptc_data.append(info)
     return iptc_data
 
@@ -232,7 +240,7 @@ if(__name__ == "__main__"):
         run_files()
         # exif_d = get_exif_data()
         iptc_d = get_iptc_data()
-        print(exif_d)
+        # print(exif_d)
     else:
         im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
         img = Image.open(im)
