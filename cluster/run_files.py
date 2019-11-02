@@ -177,6 +177,11 @@ def run_files():
             break
     path_files.close()
 
+'''
+    Retrieve exif data as a list. Exif data presents metadata created at the time the picture is taken.
+    It contains info such as the camera style, size, location (if applicable), etc. 
+    *Note* this does not generally contain info editors added in via Photomechanic, Photoshop, or other editing tools
+'''
 def get_exif_data():
     exif_data = list()
     paths_file = open("paths.txt", "r")
@@ -198,6 +203,13 @@ def get_exif_data():
                     print(str(exif['ColorSpace']) + "\n\n\n")
     return exif_data
 
+'''
+    Retrieve International Press Telecommunications Council (IPTC) metadata. IPTC metadata is the primary way info is stored 
+    via editors. The most focused on element here is the 221 tag, which represents preference in Photomechanic. This
+    tag is stored as a base64 number and read in as a bit stream. Other data IPTC contains includes keywords, categories, 
+    authors/editors names, all of which only exist if an editor has added them. Most of this data depends on an individual
+    adding it to the metadata some time after creation.
+'''
 def get_iptc_data():
     iptc_data = list()
     paths_file = open("paths.txt", "r")
@@ -223,8 +235,8 @@ def get_iptc_data():
                 pref = val[-6:]
                 pref = pref.encode('utf-8')
                 decoded = base64.decodebytes(pref)
-                print(decoded)
-                print(str(pref) + "\n\n")
+                print(pref)
+                print(str(decoded) + "\n\n")
             # iptc_data.append(info)
     return iptc_data
 
