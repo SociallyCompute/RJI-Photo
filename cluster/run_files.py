@@ -15,6 +15,7 @@ from sklearn.neighbors import KNeighborsClassifier as knn
 from sklearn.decomposition import PCA
 import PIL.ExifTags
 from iptcinfo3 import IPTCInfo
+import base64
 
 
 pics = {}
@@ -203,8 +204,20 @@ def get_iptc_data():
     for line in paths_file:
         if line.rstrip().lower().endswith('.jpg'):
             info = IPTCInfo(line.rstrip())
-            print(str(info) + "\n")
+            #print(str(dir(info)) + "\n")
+            print(str(info._data))
+            print(str(info._data.keys()))
+            print(str(info._data['nonstandard_221']) + "\n\n")
+            # decoded = base64.decodebytes(info._data['nonstandard_221'])
             iptc_data.append(info)
+            if info._data['nonstandard_221'] is None:
+                continue
+            else:
+                decoded = base64.decodebytes(info._data['nonstandard_221'])
+                print(decoded)
+                val = info._data['nonstandard_221'].decode('utf-8')
+                print(str(val) + "\n\n")
+            # iptc_data.append(info)
     return iptc_data
 
 #split into 5 groups of 4 years apiece?
