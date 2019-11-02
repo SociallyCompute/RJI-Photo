@@ -14,6 +14,7 @@ from sklearn.cluster import KMeans
 from sklearn.neighbors import KNeighborsClassifier as knn
 from sklearn.decomposition import PCA
 import PIL.ExifTags
+from iptcinfo3 import IPTCInfo
 
 
 pics = {}
@@ -195,6 +196,16 @@ def get_exif_data():
                 print(str(exif['ColorSpace']) + "\n\n\n")
     return exif_data
 
+def get_iptc_data():
+    iptc_data = list()
+    paths_file = open("paths.txt", "r")
+    for line in paths_file:
+        if line.rstrip().lower().endswith('.jpg'):
+            info = IPTCInfo(line.rstrip())
+            print(info.keys())
+            iptc_data.append(info)
+    return iptc_data
+
 #split into 5 groups of 4 years apiece?
 #keep relevance in the pictures, was there a specific point in the last 20 years cameras improved?
 #have argv[1] be the root folder and argv[2] be the first folder we don't want to pull from
@@ -206,6 +217,7 @@ if(__name__ == "__main__"):
         trainloader, testloader = load_split_train_test(data_dir, .2)
         run_files()
         exif_d = get_exif_data()
+        iptc_d = get_iptc_data()
         print(exif_d)
     else:
         im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
