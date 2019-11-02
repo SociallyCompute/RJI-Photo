@@ -67,10 +67,10 @@ class ImageFolderWithPaths(datasets.ImageFolder):
         original_tuple = super(ImageFolderWithPaths, self).__getitem__(index)
         # the image file path
         path = self.imgs[index][0]
-        if datasets.folder.has_file_allowed_extension(path, (".jpg", ".JPG")):
-            # make a new tuple that includes original and the path
-            tuple_with_path = (original_tuple + (path,))
-            return tuple_with_path
+        # if datasets.folder.has_file_allowed_extension(path, (".jpg", ".JPG")):
+        # make a new tuple that includes original and the path
+        tuple_with_path = (original_tuple + (path,))
+        return tuple_with_path
 
 def load_split_train_test(datadir, valid_size = .2):
     
@@ -203,7 +203,7 @@ def get_iptc_data():
     for line in paths_file:
         if line.rstrip().lower().endswith('.jpg'):
             info = IPTCInfo(line.rstrip())
-            print(info.keys())
+            print(str(info) + "\n")
             iptc_data.append(info)
     return iptc_data
 
