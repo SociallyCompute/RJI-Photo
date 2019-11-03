@@ -264,7 +264,7 @@ if(__name__ == "__main__"):
 
         dump3im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
 
-        dump4im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170905_BattleTennisGirls_ec/20170905_battletennis_ec_001.JPG"
+        dump4im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170905_BattleTennisGirls_ec/20170905_battletennis_ec_005.JPG"
 
         dump_info1 = IPTCInfo(dump1im)
         print('dump 1: ' + str(dump_info1._data['nonstandard_221']))
