@@ -256,18 +256,26 @@ if(__name__ == "__main__"):
         iptc_d = get_iptc_data()
         # print(exif_d)
     else:
-        dump2im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
         dump1im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170822_NAACPForum_EC/20170822_NAACPForum_EC_134.JPG"
         edit1im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Cherryhomes, Ellie/20170822_NAACPForum_EC_134.JPG"
 
-        dump_info2 = IPTCInfo(dump2im)
-        print('dump 2: ' + str(dump_info2._data['nonstandard_221']))
+        dump2im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170822_NAACPForum_EC/20170822_NAACPForum_EC_164.JPG"
+        edit2im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Cherryhomes, Ellie/20170822_NAACPForum_EC_164.JPG"
+
+        dump3im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20171208_recycling_ec/20171208_recylingmizzou_ec_008.JPG"
 
         dump_info1 = IPTCInfo(dump1im)
         print('dump 1: ' + str(dump_info1._data['nonstandard_221']))
-
         edit_info1 = IPTCInfo(edit1im)
         print('edit 1: ' + str(edit_info1._data['nonstandard_221']))
+
+        dump_info2 = IPTCInfo(dump2im)
+        print('dump 2: ' + str(dump_info2._data['nonstandard_221']))
+        edit_info2 = IPTCInfo(edit2im)
+        print('edit 2: ' + str(edit_info2._data['nonstandard_221']))
+
+        dump_info3 = IPTCInfo(dump3im)
+        print('dump 3: ' + str(dump_info3._data['nonstandard_221']))
 
         # img = Image.open(im)
         # exif = img._getexif()
