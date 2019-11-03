@@ -279,6 +279,9 @@ if(__name__ == "__main__"):
         dump_info3 = IPTCInfo(dump3im)
         print('dump 3: ' + str(dump_info3._data['nonstandard_221']))
 
+        dump_info4 = IPTCInfo(dump4im)
+        print('dump 4: ' + str(dump_info4._data['nonstandard_221']))
+
         # img = Image.open(im)
         # exif = img._getexif()
         # print(exif)
