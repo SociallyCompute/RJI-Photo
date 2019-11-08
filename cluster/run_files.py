@@ -218,9 +218,9 @@ def get_iptc_data():
             info = IPTCInfo(line.rstrip())
             #print(str(dir(info)) + "\n")
             print(line.rstrip())
-            print(str(info._data))
-            print(str(info._data.keys()))
-            print(info._data['nonstandard_221'])
+            # print(str(info._data))
+            # print(str(info._data.keys()))
+            # print(info._data['nonstandard_221'])
             iptc_data.append(info)
             if info._data['nonstandard_221'] is None:
                 continue
@@ -233,12 +233,12 @@ def get_iptc_data():
                     and attempt to decode the base64 into binary. This can then be converted into usable ASCII
                 '''
                 val = info._data['nonstandard_221'].decode('utf-8')
-                print("val: " + str(val))
-                pref = "000000000000000000" + val[-6:]
-                pref = pref.encode('utf-8')
-                print(pref)
-                decoded = base64.decodebytes(pref)
-                print(str(decoded) + "\n\n")
+                print(str(val))
+                # pref = "000000000000000000" + val[-6:]
+                # pref = pref.encode('utf-8')
+                # print(pref)
+                # decoded = base64.decodebytes(pref)
+                # print(str(decoded) + "\n\n")
             # iptc_data.append(info)
     return iptc_data
 
