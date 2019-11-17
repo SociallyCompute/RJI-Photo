@@ -242,11 +242,23 @@ def get_iptc_data():
             # iptc_data.append(info)
     return iptc_data
 
+def run_xmp():
+    paths = open("paths.txt", "rb")
+    for path in paths:
+        with open(path, "rb") as f:
+            img = f.read()
+        img_string = str(img)
+        xmp_start = img_string.find('<x:xmpmeta')
+        xmp_end = img_string.find('</x:xmpmeta')
+        if xmp_start != xmp_end:
+            xmp_string = img_string[xmp_start:xmp_end+12]
+            print(xmp_string)
+
 #split into 5 groups of 4 years apiece?
 #keep relevance in the pictures, was there a specific point in the last 20 years cameras improved?
 #have argv[1] be the root folder and argv[2] be the first folder we don't want to pull from
 if(__name__ == "__main__"):
-    choice = input('1 for training 2 for printing exif example: ')
+    choice = input('1 for training, 2 for xmp, 3 for printing exif example: ')
     if choice == '1':
         # run_with_trainloader()
         data_dir = "../../../../../mnt/md0/mysql-dump-economists/Archives"#/Fall"#/Dump"
@@ -255,6 +267,8 @@ if(__name__ == "__main__"):
         # exif_d = get_exif_data()
         iptc_d = get_iptc_data()
         # print(exif_d)
+    elif:
+        run_xmp()
     else:
         dump1im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie/20170822_NAACPForum_EC/20170822_NAACPForum_EC_134.JPG"
         edit1im = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Edited/Cherryhomes, Ellie/20170822_NAACPForum_EC_134.JPG"
