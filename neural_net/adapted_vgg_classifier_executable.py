@@ -124,22 +124,22 @@ def retrieve_xmp_tags():
             xmp_string = img_string[xmp_start:xmp_end+12]
             print(xmp_string + '\n\n\n')
 
-def run_k_means_files():
-    count = 0
-    limit = 150
-    print("Percent done: {}%".format(count/limit*100))
-    for inputs, labels, paths in trainloader:
-        print('\n{}'.format(paths))
-        print(inputs.size())
-        mat4d = inputs
-        mat4d = mat4d[0::2,0::2,:,:]
-        mat2d = mat4d.resize_((mat4d.shape[1] * mat4d.shape[2]), mat4d.shape[3])
+# def run_k_means_files():
+#     count = 0
+#     limit = 150
+#     print("Percent done: {}%".format(count/limit*100))
+#     for inputs, labels, paths in trainloader:
+#         print('\n{}'.format(paths))
+#         print(inputs.size())
+#         mat4d = inputs
+#         mat4d = mat4d[0::2,0::2,:,:]
+#         mat2d = mat4d.resize_((mat4d.shape[1] * mat4d.shape[2]), mat4d.shape[3])
         
-        add_to_list_file(paths[0], mat2d)
-        count = count + 1
-        print("Percent done: {}%".format(count/limit*100))
-        if(count >= limit):
-            break
+#         add_to_list_file(paths[0], mat2d)
+#         count = count + 1
+#         print("Percent done: {}%".format(count/limit*100))
+#         if(count >= limit):
+#             break
 
 def change_fc():
     for param in vgg16.parameters():
