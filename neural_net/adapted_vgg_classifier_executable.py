@@ -176,8 +176,11 @@ def run_vgg():
     # change_fc()
     # train_network(2, 0.4, 0.9, training)
     vgg16.eval()
-    for tens in testing:
-        print(vgg16(tens))
+    for i, data in enumerate(testing,0):
+        inputs, labels = data
+        output = vgg16(inputs)
+        # loss = criterion(output, labels)
+        print(output)
     # output = vgg16(testing)
     # print(output)
 
