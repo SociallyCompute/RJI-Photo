@@ -176,8 +176,10 @@ def run_vgg():
     # change_fc()
     # train_network(2, 0.4, 0.9, training)
     vgg16.eval()
-    output = vgg16(testing)
-    print(output)
+    for tens in testing:
+        print(vgg16(tens))
+    # output = vgg16(testing)
+    # print(output)
 
 
 if __name__ == "__main__":
