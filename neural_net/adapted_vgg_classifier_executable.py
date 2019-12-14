@@ -179,8 +179,8 @@ def run_vgg():
     vgg16.eval()
     for _,data in enumerate(testing,0):
         output = vgg16(data[0])
-        max_val = torch.max(output)
-        print(data[1])
+        max_val = torch.argmax(output)
+        print(data[2])
         print(max_val)
         print("\n\n\n")
         # loss = criterion(output, labels)
