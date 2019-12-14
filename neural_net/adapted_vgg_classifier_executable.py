@@ -17,7 +17,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
 
 
-home = "../../../../../mnt/md0/mysql-dump-economists/Archives"#/Fall"#/Dump"
+home = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017"#/Fall"#/Dump"
 vgg16 = models.vgg16(pretrained=True)
 path_list = []
 
