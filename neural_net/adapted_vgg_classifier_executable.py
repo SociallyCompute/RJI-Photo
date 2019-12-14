@@ -177,7 +177,7 @@ def run_vgg():
     # train_network(2, 0.4, 0.9, training)
     vgg16.eval()
     for i, data in enumerate(testing,0):
-        inputs, labels = data
+        inputs = data
         output = vgg16(inputs)
         # loss = criterion(output, labels)
         print(output)
