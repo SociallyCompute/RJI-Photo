@@ -50,7 +50,7 @@ def load_split_train_test(datadir, valid_size = .2):
     
     # Helper/controller params for checking size
     find_size_bounds = False #set to true if you are looking for min/max dims in the current set, false if you want them to be resized
-    limit_num_pictures = 1000 #set to null if you want no limit
+    limit_num_pictures = 500 #set to null if you want no limit
     
     # load data and apply the transforms on contained pictures
     train_data = ImageFolderWithPaths(datadir, transform=_transform)
