@@ -3,7 +3,8 @@ import numpy as np
 import math, pandas
 import matplotlib.image as mpimg
 
-from PIL import Image
+from PIL import Image, ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 #pytorch imports
 import torch
