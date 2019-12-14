@@ -171,10 +171,10 @@ def train_network(max_epoch, learning_rate, mom, trainloader):
 
 def run_vgg():
     training, testing = load_split_train_test(home, .2)
-    for _,_,paths in training:
-        path_list.append(paths)
-    change_fc()
-    train_network(2, 0.4, 0.9, training)
+    # for _,_,paths in training:
+    #     path_list.append(paths)
+    # change_fc()
+    # train_network(2, 0.4, 0.9, training)
     vgg16.eval()
     output = vgg16(testing)
     print(output)
