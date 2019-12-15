@@ -153,7 +153,7 @@ def run_files():
     count = 0
     limit = 150
     print("Percent done: {}%".format(count/limit*100))
-    for inputs, labels, paths in trainloader:
+    for inputs,_, paths in trainloader:
         print('\n{}'.format(paths))
         path_files.write(str(paths[0]) + "\n")
         
