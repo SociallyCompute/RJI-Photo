@@ -249,10 +249,13 @@ def run_xmp():
         with open(path, "rb") as f:
             img = f.read()
         img_string = str(img)
-        xmp_start = img_string.find('<x:xmpmeta')
-        xmp_end = img_string.find('</x:xmpmeta')
+        # xmp_start = img_string.find('<x:xmpmeta')
+        xmp_start = img_string.find('photomechanic:ColorClass')
+        # xmp_end = img_string.find('</x:xmpmeta')
+        xmp_end = img_string.find('photomechanic:Tagged')
         if xmp_start != xmp_end:
-            xmp_string = img_string[xmp_start:xmp_end+12]
+            # xmp_string = img_string[xmp_start:xmp_end+12]
+            xmp_string = img_string[xmp_start:xmp_end]
             print(xmp_string + '\n\n\n')
 
 #split into 5 groups of 4 years apiece?
