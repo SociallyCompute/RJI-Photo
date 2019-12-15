@@ -244,6 +244,7 @@ def get_iptc_data():
 
 def run_xmp():
     paths = open("paths.txt", "rb")
+    counter = 0
     for path in paths:
         path = path.rstrip()
         with open(path, "rb") as f:
@@ -256,7 +257,11 @@ def run_xmp():
         if xmp_start != xmp_end:
             # xmp_string = img_string[xmp_start:xmp_end+12]
             xmp_string = img_string[xmp_start:xmp_end]
-            print(xmp_string + '\n\n\n')
+            if xmp_string[26] != "0":
+                print(xmp_string[26] + path + '\n\n\n')
+            else:
+                counter = counter + 1
+    print(counter)
 
 #split into 5 groups of 4 years apiece?
 #keep relevance in the pictures, was there a specific point in the last 20 years cameras improved?
