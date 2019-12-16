@@ -175,7 +175,7 @@ def run_vgg(training, testing):
     # for _,_,paths in training:
     #     path_list.append(paths)
     # change_fc()
-    # train_network(2, 0.4, 0.9, training)
+    train_network(2, 0.4, 0.9, training)
     vgg16.eval()
     for _,data in enumerate(testing,0):
         output = vgg16(data[0])

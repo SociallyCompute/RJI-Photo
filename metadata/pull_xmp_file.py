@@ -1,7 +1,7 @@
 def find_color_code(data_loader):
     counter = 0
     i = 0
-    for _,label,path in data_loader:
+    for _,data,path in data_loader:
         i = i+1
         path=path.rstrip()
         with open(path, "rb") as f:
@@ -17,6 +17,17 @@ def find_color_code(data_loader):
                 counter = counter + 1
             # labels[path.decode('ascii')] = xmp_string[26]
         # print(label)
-            label = xmp_string[26]
+            if(xmp_string[26] == '1'):
+                data[1] = torch.tensor(999)
+            elif(xmp_string[26] == '2'):
+                data[1] = torch.tensor(800)
+            elif(xmp_string[26] == '3'):
+                data[1] = torch.tensor(700)
+            elif(xmp_string[26] == '4'):
+                data[1] = torch.tensor(650)
+            elif(xmp_string[26] == '5'):
+                data[1] = torch.tensor(500)
+            else:
+                data[1] = torch.tensor(250)
     print(counter)
     print("Total Images: " + str(i))

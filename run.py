@@ -24,6 +24,6 @@ vgg16 = models.vgg16(pretrained=True)
 path_list = []
 
 if __name__ == "__main__":
-    testing, training = load_split_train_test(home, .2)
+    training, testing = load_split_train_test(home, .2)
     find_color_code(training)
     run_vgg(testing, training)
