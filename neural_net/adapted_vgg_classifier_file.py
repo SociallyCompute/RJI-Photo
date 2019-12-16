@@ -170,8 +170,8 @@ def train_network(max_epoch, learning_rate, mom, trainloader):
                 running_loss = 0
             print("Finished")
 
-def run_vgg():
-    training, testing = load_split_train_test(home, .2)
+def run_vgg(training, testing):
+    # training, testing = load_split_train_test(home, .2)
     # for _,_,paths in training:
     #     path_list.append(paths)
     # change_fc()
@@ -180,6 +180,7 @@ def run_vgg():
     for _,data in enumerate(testing,0):
         output = vgg16(data[0])
         max_val = torch.argmax(output)
+        print('labels: ' + str(data[1]))
         print(data[2])
         print(max_val)
         print("\n\n\n")
