@@ -26,4 +26,4 @@ path_list = []
 if __name__ == "__main__":
     training, testing = load_split_train_test(home, .2)
     find_color_code(training)
-    run_vgg(testing, training)
+    run_vgg(training, testing)
