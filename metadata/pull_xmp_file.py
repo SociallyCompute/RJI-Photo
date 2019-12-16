@@ -19,7 +19,7 @@ from torchvision import datasets, transforms
 def find_color_code(data_loader):
     counter = 0
     i = 0
-    for _,data,paths in data_loader:
+    for _,label,paths in data_loader:
         i = i+1
         path=paths[0]
         # print(path)
@@ -37,16 +37,16 @@ def find_color_code(data_loader):
             # labels[path.decode('ascii')] = xmp_string[26]
         # print(label)
             if(xmp_string[26] == '1'):
-                data[1] = torch.tensor(999)
+                label = torch.tensor(999)
             elif(xmp_string[26] == '2'):
-                data[1] = torch.tensor(800)
+                label = torch.tensor(800)
             elif(xmp_string[26] == '3'):
-                data[1] = torch.tensor(700)
+                label = torch.tensor(700)
             elif(xmp_string[26] == '4'):
-                data[1] = torch.tensor(650)
+                label = torch.tensor(650)
             elif(xmp_string[26] == '5'):
-                data[1] = torch.tensor(500)
+                label = torch.tensor(500)
             else:
-                data[1] = torch.tensor(250)
+                label = torch.tensor(250)
     print(counter)
     print("Total Images: " + str(i))
