@@ -187,6 +187,6 @@ def run_vgg():
         # print(output)
 
 
-if __name__ == "__main__":
-    run_vgg()
+# if __name__ == "__main__":
+#     run_vgg()
 # run_k_means_files()
