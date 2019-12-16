@@ -13,7 +13,7 @@ def find_color_code(data_loader):
         if xmp_start != xmp_end:
             xmp_string = img_string[xmp_start:xmp_end]
             if xmp_string[26] != "0":
-                print(xmp_string[26] + " " + path.decode('ascii') + "\n\n")
+                print(xmp_string[26] + " " + path + "\n\n")
             else:
                 counter = counter + 1
             # labels[path.decode('ascii')] = xmp_string[26]
