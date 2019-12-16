@@ -3,7 +3,8 @@ def find_color_code(data_loader):
     i = 0
     for _,data,path in data_loader:
         i = i+1
-        path=path.rstrip()
+        # path=path.rstrip()
+        print(path)
         with open(path, "rb") as f:
             img = f.read()
         img_string = str(img)
