@@ -1,10 +1,10 @@
 def find_color_code(data_loader):
     counter = 0
     i = 0
-    for _,data,path in data_loader:
+    for _,data,paths in data_loader:
         i = i+1
-        # path=path.rstrip()
-        print(path)
+        path=paths[0]
+        # print(path)
         with open(path, "rb") as f:
             img = f.read()
         img_string = str(img)
