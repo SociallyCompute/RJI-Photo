@@ -17,7 +17,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
 
 
-home = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017"#/Fall"#/Dump"
+home = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie"
 vgg16 = models.vgg16(pretrained=True)
 path_list = []
 
@@ -156,6 +156,7 @@ def train_network(max_epoch, learning_rate, mom, trainloader):
     for epoch in range(max_epoch):
         running_loss = 0.0
         for i, data in enumerate(trainloader,0):
+            print(data)
             inputs, labels = data
             optimizer.zero_grad()
             
