@@ -76,6 +76,15 @@ k = knn(clusters)
 k.fit(p, range(p.shape[1])) 
 ```
 
+### Splitting Images:
+Part of running the python script on KNN splits the images into several files based on pixel size. This can be used to prevent loading images repeatedly and wasting processing speed. Written file syntax are full path names followed by \n. Current file names are:
+- '22080files.txt' : 4912 x 7360 x 3
+- '18048files.txt' : 4016 x 6016 x 3
+- '9024files.txt' : 2008 x 3008 x 3
+
+### Convolusional Neural Network:
+Primarily using Pytorch for building the CNN. We need to develop stronger labels than the provided file system for usable data.
+
 ### Problems:
 - reformatting pictures: at least 1999 has different sizes
   * lossless compression?
