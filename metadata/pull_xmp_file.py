@@ -17,6 +17,8 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
 
 def find_color_code(data_loader):
+    # creating an array of 1000 inputs to map to the one hot encoding, 1 is high 0 is low
+    base_label = np.zeros(1000)
     counter = 0
     i = 0
     for _,label,paths in data_loader:
@@ -37,16 +39,28 @@ def find_color_code(data_loader):
             # labels[path.decode('ascii')] = xmp_string[26]
         # print(label)
             if(xmp_string[26] == '1'):
-                label = torch.tensor(999)
+                base_label[999] = 1
+                label = torch.tensor(base_label)
+                base_label[999] = 0
             elif(xmp_string[26] == '2'):
-                label = torch.tensor(800)
+                base_label[800] = 1
+                label = torch.tensor(base_label)
+                base_label[800] = 0
             elif(xmp_string[26] == '3'):
-                label = torch.tensor(700)
+                base_label[700] = 1
+                label = torch.tensor(base_label)
+                base_label[700] = 0
             elif(xmp_string[26] == '4'):
-                label = torch.tensor(650)
+                base_label[650] = 1
+                label = torch.tensor(base_label)
+                base_label[650] = 0
             elif(xmp_string[26] == '5'):
-                label = torch.tensor(500)
+                base_label[500] = 1
+                label = torch.tensor(base_label)
+                base_label[500] = 0
             else:
-                label = torch.tensor(250)
+                base_label[250] = 1
+                label = torch.tensor(base_label)
+                base_label[250] = 0
     print(counter)
     print("Total Images: " + str(i))
