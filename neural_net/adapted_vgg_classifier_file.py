@@ -113,17 +113,17 @@ def load_split_train_test(datadir, valid_size = .2):
                    sampler=test_sampler, batch_size=1)#, num_workers=4)
     return trainloader, testloader
 
-def retrieve_xmp_tags():
-    for path in path_list:
-#         path = path.rstrip()
-        with open(path, "rb") as f:
-            img = f.read()
-        img_string = str(img)
-        xmp_start = img_string.find('<x:xmpmeta')
-        xmp_end = img_string.find('</x:xmpmeta')
-        if xmp_start != xmp_end:
-            xmp_string = img_string[xmp_start:xmp_end+12]
-            print(xmp_string + '\n\n\n')
+# def retrieve_xmp_tags():
+#     for path in path_list:
+# #         path = path.rstrip()
+#         with open(path, "rb") as f:
+#             img = f.read()
+#         img_string = str(img)
+#         xmp_start = img_string.find('<x:xmpmeta')
+#         xmp_end = img_string.find('</x:xmpmeta')
+#         if xmp_start != xmp_end:
+#             xmp_string = img_string[xmp_start:xmp_end+12]
+#             print(xmp_string + '\n\n\n')
 
 # def run_k_means_files():
 #     count = 0
