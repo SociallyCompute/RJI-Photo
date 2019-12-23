@@ -156,7 +156,7 @@ def train_network(max_epoch, learning_rate, mom, trainloader):
     for epoch in range(max_epoch):
         running_loss = 0.0
         for i, data in enumerate(trainloader,0):
-            print(data)
+            # print(data)
             inputs, labels, paths = data
             optimizer.zero_grad()
             
@@ -169,7 +169,7 @@ def train_network(max_epoch, learning_rate, mom, trainloader):
             if i % 2000 == 1999:
                 print(running_loss/2000)
                 running_loss = 0
-            print("Finished")
+            print("Finished: " + str(i))
 
 def run_vgg(training, testing):
     # training, testing = load_split_train_test(home, .2)

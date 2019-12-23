@@ -22,6 +22,7 @@ def find_color_code(data_loader):
     counter = 0
     i = 0
     for _,label,paths in data_loader:
+        print(label)
         i = i+1
         path=paths[0]
         # print(path)
