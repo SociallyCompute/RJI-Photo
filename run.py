@@ -19,7 +19,7 @@ from torchvision import datasets, transforms
 from metadata.pull_xmp_file import find_color_code
 from neural_net.adapted_vgg_classifier_file import run_vgg, load_split_train_test
 
-home = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017"#/Fall"#/Dump"
+home = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie"
 vgg16 = models.vgg16(pretrained=True)
 path_list = []
 
