@@ -17,7 +17,7 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
 
 
-home = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie"
+# home = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump/Cherryhomes, Ellie"
 vgg16 = models.vgg16(pretrained=True)
 path_list = []
 
@@ -113,17 +113,17 @@ def load_split_train_test(datadir, valid_size = .2):
                    sampler=test_sampler, batch_size=1)#, num_workers=4)
     return trainloader, testloader
 
-def retrieve_xmp_tags():
-    for path in path_list:
-#         path = path.rstrip()
-        with open(path, "rb") as f:
-            img = f.read()
-        img_string = str(img)
-        xmp_start = img_string.find('<x:xmpmeta')
-        xmp_end = img_string.find('</x:xmpmeta')
-        if xmp_start != xmp_end:
-            xmp_string = img_string[xmp_start:xmp_end+12]
-            print(xmp_string + '\n\n\n')
+# def retrieve_xmp_tags():
+#     for path in path_list:
+# #         path = path.rstrip()
+#         with open(path, "rb") as f:
+#             img = f.read()
+#         img_string = str(img)
+#         xmp_start = img_string.find('<x:xmpmeta')
+#         xmp_end = img_string.find('</x:xmpmeta')
+#         if xmp_start != xmp_end:
+#             xmp_string = img_string[xmp_start:xmp_end+12]
+#             print(xmp_string + '\n\n\n')
 
 # def run_k_means_files():
 #     count = 0
@@ -156,8 +156,8 @@ def train_network(max_epoch, learning_rate, mom, trainloader):
     for epoch in range(max_epoch):
         running_loss = 0.0
         for i, data in enumerate(trainloader,0):
-            print(data)
-            inputs, labels = data
+            # print(data)
+            inputs, labels, paths = data
             optimizer.zero_grad()
             
             output = vgg16(inputs)
@@ -169,7 +169,7 @@ def train_network(max_epoch, learning_rate, mom, trainloader):
             if i % 2000 == 1999:
                 print(running_loss/2000)
                 running_loss = 0
-            print("Finished")
+            print("Finished: " + str(i))
 
 def run_vgg(training, testing):
     # training, testing = load_split_train_test(home, .2)
