@@ -204,7 +204,7 @@ vgg16.classifier[6].out_features = 10
 for param in vgg16.parameters():
     param.requires_grad = False #freeze all convolution weights
 network = list(vgg16.classifier.children())[:-1] #remove fully connected layer
-network.extend([nn.Linear(4096, 9)]) #add new layer of 4096->100 (rating scale with 1 decimal - similar to 1 hot encoding)
+network.extend([nn.Linear(4096, 8)]) #add new layer of 4096->100 (rating scale with 1 decimal - similar to 1 hot encoding)
 vgg16.classifier = nn.Sequential(*network)
 
 criterion = nn.CrossEntropyLoss() # loss function
@@ -241,7 +241,7 @@ for epoch in range(num_epochs):
         print("Completed training output for image #{}: {}".format(i, output))
     training_loss = running_loss/len(train_loader.dataset)
     training_accuracy = 100 * num_correct/len(train_loader.dataset)
-    print("Training accuracy: {}, Training loss: {}".format(accuracy, loss))
+    print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
 
 limit_num_pictures = 5
 vgg16.eval()
