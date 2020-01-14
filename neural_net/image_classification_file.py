@@ -110,7 +110,7 @@ data = ImageFolderWithPaths(data_dir, transform=_transform)
 
 data_loader = torch.utils.data.DataLoader(data)#, num_workers=4)
 
-limit_num_pictures = 200
+limit_num_pictures = 2000
 
 rated_indices = []
 ratings = []
@@ -224,8 +224,8 @@ for epoch in range(num_epochs):
             if i > limit_num_pictures:
                 break
         inputs, _, path, label = data
-        label = torch.LongTensor([int(labels[0])])
-        print(torch.LongTensor([int(labels[0])]))
+        label = torch.LongTensor([int(label[0])])
+        print(label)
         optimizer.zero_grad()
         output = vgg16(inputs)
         loss = criterion(output, torch.LongTensor([int(label[0])]))
