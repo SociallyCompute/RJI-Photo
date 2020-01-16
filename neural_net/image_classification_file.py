@@ -22,7 +22,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # root directory where the images are stored
-data_dir = "../../../../../mnt/md0/mysql-dump-economists/Archives"#/Fall"#/Dump"
+data_dir = "../../../../../mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"#/Fall"#/Dump"
 
 class ImageFolderWithPaths(datasets.ImageFolder):
     """Custom dataset that includes image file paths. Extends
@@ -110,7 +110,8 @@ data = ImageFolderWithPaths(data_dir, transform=_transform)
 
 data_loader = torch.utils.data.DataLoader(data)#, num_workers=4)
 
-limit_num_pictures = 2000
+limit_num_pictures = False
+# limit_num_pictures = 2000
 
 rated_indices = []
 ratings = []
@@ -225,7 +226,7 @@ for epoch in range(num_epochs):
                 break
         inputs, _, path, label = data
         label = torch.LongTensor([int(label[0])])
-        print(label)
+        # print(label)
         optimizer.zero_grad()
         output = vgg16(inputs)
         loss = criterion(output, torch.LongTensor([int(label[0])]))
@@ -236,32 +237,35 @@ for epoch in range(num_epochs):
         optimizer.step()
     
         if i % 2000 == 1999:
-            print(running_loss/2000)
-#             running_loss = 0
-        print("Completed training output for image #{}: {}".format(i, output))
+            # print(running_loss/2000)
+            running_loss = 0
+        # print("Completed training output for image #{}: {}".format(i, output))
     training_loss = running_loss/len(train_loader.dataset)
     training_accuracy = 100 * num_correct/len(train_loader.dataset)
-    print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
+    # print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
+torch.save(vgg16.state_dict(), 'models/Jan16_All_2017_Fall_Dump_only_labels.pt')
 
-limit_num_pictures = 5
-vgg16.eval()
-testing_loss = 0
-testing_accuracy = 0
-running_loss = 0.0
-num_correct = 0
-for i, data in enumerate(test_loader):
-    if limit_num_pictures:
-        if i > limit_num_pictures:
-            break
-    inputs, _, path, label = data
-    print(label)
-    output = vgg16(inputs)
-    loss = criterion(output, label)
 
-    running_loss += loss.item()
-    _, preds = torch.max(output.data, 1)
-    num_correct += (preds == label).sum().item()
-    print("Classification for test image #{}: {}".format(i, output))
+def test_data_function():
+    limit_num_pictures = 5
+    vgg16.eval()
+    # testing_loss = 0
+    # testing_accuracy = 0
+    # running_loss = 0.0
+    # num_correct = 0
+    for i, data in enumerate(test_loader):
+        if limit_num_pictures:
+            if i > limit_num_pictures:
+                break
+        inputs, _, path, label = data
+        # print(label)
+        output = vgg16(inputs)
+        # loss = criterion(output, label)
 
-testing_loss = running_loss/len(test_loader.dataset)
-testing_accuracy = 100. * num_correct/len(test_loader.dataset)
+        # running_loss += loss.item()
+        _, preds = torch.max(output.data, 1)
+        # num_correct += (preds == label).sum().item()
+        print("Classification for test image #{}: {}".format(i, output))
+
+    # testing_loss = running_loss/len(test_loader.dataset)
+    # testing_accuracy = 100. * num_correct/len(test_loader.dataset)
