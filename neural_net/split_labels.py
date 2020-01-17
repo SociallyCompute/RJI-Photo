@@ -129,12 +129,12 @@ def get_color_class_from_xmp():
             # inputs, labels, path = data
             _, _, path = data
             path = path[0].rstrip()
-            with open(path, "rb") as f:
-                try:
+            try:
+                with open(path, "rb") as f:
                     img = f.read()
-                except Exception as ex:
-                    print("There was an error on image #{}: {}".format(i, ex))
-                    continue
+            except Exception as ex:
+                print("There was an error on image #{}: {}".format(i, ex))
+                continue
             img_string = str(img)
             xmp_start = img_string.find('photomechanic:ColorClass')
             xmp_end = img_string.find('photomechanic:Tagged')
