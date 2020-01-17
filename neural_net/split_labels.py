@@ -149,7 +149,6 @@ def get_color_class_from_xmp():
                     ratings.append(0)
                     bad_indices.append(i)
                     none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-        break
     except Exception as e:
         print("There was an error on image #{}: {}".format(i, e))
     labels_file.close()
