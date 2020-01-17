@@ -121,34 +121,37 @@ def get_color_class_from_xmp():
     # data_loader = torch.utils.data.DataLoader(data)#, num_workers=4)
     data_loader = torch.utils.data.DataLoader(ImageFolderWithPaths(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
 
-    for attempt in range(10):
-        try:
-            for i, data in enumerate(data_loader):
-                if limit_num_pictures:
-                    if i > limit_num_pictures:
-                        break
-                # inputs, labels, path = data
-                _, _, path = data
-                path = path[0].rstrip()
-                with open(path, "rb") as f:
+    try:
+        for i, data in enumerate(data_loader):
+            if limit_num_pictures:
+                if i > limit_num_pictures:
+                    break
+            # inputs, labels, path = data
+            _, _, path = data
+            path = path[0].rstrip()
+            with open(path, "rb") as f:
+                try:
                     img = f.read()
-                img_string = str(img)
-                xmp_start = img_string.find('photomechanic:ColorClass')
-                xmp_end = img_string.find('photomechanic:Tagged')
-                if xmp_start != xmp_end:
-                    xmp_string = img_string[xmp_start:xmp_end]
-                    if xmp_string[26] != "0":
-                        print(xmp_string[26] + " " + str(path) + "\n\n")
-                        rated_indices.append(i)
-                        ratings.append(xmp_string[26])
-                        labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-                    else:
-                        ratings.append(0)
-                        bad_indices.append(i)
-                        none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-            break
-        except Exception as e:
-            print("There was an error on image #{}: {}".format(i, e))
+                except Exception as ex:
+                    print("There was an error on image #{}: {}".format(i, ex))
+                    continue
+            img_string = str(img)
+            xmp_start = img_string.find('photomechanic:ColorClass')
+            xmp_end = img_string.find('photomechanic:Tagged')
+            if xmp_start != xmp_end:
+                xmp_string = img_string[xmp_start:xmp_end]
+                if xmp_string[26] != "0":
+                    print(xmp_string[26] + " " + str(path) + "\n\n")
+                    rated_indices.append(i)
+                    ratings.append(xmp_string[26])
+                    labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
+                else:
+                    ratings.append(0)
+                    bad_indices.append(i)
+                    none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
+        break
+    except Exception as e:
+        print("There was an error on image #{}: {}".format(i, e))
     labels_file.close()
     none_file.close()
 
