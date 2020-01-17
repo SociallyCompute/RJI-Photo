@@ -111,8 +111,8 @@ def find_size_bounds(limit_num_pictures=None):
 
 # load data and apply the transforms on contained pictures
 def get_color_class_from_xmp():
-    labels_file = open("labeled_images.txt", "w")
-    none_file = open("unlabeled_images.txt", "w")
+    labels_file = open("image_splits/full_labeled_images.txt", "w")
+    none_file = open("image_splits/full_unlabeled_images.txt", "w")
     # _transform = transforms.Compose([transforms.ToTensor()])
 
     # data = ImageFolderWithPaths(data_dir, transform=_transform)
@@ -156,7 +156,7 @@ SCRIPT GLOBAL VARS
 
 """
 # root directory where the images are stored
-data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"#/Fall"#/Dump"
+data_dir = "/mnt/md0/mysql-dump-economists/Archives"#/2017/Fall/Dump"#/Fall"#/Dump"
 # ratings = None
 limit_num_pictures = False #limit_num_pictures = 2000
 rated_indices = []

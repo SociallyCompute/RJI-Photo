@@ -1,7 +1,5 @@
 """
-
 SCRIPT IMPORTS
-
 """
 #standard ML/Image Processing imports
 import numpy as np
@@ -25,9 +23,7 @@ warnings.filterwarnings('ignore')
 
 
 """
-
 SCRIPT CLASSES
-
 """
 class ImageFolderWithPaths(datasets.ImageFolder):
     """Custom dataset that includes image file paths. Extends
@@ -66,9 +62,7 @@ class ImageFolderWithPathsAndRatings(datasets.ImageFolder):
 
 
 """
-
 SCRIPT FUNCTIONS
-
 """
 def find_size_bounds(limit_num_pictures=None):
     """ Will print and return min/max width/height of pictures in the dataset 
@@ -277,9 +271,7 @@ def test_data_function(test_loader):
 
 
 """
-
 SCRIPT GLOBAL VARS
-
 """
 # root directory where the images are stored
 data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"#/Fall"#/Dump"
@@ -293,9 +285,7 @@ vgg16 = models.vgg16(pretrained=True)
 
 
 """
-
 SCRIPT EXECUTION
-
 """
 get_color_class_from_xmp()
 train, test = build_dataloaders()
