@@ -121,20 +121,17 @@ def get_color_class_from_xmp():
     # data_loader = torch.utils.data.DataLoader(data)#, num_workers=4)
     data_loader = torch.utils.data.DataLoader(ImageFolderWithPaths(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
 
-    try:
-        for i, data in enumerate(data_loader):
+    
+    for i, data in enumerate(data_loader):
+        try:
             if limit_num_pictures:
                 if i > limit_num_pictures:
                     break
             # inputs, labels, path = data
             _, _, path = data
             path = path[0].rstrip()
-            try:
-                with open(path, "rb") as f:
-                    img = f.read()
-            except Exception as ex:
-                print("There was an error on image #{}: {}".format(i, ex))
-                continue
+            with open(path, "rb") as f:
+                img = f.read()
             img_string = str(img)
             xmp_start = img_string.find('photomechanic:ColorClass')
             xmp_end = img_string.find('photomechanic:Tagged')
@@ -149,8 +146,8 @@ def get_color_class_from_xmp():
                     ratings.append(0)
                     bad_indices.append(i)
                     none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-    except Exception as e:
-        print("There was an error on image #{}: {}".format(i, e))
+        except Exception as e:
+            print("There was an error on image #{}: {}".format(i, e))
     labels_file.close()
     none_file.close()
 
