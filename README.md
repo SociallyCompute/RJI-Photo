@@ -12,6 +12,6 @@ This project is divided into multiple parts:
 Because of the nature and scope of this project more specific documentation and executables exist in each subfolder with an overall executable existing at the root of the repo with run.py. 
 
 ### Component Specific Documentation:
-[General Cluster Info](README_Cluster.md)
-[Neural Net Labels](labels_features.md)
-[Metadata Info](README_meta.md)
+* [General Cluster Info](README_Cluster.md)
+* [Neural Net Labels](labels_features.md)
+* [Metadata Info](README_meta.md)
