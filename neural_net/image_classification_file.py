@@ -37,7 +37,7 @@ class ImageFolderWithPaths(datasets.ImageFolder):
         path = self.imgs[index][0]
         # make a new tuple that includes original and the path
         tuple_with_path = (original_tuple + (path,))
-        print(tuple_with_path)
+        # print(tuple_with_path)
         return tuple_with_path
 
 class ImageFolderWithPathsAndRatings(datasets.ImageFolder):
@@ -287,8 +287,10 @@ vgg16 = models.vgg16(pretrained=True)
 """
 SCRIPT EXECUTION
 """
-get_color_class_from_xmp()
-train, test = build_dataloaders()
-change_fully_connected_layer()
-train_data_function(train)
-test_data_function(test)
+def run():
+    get_color_class_from_xmp()
+    train, test = build_dataloaders()
+    change_fully_connected_layer()
+    train_data_function(train)
+    test_data_function(test)
+
