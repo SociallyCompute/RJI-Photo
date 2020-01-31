@@ -133,7 +133,7 @@ def get_color_class_from_xmp():
                 if xmp_string[26] != "0":
                     print(xmp_string[26] + " " + str(path) + "\n\n")
                     rated_indices.append(i)
-                    ratings.append(xmp_string[26])
+                    ratings.append(xmp_string[26] + 2)
                     labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
                 else:
                     ratings.append(0)
@@ -204,7 +204,7 @@ def change_fully_connected_layer():
     for param in vgg16.parameters():
         param.requires_grad = False #freeze all convolution weights
     network = list(vgg16.classifier.children())[:-1] #remove fully connected layer
-    network.extend([nn.Linear(4096, 8)]) #add new layer of 4096->100 (rating scale with 1 decimal - similar to 1 hot encoding)
+    network.extend([nn.Linear(4096, 10)]) #add new layer of 4096->100 (rating scale with 1 decimal - similar to 1 hot encoding)
     vgg16.classifier = nn.Sequential(*network)
     vgg16
 
@@ -241,7 +241,7 @@ def train_data_function(train_loader):
         # training_loss = running_loss/len(train_loader.dataset)
         # training_accuracy = 100 * num_correct/len(train_loader.dataset)
         # print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
-    torch.save(vgg16.state_dict(), 'models/Jan16_All_2017_Fall_Dump_only_labels.pt')
+    torch.save(vgg16.state_dict(), 'models/Jan29_All_2017_Fall_Dump_only_labels_10scale.pt')
 
 def test_data_function(test_loader):
     limit_num_pictures = 5
