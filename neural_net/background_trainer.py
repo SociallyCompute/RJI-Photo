@@ -118,8 +118,8 @@ def find_size_bounds(limit_num_pictures=None):
         print(e)
         print("error occurred on pic {} number {}".format(pic, i))
 
-    print("Max/min width: {} {}".format(max_w, min_w))
-    print("Max/min height: {} {}".format(max_h, min_h))
+    #print("Max/min width: {} {}".format(max_w, min_w))
+    #print("Max/min height: {} {}".format(max_h, min_h))
     return min_w, max_w, min_h, max_h
 #find_size_bounds(limit_num_pictures=1000)
 # load data and apply the transforms on contained pictures
@@ -130,7 +130,7 @@ data = ImageFolderWithPaths(data_dir, transform=_transform)
 
 data_loader = torch.utils.data.DataLoader(data)#, num_workers=4)
 
-limit_num_pictures = 5000
+limit_num_pictures = 1000000
 
 # Define our data transforms to get all our images the same size
 _transform = transforms.Compose([
@@ -150,7 +150,7 @@ train_data = ImageFolderWithPathsAndRatings(data_dir, transform=_transform)
 test_data = ImageFolderWithPathsAndRatings(data_dir, transform=_transform)   
 
 num_pictures = len(train_data)
-print("Number of pictures in subdirectories: {}".format(num_pictures))
+#print("Number of pictures in subdirectories: {}".format(num_pictures))
 
 # Shuffle pictures and split training set
 indices = list(range(num_pictures))
@@ -164,7 +164,7 @@ split = int(np.floor(valid_size * num_pictures))
 #     print("Head of shuffled indices: {}".format(indices[:10]))
 
 train_idx, test_idx = indices[split:], indices[:split]#rated_indices, bad_indices
-print("Size of training set: {}, size of test set: {}".format(len(train_idx), len(test_idx)))
+#print("Size of training set: {}, size of test set: {}".format(len(train_idx), len(test_idx)))
 
 # Define samplers that sample elements randomly without replacement
 train_sampler = SubsetRandomSampler(train_idx)
@@ -178,7 +178,7 @@ test_loader = torch.utils.data.DataLoader(test_data,
 
 # check GPU availability
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-print("Device that will be used: {}".format(device))
+#print("Device that will be used: {}".format(device))
 
 # we load the pretrained model, the argument pretrained=True implies to load the ImageNet 
 #     weights for the pre-trained model
@@ -204,7 +204,7 @@ for epoch in range(num_epochs):
     running_loss = 0.0
     num_correct = 0
     for i, data in enumerate(train_loader,0):
-        print(i)
+        #print(i)
         if limit_num_pictures:
             if i > limit_num_pictures:
                 break
@@ -219,7 +219,7 @@ for epoch in range(num_epochs):
         label = torch.LongTensor([label])
 #         print('inputs shape is: {}'.format(inputs.shape))
 #         print('label shape is: {}'.format(label.shape))
-        print('label is : {}'.format(label))
+        #print('label is : {}'.format(label))
         optimizer.zero_grad()
         output = vgg16(inputs)
 #         print('output shape is: {}'.format(output.shape))
@@ -232,9 +232,9 @@ for epoch in range(num_epochs):
         optimizer.step()
     
 
-        print("Completed training output for image #{}: {}".format(i, output))
+        #print("Completed training output for image #{}: {}".format(i, output))
         if epoch == 0 and i % 20 == 0:
-            print('test')
+            #print('test')
 #             fig = plt.figure(figsize=(16, 4))
             columns = 3
             rows = 1
@@ -249,5 +249,5 @@ for epoch in range(num_epochs):
 #             plt.show()
     training_loss = running_loss/len(train_loader.dataset)
     training_accuracy = 100 * num_correct/len(train_loader.dataset)
-    print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
-# torch.save(vgg16.state_dict(), 'models/Jan29_All_AVA_only_training.pt')
+    #print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
+torch.save(vgg16.state_dict(), 'models/Jan29_All_AVA_only_training.pt')
