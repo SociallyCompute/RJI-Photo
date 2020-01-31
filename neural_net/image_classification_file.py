@@ -209,6 +209,7 @@ def change_fully_connected_layer():
     vgg16
 
 def train_data_function(train_loader):
+    vgg16.load_state_dict(torch.load('models/Jan29_All_AVA_only_training.pt')) #load the AVA model first and train on top
     criterion = nn.CrossEntropyLoss() # loss function
     optimizer = optim.SGD(vgg16.parameters(), lr=0.4, momentum=0.9) # optimizer
     vgg16 #print out the model to ensure our network is correct
@@ -241,7 +242,7 @@ def train_data_function(train_loader):
         # training_loss = running_loss/len(train_loader.dataset)
         # training_accuracy = 100 * num_correct/len(train_loader.dataset)
         # print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
-    torch.save(vgg16.state_dict(), 'models/Jan29_All_2017_Fall_Dump_only_labels_10scale.pt')
+    torch.save(vgg16.state_dict(), 'models/Jan31_All_2017_Fall_Dump_only_labels_10scale_and_AVA.pt')
 
 def test_data_function(test_loader):
     limit_num_pictures = 5
@@ -292,5 +293,7 @@ def run():
     train, test = build_dataloaders()
     change_fully_connected_layer()
     train_data_function(train)
-    test_data_function(test)
+    # test_data_function(test)
+
+run()
 
