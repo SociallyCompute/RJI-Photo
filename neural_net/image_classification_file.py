@@ -133,7 +133,7 @@ def get_color_class_from_xmp():
                 if xmp_string[26] != "0":
                     print(xmp_string[26] + " " + str(path) + "\n\n")
                     rated_indices.append(i)
-                    ratings.append(xmp_string[26] + 2)
+                    ratings.append(11 - int(xmp_string[26])) #have to invert and adjust to be on a growing scale of 1-10
                     labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
                 else:
                     ratings.append(0)
@@ -225,7 +225,7 @@ def train_data_function(train_loader):
                     break
             inputs, _, _, label = data
             label = torch.LongTensor([int(label[0])])
-            # print(label)
+            print(label)
             optimizer.zero_grad()
             output = vgg16(inputs)
             loss = criterion(output, torch.LongTensor([int(label[0])]))
@@ -290,8 +290,11 @@ SCRIPT EXECUTION
 """
 def run():
     get_color_class_from_xmp()
+    print('got color class')
     train, test = build_dataloaders()
+    print('dataloaders built')
     change_fully_connected_layer()
+    print('changed final layer')
     train_data_function(train)
     # test_data_function(test)
 
