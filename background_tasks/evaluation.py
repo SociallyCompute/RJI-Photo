@@ -39,7 +39,7 @@ from helpers import ImageFolderWithPathsAndRatings, ImageFolderWithPaths
 """ Define global variables that were configurable """
 
 # model we will be evaluating with
-photo_model = '../neural_net/models/Jan16_All_2017_Fall_Dump_only_labels.pt'
+photo_model = '../neural_net/models/Jan31_All_2017_Fall_Dump_only_labels_10scale_and_AVA.pt'
 
 # setup logger
 logging.basicConfig(filename='evaluation_{}.log'.format(photo_model.split('/')[3].split('.')[0]), filemode='w', level=logging.INFO)
@@ -48,7 +48,7 @@ logging.basicConfig(filename='evaluation_{}.log'.format(photo_model.split('/')[3
 data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
 
 # The number of classification groups
-num_ratings = 8
+num_ratings = 10
 
 
 
@@ -97,7 +97,7 @@ vgg16.to(device) # loads the model onto the device (CPU or GPU)
 for param in vgg16.parameters():
     param.requires_grad = False #freeze all convolution weights
 network = list(vgg16.classifier.children())[:-1] #remove fully connected layer
-network.extend([nn.Linear(4096, 8)]) #add new layer of 4096->100 (rating scale with 1 decimal - similar to 1 hot encoding)
+network.extend([nn.Linear(4096, num_ratings)]) #add new layer of 4096->100 (rating scale with 1 decimal - similar to 1 hot encoding)
 vgg16.classifier = nn.Sequential(*network)
 
 # criterion = nn.CrossEntropyLoss() # loss function
@@ -181,4 +181,5 @@ while index_progress < num_pictures - 1:
     except Exception as e:
         logging.info("Ran into error for image #{}: {}\n... Moving on.\n".format(index_progress, e))
         index_progress += 1
+
 
