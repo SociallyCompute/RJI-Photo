@@ -8,7 +8,8 @@ import math, pandas
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
-from PIL import Image
+from PIL import Image, ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 #pytorch imports
 import torch
@@ -158,7 +159,7 @@ for epoch in range(num_epochs):
     #         print(pic_label_dict[pic_name.split('.')[0]])
     #         label = torch.LongTensor(pic_label_dict[pic_name.split('.')[0]])
             label = pic_label_dict[pic_name.split('.')[0]][j]
-#             print(tag_mapping[label])
+            print(tag_mapping[label])
             label = torch.LongTensor([label])
 #             print('inputs shape is: {}'.format(inputs.shape))
 #             print('label shape is: {}'.format(label.shape))
