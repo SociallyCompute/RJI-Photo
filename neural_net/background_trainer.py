@@ -197,7 +197,7 @@ optimizer = optim.SGD(vgg16.parameters(), lr=0.4, momentum=0.9) # optimizer
 # vgg16 #print out the model to ensure our network is correct
 
 vgg16.train() # set model to training model
-num_epochs = 1 
+num_epochs = 50 
 training_loss = 0
 training_accuracy = 0
 for epoch in range(num_epochs):
@@ -250,4 +250,4 @@ for epoch in range(num_epochs):
     training_loss = running_loss/len(train_loader.dataset)
     training_accuracy = 100 * num_correct/len(train_loader.dataset)
     #print("Training accuracy: {}, Training loss: {}".format(training_accuracy, training_loss))
-torch.save(vgg16.state_dict(), 'models/Jan29_All_AVA_only_training.pt')
+torch.save(vgg16.state_dict(), 'models/Feb3_All_AVA_only_training_50epoch.pt')
