@@ -134,6 +134,7 @@ def get_color_class_from_xmp():
                     print(xmp_string[26] + " " + str(path) + "\n\n")
                     rated_indices.append(i)
                     ratings.append(11 - int(xmp_string[26])) #have to invert and adjust to be on a growing scale of 1-10
+                    print(ratings[-1])
                     labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
                 else:
                     ratings.append(0)
