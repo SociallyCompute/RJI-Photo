@@ -342,30 +342,32 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
                         continue
                 else:
                     try:
-                        #logging.info('path is {}'.format(path))
                         path = path[0]
                         path_array = path.split('/')
                         pic_name = path_array[-1]
-                        #logging.info('index for label_dict is {}'.format(pic_name.split('.')[0]))
                         label = label_dict[pic_name.split('.')[0]]
                         label = torch.LongTensor([label])
                     except Exception:
                         logging.error('Invalid label found at path: {}, skipping Image #{}, label: {}'.format(path[0], i, label))
                         continue
                 
-                optimizer.zero_grad()
-                output = vgg16(inputs)
-                loss = criterion(output, torch.LongTensor(label))
-                running_loss += loss.item()
-                _, preds = torch.max(output.data, 1)
-                num_correct += (preds == label).sum().item()
-                loss.backward()
-                optimizer.step()
+                try:
+                    optimizer.zero_grad()
+                    output = vgg16(inputs)
+                    loss = criterion(output, torch.LongTensor(label))
+                    running_loss += loss.item()
+                    _, preds = torch.max(output.data, 1)
+                    num_correct += (preds == label).sum().item()
+                    loss.backward()
+                    optimizer.step()
+                except Exception:
+                    logging.warning('Issue calculating loss and optimizing with image #{}, dataloader is\n{}'.format(i, data))
+                    continue
             
                 if i % 2000 == 1999:
                     running_loss = 0
         except Exception:
-            logging.error('Non-specific error in training, dumping dataloader and exiting\n{}'.format(data))
+            logging.error('Error reading train_loader at #{}, dumping data and exiting\n{}'.format(i, data))
             sys.exit(1)
 
         training_loss = running_loss/len(train_loader.dataset)
@@ -374,7 +376,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
     try:
         torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name)
     except Exception:
-        logging.error('Unable to save model: {}, exiting program'.format(model))
+        logging.error('Unable to save model: {}, exiting program'.format(model_name))
         sys.exit(1)
 
 """
