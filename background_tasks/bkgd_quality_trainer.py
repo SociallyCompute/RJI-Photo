@@ -1,13 +1,11 @@
 """
 SCRIPT IMPORTS
 """
-#standard ML/Image Processing imports
 import numpy as np
 import math, pandas
 import matplotlib.image as mpimg
 from PIL import Image
 
-#pytorch imports
 import torch
 import torch.optim as optim
 import torchvision.models as models
@@ -17,7 +15,11 @@ from torch import optim
 from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
 
-# no one likes irrelevant warnings
+import logging
+import sys
+import os.path
+from os import path
+
 import warnings  
 warnings.filterwarnings('ignore')
 
@@ -123,24 +125,29 @@ def get_xmp_color_class():
                     break
             _, _, path = data
             path = path[0].rstrip()
-            with open(path, "rb") as f:
-                img = f.read()
-            img_string = str(img)
-            xmp_start = img_string.find('photomechanic:ColorClass')
-            xmp_end = img_string.find('photomechanic:Tagged')
-            if xmp_start != xmp_end:
-                xmp_string = img_string[xmp_start:xmp_end]
-                if xmp_string[26] != "0":
-                    print(xmp_string[26] + " " + str(path) + "\n\n")
-                    rated_indices.append(i)
-                    ratings.append(11 - int(xmp_string[26])) #have to invert and adjust to be on a growing scale of 1-10
-                    labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-                else:
-                    ratings.append(0)
-                    bad_indices.append(i)
-                    none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
+            try:
+                with open(path, "rb") as f:
+                    img = f.read()
+                    img_string = str(img)
+                    xmp_start = img_string.find('photomechanic:ColorClass')
+                    xmp_end = img_string.find('photomechanic:Tagged')
+                    if xmp_start != xmp_end and xmp_start != -1:
+                        xmp_string = img_string[xmp_start:xmp_end]
+                        if xmp_string[26] != "0":
+                            print(xmp_string[26] + " " + str(path) + "\n\n")
+                            rated_indices.append(i)
+                            ratings.append(11 - int(xmp_string[26])) #have to invert and adjust to be on a growing scale of 1-10
+                            labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
+                        else:
+                            ratings.append(0)
+                            bad_indices.append(i)
+                            none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
+            except OSError:
+                logging.warning('Image #{} not found at specified path'.format(i))
+                continue
     except Exception as e:
-        print("There was an error on image #{}: {}".format(i, e))
+        logging.error('There was an error with the dataloader at image #{}: {}'.format(i, e))
+        sys.exit(1)
     labels_file.close()
     none_file.close()
 
@@ -152,10 +159,14 @@ GET_FILE_COLOR_CLASS
         Load Missourian labels from files, apply those to global arrays
 """
 def get_file_color_class():
-    labels_file = open("labeled_images.txt", "r")
-    none_file = open("unlabeled_images.txt", "r")
+    try:
+        labels_file = open("labeled_images.txt", "r")
+        none_file = open("unlabeled_images.txt", "r")
+    except OSError:
+        logging.error('Could not open Missourian image mapping files')
+        sys.exit(1)
 
-    data_loader = torch.utils.data.DataLoader(ImageFolderWithPaths(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
+    #data_loader = torch.utils.data.DataLoader(ImageFolderWithPaths(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
 
     for line in labels_file:
         labels_string = line.split(',')
@@ -167,6 +178,7 @@ def get_file_color_class():
         bad_indices.append(labels_string[0])
         ratings.append(0)
 
+    logging.info('Successfully loaded info from Missourian Image Files')
     labels_file.close()
     none_file.close()
 
@@ -182,18 +194,23 @@ GET_AVA_LABELS
 def get_ava_labels():
     pic_label_dict = {}
     limit_lines = 1000000
-    f = open(label_file, "r")
-    for i, line in enumerate(f):
-        if i >= limit_lines:
-            break
-        line_array = line.split()
-        picture_name = line_array[1]
-        temp = line_array[2:]
-        aesthetic_values = temp[:10]
-        for i in range(0, len(aesthetic_values)): 
-            aesthetic_values[i] = int(aesthetic_values[i])
-        pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-        return pic_label_dict
+    try:
+        f = open(label_file, "r")
+        for i, line in enumerate(f):
+            if i >= limit_lines:
+                logging.info('Reached the developer specified line limit')
+                break
+            line_array = line.split()
+            picture_name = line_array[1]
+            temp = line_array[2:]
+            aesthetic_values = temp[:10]
+            for i in range(0, len(aesthetic_values)): 
+                aesthetic_values[i] = int(aesthetic_values[i])
+            pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
+            return pic_label_dict
+    except OSError:
+        logging.error('Cannot open AVA label file')
+        sys.exit(1)
 
 """
 BUILD_DATALOADERS
@@ -225,7 +242,8 @@ def build_dataloaders(dataset):
 
     # load data and apply the transforms on contained pictures
     train_data = ImageFolderWithPathsAndRatings(data_dir, transform=_transform)
-    test_data = ImageFolderWithPathsAndRatings(data_dir, transform=_transform)   
+    test_data = ImageFolderWithPathsAndRatings(data_dir, transform=_transform)
+    logging.info('Training and Testing Dataset correctly transformed')   
 
     num_pictures = len(train_data)
     indices = list(range(num_pictures))
@@ -248,6 +266,7 @@ def build_dataloaders(dataset):
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     vgg16.to(device)
+    logging.info('VGG16 is running on {}'.format(device))
     return train_loader, test_loader
 
 """
@@ -266,11 +285,13 @@ def change_fully_connected_layer():
 
     for param in vgg16.parameters():
         param.requires_grad = False
+    logging.info('All VGG16 layers frozen')
 
     network = list(vgg16.classifier.children())[:-1]
 
     network.extend([nn.Linear(4096, 10)])
     vgg16.classifier = nn.Sequential(*network)
+    logging.info('New Layer correctly added to VGG16')
 
 """
 TRAIN_DATA_FUNCTION
@@ -290,7 +311,10 @@ TRAIN_DATA_FUNCTION
 """
 def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, model_name):
     if(prev_model != 'N/A'):
-        vgg16.load_state_dict(torch.load('../neural_net/models/' + prev_model))
+        try:
+            vgg16.load_state_dict(torch.load('../neural_net/models/' + prev_model))
+        except Exception:
+            logging.warning('Failed to find {}, model trained off base vgg16'.format(prev_model))
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(vgg16.parameters(), lr=0.4, momentum=0.9)
@@ -299,38 +323,56 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
     training_loss = 0
     training_accuracy = 0
     num_epochs = epochs 
+
     for epoch in range(num_epochs):
         running_loss = 0.0
         num_correct = 0
-        for i, data in enumerate(train_loader,0):
-            if limit_num_pictures:
-                if i > limit_num_pictures:
-                    break
-            inputs, _, path, label = data
-            if(dataset == 2):
-                label = torch.LongTensor([int(label[0])])
-            else:
-                path = path[0]
-                path_array = path.split('/')
-                pic_name = path_array[-1]
-                label = label_dict[pic_name.split('.')[0]]
-                label = torch.LongTensor([label])
+        try:
+            for i, data in enumerate(train_loader,0):
+                if limit_num_pictures:
+                    if i > limit_num_pictures:
+                        break
+                inputs, _, path, label = data
+                if(dataset == 2):
+                    try:
+                        label = torch.LongTensor([int(label[0])])
+                    except Exception:
+                        logging.error('Invalid label for image, skipping Image #{}'.format(i))
+                        continue
+                else:
+                    try:
+                        path = path[0]
+                        path_array = path.split('/')
+                        pic_name = path_array[-1]
+                        label = label_dict[pic_name.split('.')[0]]
+                        label = torch.LongTensor([label])
+                    except Exception:
+                        logging.error('Invalid label found at path: {}, skipping Image #{}'.format(path[0], i))
+                        continue
+                
+                optimizer.zero_grad()
+                output = vgg16(inputs)
+                loss = criterion(output, torch.LongTensor(label))
+                running_loss += loss.item()
+                _, preds = torch.max(output.data, 1)
+                num_correct += (preds == label).sum().item()
+                loss.backward()
+                optimizer.step()
             
-            optimizer.zero_grad()
-            output = vgg16(inputs)
-            loss = criterion(output, torch.LongTensor(label))
-            running_loss += loss.item()
-            _, preds = torch.max(output.data, 1)
-            num_correct += (preds == label).sum().item()
-            loss.backward()
-            optimizer.step()
-        
-            if i % 2000 == 1999:
-                running_loss = 0
+                if i % 2000 == 1999:
+                    running_loss = 0
+        except Exception:
+            logging.error('Non-specific error in training, dumping dataloader and exiting\n{}'.format(data))
+            sys.exit(1)
+
         training_loss = running_loss/len(train_loader.dataset)
         training_accuracy = 100 * num_correct/len(train_loader.dataset)
         print('training loss: {}\ntraining accuracy: {}'.format(training_loss, training_accuracy))
-    torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name)
+    try:
+        torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name)
+    except Exception:
+        logging.error('Unable to save model: {}, exiting program'.format(model))
+        sys.exit(1)
 
 """
 RUN
@@ -346,15 +388,18 @@ def run(dataset):
     if(dataset == 'AVA' or dataset == '1'):
         dataset = 1
         label_dict = get_ava_labels()
+        logging.info('Successfully loaded AVA labels')
     else:
         dataset = 2
-        get_xmp_color_class()
+        if(path.exists('labeled_images.txt') and path.exists('unlabeled_images.txt')):
+            logging.info('labeled_images.txt and unlabeled_images.txt found')
+            get_file_color_class()
+        else:
+            logging.info('labeled_images.txt and unlabeled_images.txt not found')
+            get_xmp_color_class()
     train, test = build_dataloaders(dataset)
     change_fully_connected_layer()
-    prev_model = input('Which model do you want to train on? (just use the file name or type N/A for no previous model) ')
-    epochs = input('How many epochs should be used: ')
-    model_name = input('What would you like to name this model? ')
-    train_data_function(train, int(epochs), prev_model, dataset, label_dict, model_name)
+    train_data_function(train, epochs, prev_model, dataset, label_dict, model_name)
     # test_data_function(test)
 
 
@@ -372,10 +417,20 @@ GLOBAL VARS
         Ends by calling the run function
 """
 # root directory where the images are stored
-dataset = input('Which dataset would you like to train with?\n1: AVA\n2: Missourian\n')
+dataset = 'AVA'
+prev_model = 'Jan31_All_2017_Fall_Dump_only_labels_10scale_and_AVA.pt'
+logging.basicConfig(filename='logs/bkgd_quality_trainer.log', filemode='w', level=logging.DEBUG)
+# model_name = 'Feb6_new_model_name.pt'
+model_name = sys.argv[1]
+if(model_name.split('.')[1] != 'pt'):
+    logging.info('Invalid model name {} submitted, must end in .pt or .pth'.format(model_name))
+    sys.exit('Invalid Model')
+epochs = 25
 if(dataset == 'AVA' or dataset == '1'):
+    logging.info('Using AVA Dataset to train')
     data_dir = "/mnt/md0/reynolds/ava-dataset/"
 else:
+    logging.info('Using Missourian Dataset to train')
     data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"#/Fall"#/Dump"
     
 label_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
