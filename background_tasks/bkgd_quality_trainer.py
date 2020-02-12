@@ -207,7 +207,8 @@ def get_ava_labels():
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-            return pic_label_dict
+        logging.info('labels dictionary is {}'.format(pic_label_dict))
+        return pic_label_dict
     except OSError:
         logging.error('Cannot open AVA label file')
         sys.exit(1)
@@ -337,17 +338,19 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
                     try:
                         label = torch.LongTensor([int(label[0])])
                     except Exception:
-                        logging.error('Invalid label for image, skipping Image #{}'.format(i))
+                        logging.error('Invalid label for image, skipping Image #{} from label {}'.format(i, label))
                         continue
                 else:
                     try:
+                        #logging.info('path is {}'.format(path))
                         path = path[0]
                         path_array = path.split('/')
                         pic_name = path_array[-1]
+                        #logging.info('index for label_dict is {}'.format(pic_name.split('.')[0]))
                         label = label_dict[pic_name.split('.')[0]]
                         label = torch.LongTensor([label])
                     except Exception:
-                        logging.error('Invalid label found at path: {}, skipping Image #{}'.format(path[0], i))
+                        logging.error('Invalid label found at path: {}, skipping Image #{}, label: {}'.format(path[0], i, label))
                         continue
                 
                 optimizer.zero_grad()
@@ -418,7 +421,8 @@ GLOBAL VARS
 """
 # root directory where the images are stored
 dataset = 'AVA'
-prev_model = 'Jan31_All_2017_Fall_Dump_only_labels_10scale_and_AVA.pt'
+#prev_model = 'Jan31_All_2017_Fall_Dump_only_labels_10scale_and_AVA.pt'
+prev_model = 'N/A'
 logging.basicConfig(filename='logs/bkgd_quality_trainer.log', filemode='w', level=logging.DEBUG)
 # model_name = 'Feb6_new_model_name.pt'
 model_name = sys.argv[1]

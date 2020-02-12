@@ -204,6 +204,7 @@ def train_vgg(train_loader, epochs, pic_label_dict, tag_mapping):
         except Exception:
             logging.error('Non-specific error in training, dumping dataloader and exiting\n{}'.format(data))
             sys.exit(1)
+        logging.info('Trained epoch {}'.format(epoch))
         training_loss = running_loss/len(train_loader.dataset)
         training_accuracy = 100 * num_correct/len(train_loader.dataset)
         logging.info('training loss: {} and training accuracy: {}'.format(training_loss, training_accuracy))
@@ -234,7 +235,7 @@ GLOBAL VARIABLES
         5. limit_lines - limit of lines to read from files
         6. epochs - number of times to run training model through data
 """
-logging.basicConfig(filename='logs/bkgd_quality_trainer.log', filemode='w', level=logging.DEBUG)
+logging.basicConfig(filename='logs/classifier.log', filemode='w', level=logging.DEBUG)
 # we load the pretrained model, the argument pretrained=True implies to load the ImageNet weights for the pre-trained model
 vgg16 = models.vgg16(pretrained=True)
 

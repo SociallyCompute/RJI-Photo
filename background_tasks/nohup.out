@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "bkgd_quality_trainer.py", line 449, in <module>
+    run(dataset)
+  File "bkgd_quality_trainer.py", line 405, in run
+    train_data_function(train, epochs, prev_model, dataset, label_dict, model_name)
+  File "bkgd_quality_trainer.py", line 332, in train_data_function
+    for i, data in enumerate(train_loader,0):
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 346, in __next__
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 44, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 44, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "bkgd_quality_trainer.py", line 54, in __getitem__
+    original_tuple = super(ImageFolderWithPathsAndRatings, self).__getitem__(index)
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torchvision/datasets/folder.py", line 140, in __getitem__
+    sample = self.transform(sample)
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torchvision/transforms/transforms.py", line 61, in __call__
+    img = t(img)
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torchvision/transforms/transforms.py", line 92, in __call__
+    return F.to_tensor(pic)
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torchvision/transforms/functional.py", line 99, in to_tensor
+    return img.float().div(255)
+KeyboardInterrupt

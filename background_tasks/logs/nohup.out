@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "../bkgd_quality_trainer.py", line 424, in <module>
+    logging.basicConfig(filename='logs/bkgd_quality_trainer.log', filemode='w', level=logging.DEBUG)
+  File "/usr/lib/python3.7/logging/__init__.py", line 1895, in basicConfig
+    h = FileHandler(filename, mode)
+  File "/usr/lib/python3.7/logging/__init__.py", line 1087, in __init__
+    StreamHandler.__init__(self, self._open())
+  File "/usr/lib/python3.7/logging/__init__.py", line 1116, in _open
+    return open(self.baseFilename, self.mode, encoding=self.encoding)
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/md0/reynolds/newmatt/github/RJI-Photo/background_tasks/logs/logs/bkgd_quality_trainer.log'
+Traceback (most recent call last):
+  File "../bkgd_quality_trainer.py", line 424, in <module>
+    logging.basicConfig(filename='logs/bkgd_quality_trainer.log', filemode='w', level=logging.DEBUG)
+  File "/usr/lib/python3.7/logging/__init__.py", line 1895, in basicConfig
+    h = FileHandler(filename, mode)
+  File "/usr/lib/python3.7/logging/__init__.py", line 1087, in __init__
+    StreamHandler.__init__(self, self._open())
+  File "/usr/lib/python3.7/logging/__init__.py", line 1116, in _open
+    return open(self.baseFilename, self.mode, encoding=self.encoding)
+FileNotFoundError: [Errno 2] No such file or directory: '/mnt/md0/reynolds/newmatt/github/RJI-Photo/background_tasks/logs/logs/bkgd_quality_trainer.log'
