@@ -201,6 +201,7 @@ def train_vgg(train_loader, epochs, pic_label_dict, tag_mapping):
                     num_correct += (preds == pic_label_dict[pic_name.split('.')[0]][j]).sum().item()
                     loss.backward()
                     optimizer.step()
+                    logging.info('Completed Picture #{}'.format(i))
         except Exception:
             logging.error('Non-specific error in training, dumping dataloader and exiting\n{}'.format(data))
             sys.exit(1)
@@ -244,5 +245,5 @@ data_dir = "/mnt/md0/reynolds/ava-dataset/"
 label_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
 tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
 limit_lines = 1000000
-epochs = 25
+epochs = 1
 run(epochs)
