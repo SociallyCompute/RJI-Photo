@@ -174,7 +174,7 @@ def train_vgg(train_loader, epochs, pic_label_dict, tag_mapping):
     optimizer = optim.SGD(vgg16.parameters(), lr=0.4, momentum=0.9) # optimizer
 
     vgg16.train() # set model to training model
-    limit_num_pictures = 50
+    limit_num_pictures = 1000000
     num_epochs = epochs 
     training_loss = 0
     training_accuracy = 0
@@ -210,8 +210,8 @@ def train_vgg(train_loader, epochs, pic_label_dict, tag_mapping):
         training_accuracy = 100 * num_correct/len(train_loader.dataset)
         logging.info('training loss: {} and training accuracy: {}'.format(training_loss, training_accuracy))
 
-    torch.save(vgg16.state_dict(), '../neural_net/models/CLASSIFICATION_Feb17_All_AVA_only_training.pt')
-    torch.save(vgg16.state_dict(), 'BACKUP_CLASSIFICATION_Feb17.pt')
+    torch.save(vgg16.state_dict(), 'BACKUP_CLASSIFICATION_Feb18.pt')
+    torch.save(vgg16.state_dict(), '../neural_net/models/CLASSIFICATION_Feb18_All_AVA_only_training.pt')
 
 """
 RUN
