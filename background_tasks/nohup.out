@@ -22,3 +22,27 @@ Traceback (most recent call last):
   File "/home/newmatt/rji3/lib/python3.7/site-packages/torchvision/transforms/functional.py", line 99, in to_tensor
     return img.float().div(255)
 KeyboardInterrupt
+Traceback (most recent call last):
+  File "classifier.py", line 249, in <module>
+    run(epochs)
+  File "classifier.py", line 227, in run
+    train_vgg(train_loader, epochs, pic_label_dict, tag_mapping)
+  File "classifier.py", line 213, in train_vgg
+    torch.save(vgg16.state_dict(), 'models/CLASSIFICATION_Feb11_All_AVA_only_training.pt')
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/serialization.py", line 260, in save
+    return _with_file_like(f, "wb", lambda f: _save(obj, f, pickle_module, pickle_protocol))
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/serialization.py", line 183, in _with_file_like
+    f = open(f, mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'models/CLASSIFICATION_Feb11_All_AVA_only_training.pt'
+Traceback (most recent call last):
+  File "classifier.py", line 250, in <module>
+    run(epochs)
+  File "classifier.py", line 228, in run
+    train_vgg(train_loader, epochs, pic_label_dict, tag_mapping)
+  File "classifier.py", line 213, in train_vgg
+    torch.save(vgg16.state_dict(), '../neural_nets/models/CLASSIFICATION_Feb17_All_AVA_only_training.pt')
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/serialization.py", line 260, in save
+    return _with_file_like(f, "wb", lambda f: _save(obj, f, pickle_module, pickle_protocol))
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/serialization.py", line 183, in _with_file_like
+    f = open(f, mode)
+FileNotFoundError: [Errno 2] No such file or directory: '../neural_nets/models/CLASSIFICATION_Feb17_All_AVA_only_training.pt'
