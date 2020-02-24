@@ -18,7 +18,9 @@ from torchvision import datasets, transforms
 import logging
 import sys
 import os.path
+import ntpath
 from os import path
+from pathlib2 import Path
 
 import warnings  
 warnings.filterwarnings('ignore')
@@ -63,102 +65,193 @@ class ImageFolderWithPathsAndRatings(datasets.ImageFolder):
             tuple_with_path_and_rating = (tuple_with_path + (torch.FloatTensor([0]),))
         return tuple_with_path_and_rating
 
-
 """
-FIND_SIZE_BOUNDS
-    Input: Limit the number of pictures analyzed if you want a smaller dataset
-    Output: Minimum and Maximum Width/Length/Heights of Images
+AdjustedDataset
+    Input: DatasetFolder object
+    __init__: 
+        root to images (string), image to class dict (dict: string, int), transform operator(transform Object), max class (int)
+    Comments:
+        expects 1 class per image. Needs to be adjusted to incorporate 2+ classes per image
 """
-def find_size_bounds(limit_num_pictures=None):
-    data = ImageFolderWithPaths(data_dir)
-    print(data[0][0].size)
-    max_h = (data[0][0]).size[1]
-    min_h = data[0][0].size[1]
-    max_w = data[0][0].size[0]
-    min_w = data[0][0].size[0]
-    try:
-        for (i, pic) in enumerate(data):
-            #if we are limiting pics
-            if limit_num_pictures:
-                if i > limit_num_pictures:
-                    break
-            print(pic[0].size) # print all size dimensions
-            
-            # check width records
-            if pic[0].size[0] > max_w:
-                max_w = pic[0].size[0]
-            elif pic[0].size[1] < min_w:
-                min_w = pic[0].size[0]
+# https://discuss.pytorch.org/t/custom-label-for-torchvision-imagefolder-class/52300/8
+class AdjustedDataset(datasets.DatasetFolder):
+    def __init__(self, image_path, class_dict, transform):
+        """Imports dataset from folder structure.
 
-            # check height records
-            if pic[0].size[1] > max_h:
-                max_h = pic[0].size[1]
-            elif pic[0].size[1] < min_h:
-                min_h = pic[0].size[1]
-    except Exception as e:
-        print(e)
-        print("error occurred on pic {} number {}".format(pic, i))
+        Input:
+            image_path: (string) Folder where the image samples are kept.
+            class_dict: (dict) pairs of (picture, rating)
+            transform: (Object) Image processing transformations.
 
-    print("Max/min width: {} {}".format(max_w, min_w))
-    print("Max/min height: {} {}".format(max_h, min_h))
-    return min_w, max_w, min_h, max_h
+        Attributes: 
+            classes: (list) List of the class names.
+            class_to_idx: (dict) pairs of (image, class).
+            samples: (list) List of (sample_path, class_index) tuples.
+            targets: (list) class_index value for each image in dataset.
+        """
+        super(AdjustedDataset, self).__init__()
+        self.transform = transform
+        self.classes = [i+1 for i in range(10)] #classes are 1-10
+        self.class_to_idx = class_dict
+        # self.classes, self.class_to_idx = self._find_classes(class_dict)
+        self.samples = self.make_dataset(image_path, self.class_to_idx)
+        self.targets = [s[1] for s in self.samples]
+
+    def make_dataset(self, dir, class_to_idx):
+        """Returns a list of image path, and target index
+
+        Input:
+            dir: (string) The path of each image sample
+            class_to_idx: (dict: string, int) image name, mapped to class
+
+        Output:
+            images: [(tensor, class)] Path and mapped class for each sample
+        """
+
+        images = []
+
+        dir = Path.expanduser(dir)
+
+        for d in dir.rglob("*.png"):
+            if not d.is_dir():
+                # target = self._get_target(d)
+                tensor_sample = transforms.ToTensor(Image.open(d))
+                try:
+                    class_val = class_to_idx[ntpath.basename(d).split('.')[0]]
+                except KeyError:
+                    logging.error('Failed to find key given path {}, key derived was {}'.format(d, ntpath.basename(d).split('.')[0]))
+                    sys.exit(1)
+                item = (tensor_sample, class_val)
+                images.append(item)
+
+        return images
+
+    def get_class_dict(self):
+        """Returns a dictionary of classes mapped to indicies."""
+        return self.class_to_idx
+
+    def __getitem__(self, index):
+        """Returns tuple: (tensor, int) where target is class_index of
+        target_class.
+        
+        Args:
+            idx: (int) Index.
+        """
+
+        path, target = self.samples[index]
+        # sample = default_loader(path)
+        img = Image.open(path) #load image via PIL
+        sample = self.transform(transforms.ToTensor(img)) #transform Image into Tensor, then do new transform
+
+        return sample, target
+
+    def __len__(self):
+        return len(self.samples)
 
 """
 GET_XMP_COLOR_CLASS
-    Input: N/A
+    Input: image_path - root of image folder
     Output: N/A
     Comments:
         Open the files to write labels in labeled_images.txt and unlabeled_images.txt. 
         Read to XMP data and look for the photomechanic:ColorClass tag. Use this tag 
         as labels for the Missourian data. 
 """
-def get_xmp_color_class():
-    labels_file = open("labeled_images.txt", "w")
-    none_file = open("unlabeled_images.txt", "w")
+def get_xmp_color_class(image_path):
+    labels_file = open('labeled_images.txt', 'w')
+    none_file = open('unlabeled_images.txt', 'w')
 
-    data_loader = torch.utils.data.DataLoader(ImageFolderWithPaths(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
-
-    try:
-        for i, data in enumerate(data_loader):
-            if limit_num_pictures:
-                if i > limit_num_pictures:
-                    break
-            _, _, path = data
-            path = path[0].rstrip()
-            try:
-                with open(path, "rb") as f:
-                    img = f.read()
-                    img_string = str(img)
-                    xmp_start = img_string.find('photomechanic:ColorClass')
-                    xmp_end = img_string.find('photomechanic:Tagged')
-                    if xmp_start != xmp_end and xmp_start != -1:
-                        xmp_string = img_string[xmp_start:xmp_end]
-                        if xmp_string[26] != "0":
-                            print(xmp_string[26] + " " + str(path) + "\n\n")
-                            rated_indices.append(i)
-                            ratings.append(11 - int(xmp_string[26])) #have to invert and adjust to be on a growing scale of 1-10
-                            labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-                        else:
-                            ratings.append(0)
-                            bad_indices.append(i)
-                            none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-            except OSError:
-                logging.warning('Image #{} not found at specified path'.format(i))
-                continue
-    except Exception as e:
-        logging.error('There was an error with the dataloader at image #{}: {}'.format(i, e))
-        sys.exit(1)
+    for root, _, files in os.walk(image_path, topdown=True):
+        for name in files:
+            with open(os.path.join(root, name), 'rb') as f:
+                img_str = str(f.read())
+                xmp_start = img_str.find('photomechanic:ColorClass')
+                xmp_end = img_str.find('photomechanic:Tagged')
+                if xmp_start != xmp_end and xmp_start != -1:
+                    xmp_str = img_str[xmp_start:xmp_end]
+                    if xmp_str[26] != '0':
+                        labels_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)))
+                    else:
+                        none_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)))
+    
     labels_file.close()
     none_file.close()
+
+# def get_xmp_color_class():
+#     labels_file = open("labeled_images.txt", "w")
+#     none_file = open("unlabeled_images.txt", "w")
+
+#     data_loader = torch.utils.data.DataLoader(AdjustedDataset(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
+
+#     try:
+#         for i, data in enumerate(data_loader):
+#             if limit_num_pictures:
+#                 if i > limit_num_pictures:
+#                     break
+#             _, _, path = data
+#             path = path[0].rstrip()
+#             try:
+#                 with open(path, "rb") as f:
+#                     img = f.read()
+#                     img_string = str(img)
+#                     xmp_start = img_string.find('photomechanic:ColorClass')
+#                     xmp_end = img_string.find('photomechanic:Tagged')
+#                     if xmp_start != xmp_end and xmp_start != -1:
+#                         xmp_string = img_string[xmp_start:xmp_end]
+#                         if xmp_string[26] != "0":
+#                             print(xmp_string[26] + " " + str(path) + "\n\n")
+#                             rated_indices.append(i)
+#                             ratings.append(11 - int(xmp_string[26])) #have to invert and adjust to be on a growing scale of 1-10
+#                             labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
+#                         else:
+#                             ratings.append(0)
+#                             bad_indices.append(i)
+#                             none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
+#             except OSError:
+#                 logging.warning('Image #{} not found at specified path'.format(i))
+#                 continue
+#     except Exception as e:
+#         logging.error('There was an error with the dataloader at image #{}: {}'.format(i, e))
+#         sys.exit(1)
+#     labels_file.close()
+#     none_file.close()
+
+'''
+GET_MISSOURIAN_MAPPED_VAL
+    Input: missourian raw val (int)
+    Output: converted ranking
+    Comments:
+        Helper function to easily map raw 1-8 to 1-10 vals.
+'''
+def get_missourian_mapped_val(missourian_val):
+    if(missourian_val == 1):
+        return 10
+    elif(missourian_val == 2):
+        return 9
+    elif(missourian_val == 3):
+        return 7
+    elif(missourian_val == 4):
+        return 6
+    elif(missourian_val == 5):
+        return 5
+    elif(missourian_val == 6):
+        return 4
+    elif(missourian_val == 7):
+        return 2
+    elif(missourian_val == 8):
+        return 1
+    else:
+        return 0
 
 """
 GET_FILE_COLOR_CLASS
     Input: N/A
-    Output: N/A
+    Output: pic_label_dict - (dict: path, label)
     Comments:
         Load Missourian labels from files, apply those to global arrays
 """
 def get_file_color_class():
+    pic_label_dict = {}
     try:
         labels_file = open("labeled_images.txt", "r")
         none_file = open("unlabeled_images.txt", "r")
@@ -166,21 +259,24 @@ def get_file_color_class():
         logging.error('Could not open Missourian image mapping files')
         sys.exit(1)
 
-    #data_loader = torch.utils.data.DataLoader(ImageFolderWithPaths(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
-
     for line in labels_file:
         labels_string = line.split(',')
-        rated_indices.append(labels_string[0])
-        ratings.append(11 - int(rated_indices[2]))
+        # rated_indices.append(labels_string[0])
+        file_name = (labels_string[1].split('/')[-1]).split('.')[0]
+        pic_label_dict[file_name] = get_missourian_mapped_val(int(labels_string[0]))
+        # ratings.append(get_missourian_mapped_val(int(labels_string[0])))
 
     for line in none_file:
         labels_string = line.split(',')
-        bad_indices.append(labels_string[0])
-        ratings.append(0)
+        # bad_indices.append(labels_string[0])
+        file_name = (labels_string[1].split('/')[-1]).split('.')[0]
+        pic_label_dict[file_name] = 0
+        # ratings.append(0)
 
     logging.info('Successfully loaded info from Missourian Image Files')
     labels_file.close()
     none_file.close()
+    return pic_label_dict
 
 """
 GET_AVA_LABELS
@@ -228,7 +324,7 @@ BUILD_DATALOADERS
         return all dataloaders.
 
 """
-def build_dataloaders(dataset):
+def build_dataloaders(dataset, label_dict):
     _transform = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
@@ -239,12 +335,12 @@ def build_dataloaders(dataset):
         )
     ])
 
-    valid_size = 0.2 # percentage of data to use for test set
+    valid_size = 0.2 # percentage of data to use for test set  
 
     # load data and apply the transforms on contained pictures
-    train_data = ImageFolderWithPathsAndRatings(data_dir, transform=_transform)
-    test_data = ImageFolderWithPathsAndRatings(data_dir, transform=_transform)
-    logging.info('Training and Testing Dataset correctly transformed')   
+    train_data = AdjustedDataset(data_dir, label_dict, transform=_transform)
+    test_data = AdjustedDataset(data_dir, label_dict, transform=_transform)
+    logging.info('Training and Testing Dataset correctly transformed') 
 
     num_pictures = len(train_data)
     indices = list(range(num_pictures))
@@ -367,17 +463,20 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
                 if i % 2000 == 1999:
                     running_loss = 0
         except Exception:
-            logging.error('Error reading train_loader at #{}, dumping data and exiting\n{}'.format(i, data))
+            logging.error('Error reading train_loader at #{}, dumping data, saving backup model and exiting\n{}'.format(i, data))
+            torch.save(vgg16.state_dict(), 'Backup_model.pt')
             sys.exit(1)
 
         training_loss = running_loss/len(train_loader.dataset)
         training_accuracy = 100 * num_correct/len(train_loader.dataset)
         print('training loss: {}\ntraining accuracy: {}'.format(training_loss, training_accuracy))
-    try:
-        torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name)
-    except Exception:
-        logging.error('Unable to save model: {}, exiting program'.format(model_name))
-        sys.exit(1)
+        #saving every epoch
+        try:
+            torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name + '.pt')
+        except Exception:
+            logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(model_name))
+            torch.save(vgg16.state_dict(), 'Backup_model.pt')
+            sys.exit(1)
 
 """
 RUN
@@ -396,13 +495,13 @@ def run(dataset):
         logging.info('Successfully loaded AVA labels')
     else:
         dataset = 2
-        if(path.exists('labeled_images.txt') and path.exists('unlabeled_images.txt')):
-            logging.info('labeled_images.txt and unlabeled_images.txt found')
-            get_file_color_class()
-        else:
+        if(not path.exists('labeled_images.txt') or not path.exists('unlabeled_images.txt')):
             logging.info('labeled_images.txt and unlabeled_images.txt not found')
-            get_xmp_color_class()
-    train, test = build_dataloaders(dataset)
+            get_xmp_color_class(data_dir)
+        else:
+            logging.info('labeled_images.txt and unlabeled_images.txt found')
+        label_dict = get_file_color_class()
+    train, test = build_dataloaders(dataset, label_dict)
     change_fully_connected_layer()
     train_data_function(train, epochs, prev_model, dataset, label_dict, model_name)
     # test_data_function(test)
@@ -440,6 +539,7 @@ else:
     data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"#/Fall"#/Dump"
     
 label_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
+tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
 limit_num_pictures = False #limit_num_pictures = 2000
 rated_indices = []
 ratings = []
