@@ -113,7 +113,8 @@ class AdjustedDataset(datasets.DatasetFolder):
         #     d = os.path.join(root, target)
         #     if not os.path.isdir(d):
         #         continue
-        for r, _, fnames in sorted(os.walk(root_path, followlinks=True)):
+        for r, _, fnames in os.walk(root_path):
+            logging.info('files are {}'.format(fnames))
             for fname in sorted(fnames):
                 path = os.path.join(r, fname)
                 if path.lower().endswith('.png'):
