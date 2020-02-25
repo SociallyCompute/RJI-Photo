@@ -89,7 +89,7 @@ class AdjustedDataset(datasets.DatasetFolder):
             samples: (list) List of (sample_path, class_index) tuples.
             targets: (list) class_index value for each image in dataset.
         """
-        super(AdjustedDataset, self).__init__()
+        # super(AdjustedDataset, self).__init__(image_path, None)
         self.transform = transform
         self.classes = [i+1 for i in range(10)] #classes are 1-10
         self.class_to_idx = class_dict
@@ -97,7 +97,7 @@ class AdjustedDataset(datasets.DatasetFolder):
         self.samples = self.make_dataset(image_path, self.class_to_idx)
         self.targets = [s[1] for s in self.samples]
 
-    def make_dataset(self, dir, class_to_idx):
+    def make_dataset(self, root, class_to_idx):
         """Returns a list of image path, and target index
 
         Input:
@@ -110,9 +110,9 @@ class AdjustedDataset(datasets.DatasetFolder):
 
         images = []
 
-        dir = Path.expanduser(dir)
+        root_path = Path.expanduser(root)
 
-        for d in dir.rglob("*.png"):
+        for d in root_path.rglob("*.png"):
             if not d.is_dir():
                 # target = self._get_target(d)
                 tensor_sample = transforms.ToTensor(Image.open(d))
@@ -488,6 +488,7 @@ RUN
         prompts user for previous model file name, epoch count, and model name file name.
 """
 def run(dataset):
+    logging.info('Begin running')
     label_dict = {}
     if(dataset == 'AVA' or dataset == '1'):
         dataset = 1
