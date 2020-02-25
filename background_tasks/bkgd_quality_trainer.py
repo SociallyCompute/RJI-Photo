@@ -96,35 +96,32 @@ class AdjustedDataset(datasets.DatasetFolder):
         # self.classes, self.class_to_idx = self._find_classes(class_dict)
         self.samples = self.make_dataset(image_path, self.class_to_idx)
         self.targets = [s[1] for s in self.samples]
+        logging.info('targets are {}'.format(self.targets))
 
     def make_dataset(self, root, class_to_idx):
-        """Returns a list of image path, and target index
-
+        '''
         Input:
-            dir: (string) The path of each image sample
-            class_to_idx: (dict: string, int) image name, mapped to class
-
+            1. root: (string) root path to images
+            2. class_to_idx: (dict: string, int) image name, mapped to class
+        
         Output:
-            images: [(tensor, class)] Path and mapped class for each sample
-        """
-
+            images: [(path, class)] list of paths and mapped classes
+        '''
         images = []
-
-        root_path = Path(root).expanduser()
-
-        for d in root_path.rglob("*.png"):
-            if not d.is_dir():
-                # target = self._get_target(d)
-                tensor_sample = transforms.ToTensor(Image.open(d))
-                try:
-                    class_val = class_to_idx[ntpath.basename(d).split('.')[0]]
-                except KeyError:
-                    logging.error('Failed to find key given path {}, key derived was {}'.format(d, ntpath.basename(d).split('.')[0]))
-                    sys.exit(1)
-                item = (tensor_sample, class_val)
-                images.append(item)
+        root_path = os.path.expanduser(root)
+        # for target in sorted(class_to_idx.keys()):
+        #     d = os.path.join(root, target)
+        #     if not os.path.isdir(d):
+        #         continue
+        for r, _, fnames in sorted(os.walk(root_path, followlinks=True)):
+            for fname in sorted(fnames):
+                path = os.path.join(r, fname)
+                if path.lower().endswith('.png'):
+                    item = (path, class_to_idx[fname.split('.')[0]])
+                    images.append(item)
 
         return images
+
 
     def get_class_dict(self):
         """Returns a dictionary of classes mapped to indicies."""
@@ -304,7 +301,7 @@ def get_ava_labels():
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
         # logging.info('labels dictionary is {}'.format(pic_label_dict))
-        logging.inf('label dictionary completed')
+        logging.info('label dictionary completed')
         return pic_label_dict
     except OSError:
         logging.error('Cannot open AVA label file')
