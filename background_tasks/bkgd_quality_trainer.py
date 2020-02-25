@@ -110,7 +110,7 @@ class AdjustedDataset(datasets.DatasetFolder):
 
         images = []
 
-        root_path = Path.expanduser(root)
+        root_path = Path(root).expanduser()
 
         for d in root_path.rglob("*.png"):
             if not d.is_dir():
@@ -303,7 +303,8 @@ def get_ava_labels():
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-        logging.info('labels dictionary is {}'.format(pic_label_dict))
+        # logging.info('labels dictionary is {}'.format(pic_label_dict))
+        logging.inf('label dictionary completed')
         return pic_label_dict
     except OSError:
         logging.error('Cannot open AVA label file')
@@ -364,6 +365,7 @@ def build_dataloaders(dataset, label_dict):
 
     vgg16.to(device)
     logging.info('VGG16 is running on {}'.format(device))
+    logging.info('train_loader is {}'.format(train_loader))
     return train_loader, test_loader
 
 """
