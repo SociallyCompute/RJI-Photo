@@ -96,7 +96,6 @@ class AdjustedDataset(datasets.DatasetFolder):
         # self.classes, self.class_to_idx = self._find_classes(class_dict)
         self.samples = self.make_dataset(image_path, self.class_to_idx)
         self.targets = [s[1] for s in self.samples]
-        logging.info('targets are {}'.format(self.targets))
 
     def make_dataset(self, root, class_to_idx):
         '''
@@ -114,11 +113,12 @@ class AdjustedDataset(datasets.DatasetFolder):
         #     if not os.path.isdir(d):
         #         continue
         for r, _, fnames in os.walk(root_path):
-            logging.info('files are {}'.format(fnames))
             for fname in sorted(fnames):
                 path = os.path.join(r, fname)
-                if path.lower().endswith('.png'):
+                logging.info('path is {}'.format(path))
+                if path.lower().endswith(('.png', '.jpg')):
                     item = (path, class_to_idx[fname.split('.')[0]])
+                    logging.info('appending item {}'.format(item))
                     images.append(item)
 
         return images
@@ -534,7 +534,7 @@ if(model_name.split('.')[1] != 'pt'):
 epochs = 25
 if(dataset == 'AVA' or dataset == '1'):
     logging.info('Using AVA Dataset to train')
-    data_dir = "/mnt/md0/reynolds/ava-dataset/"
+    data_dir = "/mnt/md0/reynolds/ava-dataset/images/"
 else:
     logging.info('Using Missourian Dataset to train')
     data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"#/Fall"#/Dump"
