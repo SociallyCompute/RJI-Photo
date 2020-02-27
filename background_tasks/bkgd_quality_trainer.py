@@ -91,9 +91,9 @@ class AdjustedDataset(datasets.DatasetFolder):
         """
         super(AdjustedDataset, self).__init__(image_path, self.pil_loader, extensions=('.jpg', '.png', '.PNG', '.JPG'),transform=transform)
         self.transform = transform
-        # self.classes = [i+1 for i in range(10)] #classes are 1-10
-        # self.class_to_idx = class_dict
-        self.classes, self.class_to_idx = self._find_classes(class_dict)
+        self.classes = [i+1 for i in range(10)] #classes are 1-10
+        self.class_to_idx = {i+1 : i for i in range(10)}
+        # self.classes, self.class_to_idx = self._find_classes(class_dict)
         self.samples = self.make_dataset(image_path, class_dict)
         self.targets = [s[1] for s in self.samples]
 
@@ -375,7 +375,7 @@ def build_dataloaders(dataset, label_dict):
 
     vgg16.to(device)
     logging.info('VGG16 is running on {}'.format(device))
-    logging.info('train_loader is {}'.format(train_loader))
+    # logging.info('train_loader is {}'.format(train_loader))
     return train_loader, test_loader
 
 """
@@ -437,45 +437,29 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
         running_loss = 0.0
         num_correct = 0
         try:
-            for i, data in enumerate(train_loader,0):
+            for i, (data, label) in enumerate(train_loader,0):
                 if limit_num_pictures:
                     if i > limit_num_pictures:
                         break
-                inputs, _, path, label = data
-                if(dataset == 2):
-                    try:
-                        label = torch.LongTensor([int(label[0])])
-                    except Exception:
-                        logging.error('Invalid label for image, skipping Image #{} from label {}'.format(i, label))
-                        continue
-                else:
-                    try:
-                        path = path[0]
-                        path_array = path.split('/')
-                        pic_name = path_array[-1]
-                        label = label_dict[pic_name.split('.')[0]]
-                        label = torch.LongTensor([label])
-                    except Exception:
-                        logging.error('Invalid label found at path: {}, skipping Image #{}, label: {}'.format(path[0], i, label))
-                        continue
-                
                 try:
+                    label = torch.LongTensor(label)
                     optimizer.zero_grad()
-                    output = vgg16(inputs)
-                    loss = criterion(output, torch.LongTensor(label))
+                    output = vgg16(data)
+                    loss = criterion(output, label)
                     running_loss += loss.item()
                     _, preds = torch.max(output.data, 1)
                     num_correct += (preds == label).sum().item()
                     loss.backward()
                     optimizer.step()
                 except Exception:
-                    logging.warning('Issue calculating loss and optimizing with image #{}, dataloader is\n{}'.format(i, data))
+                    logging.warning('Issue calculating loss and optimizing with image #{}, data is\n{}'.format(i, data))
                     continue
             
                 if i % 2000 == 1999:
                     running_loss = 0
         except Exception:
-            logging.error('Error reading epoch #{}, dumping data, saving backup model and exiting\n{}'.format(epoch, data))
+            (data, label) = train_loader
+            logging.error('Error on epoch #{}, train_loader issue with data: {}\nlabel: {}'.format(epoch, data, label))
             torch.save(vgg16.state_dict(), 'Backup_model.pt')
             sys.exit(1)
 
