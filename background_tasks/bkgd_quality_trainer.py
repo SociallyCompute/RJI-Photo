@@ -75,7 +75,7 @@ AdjustedDataset
 """
 # https://discuss.pytorch.org/t/custom-label-for-torchvision-imagefolder-class/52300/8
 class AdjustedDataset(datasets.DatasetFolder):
-    def __init__(self, image_path, class_dict, transform):
+    def __init__(self, image_path, class_dict, transform=None):
         """Imports dataset from folder structure.
 
         Input:
@@ -89,13 +89,23 @@ class AdjustedDataset(datasets.DatasetFolder):
             samples: (list) List of (sample_path, class_index) tuples.
             targets: (list) class_index value for each image in dataset.
         """
-        # super(AdjustedDataset, self).__init__(image_path, None)
+        super(AdjustedDataset, self).__init__(image_path, self.pil_loader, extensions=('.jpg', '.png', '.PNG', '.JPG'),transform=transform)
         self.transform = transform
-        self.classes = [i+1 for i in range(10)] #classes are 1-10
-        self.class_to_idx = class_dict
-        # self.classes, self.class_to_idx = self._find_classes(class_dict)
-        self.samples = self.make_dataset(image_path, self.class_to_idx)
+        # self.classes = [i+1 for i in range(10)] #classes are 1-10
+        # self.class_to_idx = class_dict
+        self.classes, self.class_to_idx = self._find_classes(class_dict)
+        self.samples = self.make_dataset(image_path, class_dict)
         self.targets = [s[1] for s in self.samples]
+
+    def pil_loader(self, full_path):
+        image = Image.open(full_path)
+        tensor_sample = transforms.ToTensor(image)
+        return tensor_sample
+
+    def _find_classes(self, class_dict):
+        classes = list(class_dict.values())
+        class_to_idx = {classes[i] : i for i in range(len(classes))}
+        return classes, class_to_idx
 
     def make_dataset(self, root, class_to_idx):
         '''
@@ -130,16 +140,18 @@ class AdjustedDataset(datasets.DatasetFolder):
 
     def __getitem__(self, index):
         """Returns tuple: (tensor, int) where target is class_index of
-        target_class.
+        target_class. Same as DatasetFolder object
         
         Args:
             idx: (int) Index.
         """
 
         path, target = self.samples[index]
-        # sample = default_loader(path)
-        img = Image.open(path) #load image via PIL
-        sample = self.transform(transforms.ToTensor(img)) #transform Image into Tensor, then do new transform
+        sample = self.pil_loader(path) #transform Image into Tensor
+        if self.transform is not None:
+            sample = self.transform(sample)
+        if self.target_transform is not None:
+            target = self.target_transform(target)
 
         return sample, target
 
@@ -463,7 +475,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
                 if i % 2000 == 1999:
                     running_loss = 0
         except Exception:
-            logging.error('Error reading train_loader at #{}, dumping data, saving backup model and exiting\n{}'.format(i, data))
+            logging.error('Error reading epoch #{}, dumping data, saving backup model and exiting\n{}'.format(epoch, data))
             torch.save(vgg16.state_dict(), 'Backup_model.pt')
             sys.exit(1)
 
