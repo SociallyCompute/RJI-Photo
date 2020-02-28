@@ -99,7 +99,7 @@ class AdjustedDataset(datasets.DatasetFolder):
 
     def pil_loader(self, full_path):
         image = Image.open(full_path)
-        tensor_sample = transforms.ToTensor(image)
+        tensor_sample = transforms.ToTensor()(image)
         return tensor_sample
 
     def _find_classes(self, class_dict):
