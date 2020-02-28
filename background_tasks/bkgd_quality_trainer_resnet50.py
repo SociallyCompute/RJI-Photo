@@ -311,7 +311,7 @@ def change_fully_connected_layer():
 
     network = list(resnet.fc.children())[:-1]
 
-    network.extend([nn.Linear(4096, 10)])
+    network.extend([nn.Linear(2048, 10)])
     resnet.fc = nn.Sequential(*network)
     logging.info('New Layer correctly added to ResNet50')
 
