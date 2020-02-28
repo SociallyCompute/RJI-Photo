@@ -25,46 +25,6 @@ from pathlib2 import Path
 import warnings  
 warnings.filterwarnings('ignore')
 
-
-"""
-ImageFolderWithPaths
-    Input: ImageFolder object
-    Comments:
-        add the path to the tuple supplied from the original ImageFolder.
-"""
-class ImageFolderWithPaths(datasets.ImageFolder):
-    # override the __getitem__ method. this is the method that dataloader calls
-    def __getitem__(self, index):
-        # this is what ImageFolder normally returns 
-        original_tuple = super(ImageFolderWithPaths, self).__getitem__(index)
-        # the image file path
-        path = self.imgs[index][0]
-        # make a new tuple that includes original and the path
-        tuple_with_path = (original_tuple + (path,))
-        return tuple_with_path
-
-"""
-ImageFolderWithPathsAndRatings
-    Input: ImageFolder object
-    Comments:
-        add the path and rating to the tuple supplied from the original ImageFolder.
-"""
-class ImageFolderWithPathsAndRatings(datasets.ImageFolder):
-    # override the __getitem__ method. this is the method that dataloader calls
-    def __getitem__(self, index):
-        # this is what ImageFolder normally returns 
-        original_tuple = super(ImageFolderWithPathsAndRatings, self).__getitem__(index)
-        # the image file path
-        path = self.imgs[index][0]
-        # make a new tuple that includes original and the path
-        tuple_with_path = (original_tuple + (path,))
-        # set rating
-        try:
-            tuple_with_path_and_rating = (tuple_with_path + (ratings[index],))
-        except:
-            tuple_with_path_and_rating = (tuple_with_path + (torch.FloatTensor([0]),))
-        return tuple_with_path_and_rating
-
 """
 AdjustedDataset
     Input: DatasetFolder object
@@ -120,10 +80,6 @@ class AdjustedDataset(datasets.DatasetFolder):
         '''
         images = []
         root_path = os.path.expanduser(root)
-        # for target in sorted(class_to_idx.keys()):
-        #     d = os.path.join(root, target)
-        #     if not os.path.isdir(d):
-        #         continue
         for r, _, fnames in os.walk(root_path):
             for fname in sorted(fnames):
                 path = os.path.join(r, fname)
@@ -189,45 +145,6 @@ def get_xmp_color_class(image_path):
     labels_file.close()
     none_file.close()
 
-# def get_xmp_color_class():
-#     labels_file = open("labeled_images.txt", "w")
-#     none_file = open("unlabeled_images.txt", "w")
-
-#     data_loader = torch.utils.data.DataLoader(AdjustedDataset(data_dir, transform=transforms.Compose([transforms.ToTensor()])))
-
-#     try:
-#         for i, data in enumerate(data_loader):
-#             if limit_num_pictures:
-#                 if i > limit_num_pictures:
-#                     break
-#             _, _, path = data
-#             path = path[0].rstrip()
-#             try:
-#                 with open(path, "rb") as f:
-#                     img = f.read()
-#                     img_string = str(img)
-#                     xmp_start = img_string.find('photomechanic:ColorClass')
-#                     xmp_end = img_string.find('photomechanic:Tagged')
-#                     if xmp_start != xmp_end and xmp_start != -1:
-#                         xmp_string = img_string[xmp_start:xmp_end]
-#                         if xmp_string[26] != "0":
-#                             print(xmp_string[26] + " " + str(path) + "\n\n")
-#                             rated_indices.append(i)
-#                             ratings.append(11 - int(xmp_string[26])) #have to invert and adjust to be on a growing scale of 1-10
-#                             labels_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-#                         else:
-#                             ratings.append(0)
-#                             bad_indices.append(i)
-#                             none_file.write(xmp_string[26] + ", " + str(path) + ", " + str(i))
-#             except OSError:
-#                 logging.warning('Image #{} not found at specified path'.format(i))
-#                 continue
-#     except Exception as e:
-#         logging.error('There was an error with the dataloader at image #{}: {}'.format(i, e))
-#         sys.exit(1)
-#     labels_file.close()
-#     none_file.close()
-
 '''
 GET_MISSOURIAN_MAPPED_VAL
     Input: missourian raw val (int)
@@ -273,17 +190,13 @@ def get_file_color_class():
 
     for line in labels_file:
         labels_string = line.split(',')
-        # rated_indices.append(labels_string[0])
         file_name = (labels_string[1].split('/')[-1]).split('.')[0]
         pic_label_dict[file_name] = get_missourian_mapped_val(int(labels_string[0]))
-        # ratings.append(get_missourian_mapped_val(int(labels_string[0])))
 
     for line in none_file:
         labels_string = line.split(',')
-        # bad_indices.append(labels_string[0])
         file_name = (labels_string[1].split('/')[-1]).split('.')[0]
         pic_label_dict[file_name] = 0
-        # ratings.append(0)
 
     logging.info('Successfully loaded info from Missourian Image Files')
     labels_file.close()
@@ -315,7 +228,6 @@ def get_ava_labels():
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-        # logging.info('labels dictionary is {}'.format(pic_label_dict))
         logging.info('label dictionary completed')
         return pic_label_dict
     except OSError:
@@ -329,7 +241,7 @@ BUILD_DATALOADERS
         1. Training Dataloader
         2. Testing Dataloader
     Comments:
-        Takes in the dataset identifier. Transforms the image to a 224 x 224 image to fit the vgg16 CNN.
+        Takes in the dataset identifier. Transforms the image to a 224 x 224 image to fit the ResNet50 CNN.
         Completes a CenterCrop in attempt to maintain all features of images. Utilize the custom classes
         to supply paths and ratings with the dataloaders. Splits dataset according to the dataset.
         If it is the Missourian dataset split based on whether photo has existing rating. If it is AVA
@@ -375,9 +287,8 @@ def build_dataloaders(dataset, label_dict):
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    vgg16.to(device)
-    logging.info('VGG16 is running on {}'.format(device))
-    # logging.info('train_loader is {}'.format(train_loader))
+    resnet.to(device)
+    logging.info('ResNet50 is running on {}'.format(device))
     return train_loader, test_loader
 
 """
@@ -392,17 +303,17 @@ CHANGE_FULLY_CONNECTED_LAYER
             - switch 2nd number to the needed number of output classes
 """
 def change_fully_connected_layer(): 
-    vgg16.classifier[6].out_features = 10
+    resnet.classifier[6].out_features = 10
 
-    for param in vgg16.parameters():
+    for param in resnet.parameters():
         param.requires_grad = False
-    logging.info('All VGG16 layers frozen')
+    logging.info('All ResNet50 layers frozen')
 
-    network = list(vgg16.classifier.children())[:-1]
+    network = list(resnet.classifier.children())[:-1]
 
     network.extend([nn.Linear(4096, 10)])
-    vgg16.classifier = nn.Sequential(*network)
-    logging.info('New Layer correctly added to VGG16')
+    resnet.classifier = nn.Sequential(*network)
+    logging.info('New Layer correctly added to ResNet50')
 
 """
 TRAIN_DATA_FUNCTION
@@ -423,14 +334,14 @@ TRAIN_DATA_FUNCTION
 def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, model_name):
     if(prev_model != 'N/A'):
         try:
-            vgg16.load_state_dict(torch.load('../neural_net/models/' + prev_model))
+            resnet.load_state_dict(torch.load('../neural_net/models/' + prev_model))
         except Exception:
-            logging.warning('Failed to find {}, model trained off base vgg16'.format(prev_model))
+            logging.warning('Failed to find {}, model trained off base resnet50'.format(prev_model))
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(vgg16.parameters(), lr=0.4, momentum=0.9)
+    optimizer = optim.SGD(resnet.parameters(), lr=0.4, momentum=0.9)
 
-    vgg16.train()
+    resnet.train()
     training_loss = 0
     training_accuracy = 0
     num_epochs = epochs 
@@ -447,7 +358,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
                     logging.info('label for image {} is {}'.format(i, label))
                     label = torch.LongTensor(label)
                     optimizer.zero_grad()
-                    output = vgg16(data)
+                    output = resnet(data)
                     loss = criterion(output, label)
                     running_loss += loss.item()
                     _, preds = torch.max(output.data, 1)
@@ -463,7 +374,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
         except Exception:
             (data, label) = train_loader
             logging.error('Error on epoch #{}, train_loader issue with data: {}\nlabel: {}'.format(epoch, data, label))
-            torch.save(vgg16.state_dict(), 'Backup_model.pt')
+            torch.save(resnet.state_dict(), 'Backup_model.pt')
             sys.exit(1)
 
         training_loss = running_loss/len(train_loader.dataset)
@@ -471,10 +382,10 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
         print('training loss: {}\ntraining accuracy: {}'.format(training_loss, training_accuracy))
         #saving every epoch
         try:
-            torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name + '.pt')
+            torch.save(resnet.state_dict(), '../neural_net/models/' + model_name + '.pt')
         except Exception:
             logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(model_name))
-            torch.save(vgg16.state_dict(), 'Backup_model.pt')
+            torch.save(resnet.state_dict(), 'Backup_model.pt')
             sys.exit(1)
 
 """
@@ -516,7 +427,7 @@ GLOBAL VARS
         4. Rated Indicies Array
         5. Ratings Array
         6. Bad Indicies Array
-        7. VGG16 Model
+        7. Resnet Model
     Comments:
         Ends by calling the run function
 """
@@ -545,7 +456,7 @@ rated_indices = []
 ratings = []
 bad_indices = []
 # we load the pretrained model, the argument pretrained=True implies to load the ImageNet weights for the pre-trained model
-vgg16 = models.vgg16(pretrained=True)
+resnet = models.resnet50(pretrained=True)
 
 #EXECUTE FILE
 run(dataset)
