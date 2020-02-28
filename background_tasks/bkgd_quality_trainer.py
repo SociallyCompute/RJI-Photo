@@ -89,7 +89,8 @@ class AdjustedDataset(datasets.DatasetFolder):
             samples: (list) List of (sample_path, class_index) tuples.
             targets: (list) class_index value for each image in dataset.
         """
-        super(AdjustedDataset, self).__init__(image_path, self.pil_loader, extensions=('.jpg', '.png', '.PNG', '.JPG'),transform=transform)
+        #super(AdjustedDataset, self).__init__(image_path, self.pil_loader, extensions=('.jpg', '.png', '.PNG', '.JPG'),transform=transform)
+        self.target_transform = None
         self.transform = transform
         self.classes = [i+1 for i in range(10)] #classes are 1-10
         self.class_to_idx = {i+1 : i for i in range(10)}
@@ -99,8 +100,9 @@ class AdjustedDataset(datasets.DatasetFolder):
 
     def pil_loader(self, full_path):
         image = Image.open(full_path)
-        tensor_sample = transforms.ToTensor()(image)
-        return tensor_sample
+        image = image.convert('RGB')
+        #tensor_sample = transforms.ToTensor()(image)
+        return image
 
     def _find_classes(self, class_dict):
         classes = list(class_dict.values())
@@ -442,6 +444,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
                     if i > limit_num_pictures:
                         break
                 try:
+                    logging.info('label for image {} is {}'.format(i, label))
                     label = torch.LongTensor(label)
                     optimizer.zero_grad()
                     output = vgg16(data)
@@ -527,7 +530,7 @@ model_name = sys.argv[1]
 if(model_name.split('.')[1] != 'pt'):
     logging.info('Invalid model name {} submitted, must end in .pt or .pth'.format(model_name))
     sys.exit('Invalid Model')
-epochs = 25
+epochs = 1
 if(dataset == 'AVA' or dataset == '1'):
     logging.info('Using AVA Dataset to train')
     data_dir = "/mnt/md0/reynolds/ava-dataset/images/"
