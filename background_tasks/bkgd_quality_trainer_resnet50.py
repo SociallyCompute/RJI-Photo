@@ -435,7 +435,7 @@ GLOBAL VARS
 dataset = 'AVA'
 #prev_model = 'Jan31_All_2017_Fall_Dump_only_labels_10scale_and_AVA.pt'
 prev_model = 'N/A'
-logging.basicConfig(filename='logs/bkgd_quality_trainer.log', filemode='w', level=logging.DEBUG)
+logging.basicConfig(filename='logs/bkgd_quality_trainer_resnet50.log', filemode='w', level=logging.DEBUG)
 # model_name = 'Feb6_new_model_name.pt'
 model_name = sys.argv[1]
 if(model_name.split('.')[1] != 'pt'):
