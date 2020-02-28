@@ -303,16 +303,16 @@ CHANGE_FULLY_CONNECTED_LAYER
             - switch 2nd number to the needed number of output classes
 """
 def change_fully_connected_layer(): 
-    resnet.classifier[6].out_features = 10
+    resnet.fc.out_features = 10
 
     for param in resnet.parameters():
         param.requires_grad = False
     logging.info('All ResNet50 layers frozen')
 
-    network = list(resnet.classifier.children())[:-1]
+    network = list(resnet.fc.children())[:-1]
 
     network.extend([nn.Linear(4096, 10)])
-    resnet.classifier = nn.Sequential(*network)
+    resnet.fc = nn.Sequential(*network)
     logging.info('New Layer correctly added to ResNet50')
 
 """
