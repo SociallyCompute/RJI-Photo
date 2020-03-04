@@ -374,7 +374,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
         except Exception:
             (data, label) = train_loader
             logging.error('Error on epoch #{}, train_loader issue with data: {}\nlabel: {}'.format(epoch, data, label))
-            torch.save(resnet.state_dict(), 'Backup_model.pt')
+            torch.save(resnet.state_dict(), 'Backup_model_resnet50.pt')
             sys.exit(1)
 
         training_loss = running_loss/len(train_loader.dataset)
@@ -382,10 +382,10 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
         print('training loss: {}\ntraining accuracy: {}'.format(training_loss, training_accuracy))
         #saving every epoch
         try:
-            torch.save(resnet.state_dict(), '../neural_net/models/' + model_name + '.pt')
+            torch.save(resnet.state_dict(), '../neural_net/models/' + model_name)
         except Exception:
             logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(model_name))
-            torch.save(resnet.state_dict(), 'Backup_model.pt')
+            torch.save(resnet.state_dict(), 'Backup_model_vgg16.pt')
             sys.exit(1)
 
 """
