@@ -281,9 +281,9 @@ def build_dataloaders(dataset, label_dict):
 
     # Define data loaders, which allow batching and shuffling the data
     train_loader = torch.utils.data.DataLoader(train_data,
-                sampler=train_sampler, batch_size=1)
+                sampler=train_sampler, batch_size=32)
     test_loader = torch.utils.data.DataLoader(test_data,
-                sampler=test_sampler, batch_size=1)
+                sampler=test_sampler, batch_size=32)
 
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -374,7 +374,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
         except Exception:
             (data, label) = train_loader
             logging.error('Error on epoch #{}, train_loader issue with data: {}\nlabel: {}'.format(epoch, data, label))
-            torch.save(vgg16.state_dict(), 'Backup_model_vgg16.pt')
+            torch.save(vgg16.state_dict(), 'Backup_minib_model_vgg16.pt')
             sys.exit(1)
 
         training_loss = running_loss/len(train_loader.dataset)
@@ -385,7 +385,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
             torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name)
         except Exception:
             logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(model_name))
-            torch.save(vgg16.state_dict(), 'Backup_model_vgg16.pt')
+            torch.save(vgg16.state_dict(), 'Backup_minib_model_vgg16.pt')
             sys.exit(1)
 
 """

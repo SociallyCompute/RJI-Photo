@@ -46,3 +46,71 @@ Traceback (most recent call last):
   File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/serialization.py", line 183, in _with_file_like
     f = open(f, mode)
 FileNotFoundError: [Errno 2] No such file or directory: '../neural_nets/models/CLASSIFICATION_Feb17_All_AVA_only_training.pt'
+Traceback (most recent call last):
+  File "bkgd_quality_trainer_vgg16.py", line 462, in <module>
+    run(dataset)
+  File "bkgd_quality_trainer_vgg16.py", line 405, in run
+    label_dict = get_ava_labels()
+  File "bkgd_quality_trainer_vgg16.py", line 230, in get_ava_labels
+    pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/numpy/core/_asarray.py", line 85, in asarray
+    return array(a, dtype, copy=False, order=order)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "bkgd_quality_trainer_vgg16.py", line 353, in train_data_function
+    for i, (data, label) in enumerate(train_loader,0):
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 346, in __next__
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 44, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 44, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "bkgd_quality_trainer_vgg16.py", line 108, in __getitem__
+    sample = self.pil_loader(path) #transform Image into Tensor
+  File "bkgd_quality_trainer_vgg16.py", line 63, in pil_loader
+    image = image.convert('RGB')
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/PIL/Image.py", line 930, in convert
+    self.load()
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/PIL/ImageFile.py", line 249, in load
+    "(%d bytes not processed)" % len(b)
+OSError: image file is truncated (18 bytes not processed)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "bkgd_quality_trainer_vgg16.py", line 462, in <module>
+    run(dataset)
+  File "bkgd_quality_trainer_vgg16.py", line 417, in run
+    train_data_function(train, epochs, prev_model, dataset, label_dict, model_name)
+  File "bkgd_quality_trainer_vgg16.py", line 375, in train_data_function
+    (data, label) = train_loader
+ValueError: too many values to unpack (expected 2)
+Traceback (most recent call last):
+  File "bkgd_quality_trainer_vgg16.py", line 353, in train_data_function
+    for i, (data, label) in enumerate(train_loader,0):
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/dataloader.py", line 346, in __next__
+    data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 44, in fetch
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/torch/utils/data/_utils/fetch.py", line 44, in <listcomp>
+    data = [self.dataset[idx] for idx in possibly_batched_index]
+  File "bkgd_quality_trainer_vgg16.py", line 108, in __getitem__
+    sample = self.pil_loader(path) #transform Image into Tensor
+  File "bkgd_quality_trainer_vgg16.py", line 63, in pil_loader
+    image = image.convert('RGB')
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/PIL/Image.py", line 930, in convert
+    self.load()
+  File "/home/newmatt/rji3/lib/python3.7/site-packages/PIL/ImageFile.py", line 249, in load
+    "(%d bytes not processed)" % len(b)
+OSError: image file is truncated (16 bytes not processed)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "bkgd_quality_trainer_vgg16.py", line 462, in <module>
+    run(dataset)
+  File "bkgd_quality_trainer_vgg16.py", line 417, in run
+    train_data_function(train, epochs, prev_model, dataset, label_dict, model_name)
+  File "bkgd_quality_trainer_vgg16.py", line 375, in train_data_function
+    (data, label) = train_loader
+ValueError: too many values to unpack (expected 2)
