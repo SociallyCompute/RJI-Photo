@@ -3,7 +3,10 @@ SCRIPT IMPORTS
 """
 import numpy as np
 import math, pandas
+import pandas as pd
 import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -224,8 +227,7 @@ def get_ava_labels():
                 break
             line_array = line.split()
             picture_name = line_array[1]
-            temp = line_array[2:]
-            aesthetic_values = temp[:10]
+            aesthetic_values = (line_array[2:])[:10]
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
@@ -261,12 +263,12 @@ def build_dataloaders(dataset, label_dict):
         )
     ])
 
-    valid_size = 0.2 # percentage of data to use for test set  
-
     # load data and apply the transforms on contained pictures
     train_data = AdjustedDataset(data_dir, label_dict, transform=_transform)
     test_data = AdjustedDataset(data_dir, label_dict, transform=_transform)
     logging.info('Training and Testing Dataset correctly transformed') 
+    
+    valid_size = 0.2 # percentage of data to use for test set  
 
     num_pictures = len(train_data)
     indices = list(range(num_pictures))
@@ -380,8 +382,7 @@ def train_data_function(train_loader, epochs, prev_model, dataset, label_dict, m
 
         training_loss = running_loss/len(train_loader.dataset)
         training_accuracy = 100 * num_correct/len(train_loader.dataset)
-        print('training loss: {}\ntraining accuracy: {}'.format(training_loss, training_accuracy))
-        #saving every epoch
+        logging.info('training loss: {}\ntraining accuracy: {}'.format(training_loss, training_accuracy))
         try:
             torch.save(resnet.state_dict(), '../neural_net/models/' + model_name)
         except Exception:
