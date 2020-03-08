@@ -129,6 +129,7 @@ TRANSLATE_LABELS
 """
 def translate_labels():
     tag_mapping = {}
+    limit_lines = 1000000
     try:
         f = open(tags_file, "r")
     except OSError:
