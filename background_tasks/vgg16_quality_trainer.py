@@ -224,8 +224,7 @@ def get_ava_labels():
                 break
             line_array = line.split()
             picture_name = line_array[1]
-            temp = line_array[2:]
-            aesthetic_values = temp[:10]
+            aesthetic_values = (line_array[2:])[:10]
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()

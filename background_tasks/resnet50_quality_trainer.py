@@ -3,10 +3,7 @@ SCRIPT IMPORTS
 """
 import numpy as np
 import math, pandas
-import pandas as pd
 import matplotlib.image as mpimg
-import matplotlib.pyplot as plt
-
 from PIL import Image, ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -263,13 +260,13 @@ def build_dataloaders(dataset, label_dict):
         )
     ])
 
+    valid_size = 0.2 # percentage of data to use for test set  
+
     # load data and apply the transforms on contained pictures
     train_data = AdjustedDataset(data_dir, label_dict, transform=_transform)
     test_data = AdjustedDataset(data_dir, label_dict, transform=_transform)
     logging.info('Training and Testing Dataset correctly transformed') 
     
-    valid_size = 0.2 # percentage of data to use for test set  
-
     num_pictures = len(train_data)
     indices = list(range(num_pictures))
     split = int(np.floor(valid_size * num_pictures))
