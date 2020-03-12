@@ -52,7 +52,7 @@ class AdjustedDataset(datasets.DatasetFolder):
         """
         #super(AdjustedDataset, self).__init__(image_path, self.pil_loader, extensions=('.jpg', '.png', '.PNG', '.JPG'),transform=transform)
         self.target_transform = None
-        self._transform = transform
+        self.transform = transform
         self.classes = [i+1 for i in range(10)] #classes are 1-10
         self.class_to_idx = {i+1 : i for i in range(10)}
         # self.classes, self.class_to_idx = self._find_classes(class_dict)

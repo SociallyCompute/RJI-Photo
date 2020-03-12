@@ -90,6 +90,6 @@ if(model_name.split('.')[1] != 'pt'):
     logging.info('Invalid model name {} submitted, must end in .pt or .pth'.format(model_name))
     sys.exit('Invalid Model')
 
-model_container = model.ModelBuilder(model, model_name, batch_size, dataset)
+model_container = model_class.ModelBuilder(model, model_name, batch_size, dataset)
 
 run(model_type, model_container, epochs)
