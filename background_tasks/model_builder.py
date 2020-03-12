@@ -22,7 +22,7 @@ import os.path
 import ntpath
 from os import path
 from pathlib2 import Path
-import model
+import model_class
 
 import warnings  
 warnings.filterwarnings('ignore')
