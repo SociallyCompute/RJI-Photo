@@ -1,8 +1,8 @@
 #!/bin/bash
 
 model_string='resnet'
-model_name=Mar12_AVA_MINI256
-dataset=AVA
+model_name=Mar13_Missourian_MINI256
+dataset=Missourian
 epochs=1
 batch_size=256
 model=resnet

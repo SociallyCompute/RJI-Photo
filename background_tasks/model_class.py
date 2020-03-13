@@ -23,6 +23,8 @@ import ntpath
 from os import path
 from pathlib2 import Path
 
+import matplotlib.pyplot as plt
+
 import warnings  
 warnings.filterwarnings('ignore')
 
@@ -283,8 +285,8 @@ class ModelBuilder:
         optimizer = optim.SGD(self.model.parameters(), lr=0.4, momentum=0.9)
 
         self.model.train()
-        training_loss = 0
-        training_accuracy = 0
+        training_loss = [0 for i in range(epochs)]
+        training_accuracy = [0 for i in range(epochs)]
 
         for epoch in range(epochs):
             running_loss = 0.0
@@ -317,12 +319,87 @@ class ModelBuilder:
                 torch.save(self.model.state_dict(), self.model_name)
                 sys.exit(1)
 
-            training_loss = running_loss/len(train_loader.dataset)
-            training_accuracy = 100 * num_correct/len(train_loader.dataset)
-            logging.info('training loss: {}\ntraining accuracy: {}'.format(training_loss, training_accuracy))
+            training_loss[epoch] = running_loss/len(train_loader.dataset)
+            training_accuracy[epoch] = 100 * num_correct/len(train_loader.dataset)
+            logging.info('training loss: {}\ntraining accuracy: {}'.format(training_loss[epoch], training_accuracy[epoch]))
             try:
                 torch.save(self.model.state_dict(), '../neural_net/models/' + self.model_name)
             except Exception:
                 logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(self.model_name))
                 torch.save(self.model.state_dict(), self.model_name)
                 sys.exit(1)
+
+        plt.plot([i for i in range(epochs)], training_accuracy)
+        plt.xlabel('epochs')
+        plt.ylabel('accuracy')
+        plt.title('Training Model Accuracy')
+        plt.savefig('Train_Accuracy_' + self.model_name[:-3] + '.png')
+
+        plt.plot([i for i in range(epochs)], training_loss)
+        plt.xlabel('epochs')
+        plt.ylabel('loss')
+        plt.title('Training Model Loss')
+        plt.savefig('Train_Loss_' + self.model_name[:-3] + '.png')
+
+    def test_data_function(self, epochs, test_loader, prev_model):
+        if(prev_model != 'N/A'):
+            try:
+                self.model.load_state_dict(torch.load('../neural_net/models/' + prev_model))
+            except Exception:
+                logging.warning('Failed to find {}, model tested off base resnet50'.format(prev_model))
+
+        criterion = nn.CrossEntropyLoss()
+
+        self.model.eval()
+        testing_loss = [0 for i in range(epochs)]
+        testing_accuracy = [0 for i in range(epochs)]
+
+        for epoch in range(epochs):
+            running_loss = 0.0
+            num_correct = 0
+            try:
+                for i, (data, label) in enumerate(test_loader,0):
+                    if self.limit_num_pictures:
+                        if i > self.limit_num_pictures:
+                            break
+                    try:
+                        logging.info('label for image {} is {}'.format(i, label))
+                        label = torch.LongTensor(label)
+                        output = self.model(data)
+                        loss = criterion(output, label)
+                        running_loss += loss.item()
+                        _, preds = torch.max(output.data, 1)
+                        num_correct += (preds == label).sum().item()
+                    except Exception:
+                        logging.warning('Issue calculating loss and optimizing with image #{}, data is\n{}'.format(i, data))
+                        continue
+                
+                    if i % 2000 == 1999:
+                        running_loss = 0
+            except Exception:
+                (data, label) = test_loader
+                logging.error('Error on epoch #{}, test_loader issue with data: {}\nlabel: {}'.format(epoch, data, label))
+                torch.save(self.model.state_dict(), self.model_name)
+                sys.exit(1)
+
+            testing_loss[epoch] = running_loss/len(test_loader.dataset)
+            testing_accuracy[epoch] = 100 * num_correct/len(test_loader.dataset)
+            logging.info('testing loss: {}\ntesting accuracy: {}'.format(testing_loss[epoch], testing_accuracy[epoch]))
+            try:
+                torch.save(self.model.state_dict(), '../neural_net/models/' + self.model_name)
+            except Exception:
+                logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(self.model_name))
+                torch.save(self.model.state_dict(), self.model_name)
+                sys.exit(1)
+
+        plt.plot([i for i in range(epochs)], testing_accuracy)
+        plt.xlabel('epochs')
+        plt.ylabel('accuracy')
+        plt.title('Testing Model Accuracy')
+        plt.savefig('Test_Accuracy_' + self.model_name[:-3] + '.png')
+
+        plt.plot([i for i in range(epochs)], testing_loss)
+        plt.xlabel('epochs')
+        plt.ylabel('loss')
+        plt.title('Testing Model Loss')
+        plt.savefig('Test_Loss_' + self.model_name[:-3] + '.png')
