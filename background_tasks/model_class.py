@@ -142,8 +142,8 @@ class ModelBuilder:
         
 
     def get_xmp_color_class(self):
-        labels_file = open('labeled_images.txt', 'w')
-        none_file = open('unlabeled_images.txt', 'w')
+        labels_file = open('Mar13_labeled_images.txt', 'w')
+        none_file = open('Mar13_unlabeled_images.txt', 'w')
 
         for i, (root, _, files) in enumerate(os.walk(self.image_path, topdown=True)):
             for name in files:
@@ -186,8 +186,8 @@ class ModelBuilder:
     def get_file_color_class(self):
         pic_label_dict = {}
         try:
-            labels_file = open("labeled_images.txt", "r")
-            none_file = open("unlabeled_images.txt", "r")
+            labels_file = open("Mar13_labeled_images.txt", "r")
+            none_file = open("Mar13_unlabeled_images.txt", "r")
         except OSError:
             logging.error('Could not open Missourian image mapping files')
             sys.exit(1)

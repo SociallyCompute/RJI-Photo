@@ -54,7 +54,7 @@ def run(model_type, model_container, epochs):
         label_dict = model_container.get_ava_labels()
         logging.info('Successfully loaded AVA labels')
     else:
-        if(not path.exists('labeled_images.txt') or not path.exists('unlabeled_images.txt')):
+        if(not path.exists('Mar13_labeled_images.txt') or not path.exists('Mar13_unlabeled_images.txt')):
             logging.info('labeled_images.txt and unlabeled_images.txt not found')
             model_container.get_xmp_color_class()
         else:
@@ -70,13 +70,15 @@ def run(model_type, model_container, epochs):
     model_container.train_data_function(epochs, train, 'N/A')
     # test_data_function(test)
 
-logging.basicConfig(filename='logs/bkgd_quality_trainer_vgg16.log', filemode='w', level=logging.DEBUG)
-
 model_name = sys.argv[1]
 dataset = sys.argv[2]
 epochs = int(sys.argv[3])
 batch_size = int(sys.argv[4])
 model_type = sys.argv[5]
+
+logging.basicConfig(filename='logs/' + model_name + '.log', filemode='w', level=logging.DEBUG)
+
+model_name = model_name + '.pt'
 
 if model_type == 'vgg16':
     model = models.vgg16(pretrained=True)
@@ -84,10 +86,6 @@ elif model_type == 'resnet':
     model = models.resnet50(pretrained=True)
 else:
     logging.info('Invalid model requested: {}'.format(model))
-    sys.exit('Invalid Model')
-
-if(model_name.split('.')[1] != 'pt'):
-    logging.info('Invalid model name {} submitted, must end in .pt or .pth'.format(model_name))
     sys.exit('Invalid Model')
 
 model_container = model_class.ModelBuilder(model, model_name, batch_size, dataset)
