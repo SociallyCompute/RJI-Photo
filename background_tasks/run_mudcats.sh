@@ -1,7 +1,7 @@
 #!/bin/bash
 
 model_string='resnet'
-model_name=Mar12_AVA_MINI256
+model_name=Mar13_AVA_MINI256
 dataset=AVA
 epochs=1
 batch_size=256
