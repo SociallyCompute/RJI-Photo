@@ -156,10 +156,10 @@ class ModelBuilder:
                     if xmp_start != xmp_end and xmp_start != -1:
                         xmp_str = img_str[xmp_start:xmp_end]
                         if xmp_str[26] != '0':
-                            labels_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)) + ', ' + str(i) + '/n')
+                            labels_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '/n')
                             # self.rated_indices.append(i)
                         else:
-                            none_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)) + ', ' + str(i) + '/n')
+                            none_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '/n')
                             # self.bad_indices.append(i)
         
         labels_file.close()
@@ -195,15 +195,15 @@ class ModelBuilder:
             sys.exit(1)
 
         for line in labels_file:
-            labels_string = line.split(',')
+            labels_string = line.split(';')
             file_name = (labels_string[1].split('/')[-1]).split('.')[0]
-            self.rated_indices.append(int(labels_string[-1]))
+            self.rated_indices.append(int(labels_string[-1].split('/')[0]))
             pic_label_dict[file_name] = self.get_missourian_mapped_val(int(labels_string[0]))
 
         for line in none_file:
-            labels_string = line.split(',')
+            labels_string = line.split(';')
             file_name = (labels_string[1].split('/')[-1]).split('.')[0]
-            self.bad_indices.append(int(labels_string[-1]))
+            self.bad_indices.append(int(labels_string[-1].split('/')[0]))
             pic_label_dict[file_name] = 0
 
         logging.info('Successfully loaded info from Missourian Image Files')
