@@ -156,10 +156,10 @@ class ModelBuilder:
                     if xmp_start != xmp_end and xmp_start != -1:
                         xmp_str = img_str[xmp_start:xmp_end]
                         if xmp_str[26] != '0':
-                            labels_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)) + ', ' + str(i))
+                            labels_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)) + ', ' + str(i) + '/n')
                             # self.rated_indices.append(i)
                         else:
-                            none_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)) + ', ' + str(i))
+                            none_file.write(xmp_str[26] + ', ' + str(os.path.join(root, name)) + ', ' + str(i) + '/n')
                             # self.bad_indices.append(i)
         
         labels_file.close()
