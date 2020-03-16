@@ -197,12 +197,14 @@ class ModelBuilder:
         for line in labels_file:
             labels_string = line.split(';')
             file_name = (labels_string[1].split('/')[-1]).split('.')[0]
+            logging.info(line)
             self.rated_indices.append(int(labels_string[-1].split('/')[0]))
             pic_label_dict[file_name] = self.get_missourian_mapped_val(int(labels_string[0]))
 
         for line in none_file:
             labels_string = line.split(';')
             file_name = (labels_string[1].split('/')[-1]).split('.')[0]
+            logging.info(line)
             self.bad_indices.append(int(labels_string[-1].split('/')[0]))
             pic_label_dict[file_name] = 0
 
