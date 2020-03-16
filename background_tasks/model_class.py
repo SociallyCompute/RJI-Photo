@@ -146,21 +146,24 @@ class ModelBuilder:
     def get_xmp_color_class(self):
         labels_file = open('Mar13_labeled_images.txt', 'w')
         none_file = open('Mar13_unlabeled_images.txt', 'w')
+        i = 0
 
-        for i, (root, _, files) in enumerate(os.walk(self.image_path, topdown=True)):
+        for root, _, files in os.walk(self.image_path, topdown=True):
             for name in files:
-                with open(os.path.join(root, name), 'rb') as f:
-                    img_str = str(f.read())
-                    xmp_start = img_str.find('photomechanic:ColorClass')
-                    xmp_end = img_str.find('photomechanic:Tagged')
-                    if xmp_start != xmp_end and xmp_start != -1:
-                        xmp_str = img_str[xmp_start:xmp_end]
-                        if xmp_str[26] != '0':
-                            labels_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '/n')
-                            # self.rated_indices.append(i)
-                        else:
-                            none_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '/n')
-                            # self.bad_indices.append(i)
+                if name.endswith(".JPG"):
+                    with open(os.path.join(root, name), 'rb') as f:
+                        img_str = str(f.read())
+                        xmp_start = img_str.find('photomechanic:ColorClass')
+                        xmp_end = img_str.find('photomechanic:Tagged')
+                        if xmp_start != xmp_end and xmp_start != -1:
+                            xmp_str = img_str[xmp_start:xmp_end]
+                            if xmp_str[26] != '0':
+                                labels_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
+                                # self.rated_indices.append(i)
+                            else:
+                                none_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
+                                # self.bad_indices.append(i)
+                        i+=1
         
         labels_file.close()
         none_file.close()
