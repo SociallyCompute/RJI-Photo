@@ -23,6 +23,10 @@ import ntpath
 from os import path
 from pathlib2 import Path
 
+import sqlalchemy as s
+from sqlalchemy import MetaData
+from sqlalchemy.ext.automap import automap_base
+
 import matplotlib.pyplot as plt
 
 import warnings  
@@ -88,7 +92,7 @@ class AdjustedDataset(datasets.DatasetFolder):
                 path = os.path.join(r, fname)
                 logging.info('path is {}'.format(path))
                 #stupid error check because some pictures are stored in the wrong area
-                if path.lower().endswith(('.png', '.jpg')):
+                if path.endswith(('.PNG', '.JPG')):
                     item = (path, class_to_idx[fname.split('.')[0]])
                     logging.info('appending item {}'.format(item))
                     images.append(item)
@@ -135,6 +139,7 @@ class ModelBuilder:
         self.missourian_image_path = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
         self.ava_labels_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
         self.ava_tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
+        self.db, self.photo_table = self.make_db_connection()
 
         if(dataset == 'AVA' or dataset == '1'):
             logging.info('Using AVA Dataset to train')
@@ -238,6 +243,27 @@ class ModelBuilder:
             return pic_label_dict
         except OSError:
             logging.error('Cannot open AVA label file')
+            sys.exit(1)
+
+    def get_classifier_labels(self):
+        pic_label_dict = {}
+        limit_lines = 1000000
+        try:
+            f = open(self.ava_labels_file, "r")
+            for i, line in enumerate(f):
+                if i >= limit_lines:
+                    logging.info('Reached the developer specified line limit')
+                    break
+                line_array = line.split()
+                picture_name = line_array[1]
+                classifications = (line_array[12:])[:-1]
+                for i in range(0, len(classifications)): 
+                    classifications[i] = int(classifications[i])
+                pic_label_dict[picture_name] = classifications
+            logging.info('label dictionary completed')
+            return pic_label_dict
+        except OSError:
+            logging.error('Unable to open label file, exiting program')
             sys.exit(1)
 
     def build_dataloaders(self, class_dict):
@@ -349,65 +375,61 @@ class ModelBuilder:
         plt.title('Training Model Loss')
         plt.savefig('Train_Loss_' + self.model_name[:-3] + '.png')
 
-    def test_data_function(self, epochs, test_loader, prev_model):
-        if(prev_model != 'N/A'):
-            try:
-                self.model.load_state_dict(torch.load('../neural_net/models/' + prev_model))
-            except Exception:
-                logging.warning('Failed to find {}, model tested off base resnet50'.format(prev_model))
-
-        criterion = nn.CrossEntropyLoss()
-
+    def test_data_function(self, test_loader, num_ratings):
         self.model.eval()
-        testing_loss = [0 for i in range(epochs)]
-        testing_accuracy = [0 for i in range(epochs)]
+        ratings = []
+        index_progress = 0
 
-        for epoch in range(epochs):
-            running_loss = 0.0
-            num_correct = 0
+        while index_progress < len(test_loader) - 1:
             try:
-                for i, (data, label) in enumerate(test_loader,0):
-                    if self.limit_num_pictures:
-                        if i > self.limit_num_pictures:
-                            break
-                    try:
-                        logging.info('label for image {} is {}'.format(i, label))
-                        label = torch.LongTensor(label)
-                        output = self.model(data)
-                        loss = criterion(output, label)
-                        running_loss += loss.item()
-                        _, preds = torch.max(output.data, 1)
-                        num_correct += (preds == label).sum().item()
-                    except Exception:
-                        logging.warning('Issue calculating loss and optimizing with image #{}, data is\n{}'.format(i, data))
-                        continue
-                
-                    if i % 2000 == 1999:
-                        running_loss = 0
-            except Exception:
-                (data, label) = test_loader
-                logging.error('Error on epoch #{}, test_loader issue with data: {}\nlabel: {}'.format(epoch, data, label))
-                torch.save(self.model.state_dict(), self.model_name)
-                sys.exit(1)
+                for i, data in enumerate(test_loader, index_progress):
+                    
+                    inputs, _, photo_path = data
+                    photo_path = photo_path[0]
 
-            testing_loss[epoch] = running_loss/len(test_loader.dataset)
-            testing_accuracy[epoch] = 100 * num_correct/len(test_loader.dataset)
-            logging.info('testing loss: {}\ntesting accuracy: {}'.format(testing_loss[epoch], testing_accuracy[epoch]))
-            try:
-                torch.save(self.model.state_dict(), '../neural_net/models/' + self.model_name)
-            except Exception:
-                logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(self.model_name))
-                torch.save(self.model.state_dict(), self.model_name)
-                sys.exit(1)
+                    output = self.model(inputs)
 
-        plt.plot([i for i in range(epochs)], testing_accuracy)
-        plt.xlabel('epochs')
-        plt.ylabel('accuracy')
-        plt.title('Testing Model Accuracy')
-        plt.savefig('Test_Accuracy_' + self.model_name[:-3] + '.png')
+                    _, preds = torch.max(output.data, 1)
+                    ratings = output[0].tolist()
+                    
+                    logging.info("\nImage photo_path: {}\n".format(photo_path))
+                    logging.info("Classification for test image #{}: {}\n".format(index_progress, ratings))
+                    
+                    # Prime tuples for database insertion
+                    database_tuple = {}
+                    for n in range(num_ratings):
+                        database_tuple['model_score_{}'.format(n + 1)] = ratings[n]
 
-        plt.plot([i for i in range(epochs)], testing_loss)
-        plt.xlabel('epochs')
-        plt.ylabel('loss')
-        plt.title('Testing Model Loss')
-        plt.savefig('Test_Loss_' + self.model_name[:-3] + '.png')
+                    # Include metadata for database tuple
+                    database_tuple['photo_path'] = photo_path
+                    database_tuple['photo_model'] = self.model_name
+                    logging.info("Tuple to insert to database: {}\n".format(database_tuple))
+
+                    # Insert tuple to database
+                    result = self.db.execute(self.photo_table.insert().values(database_tuple))
+                    logging.info("Primary key inserted into the photo table: {}\n".format(result.inserted_primary_key))
+
+                    index_progress += 1
+
+            except Exception as e:
+                logging.info("Ran into error for image #{}: {}\n... Moving on.\n".format(index_progress, e))
+                index_progress += 1
+
+    """ Database Connection """
+    def make_db_connection(self):
+        DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
+            'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
+        )
+        logging.info("Connecting to database: {}".format(DB_STR))
+
+        dbschema = 'rji'
+        db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
+            connect_args={'options': '-csearch_path={}'.format(dbschema)})
+        metadata = MetaData()
+        metadata.reflect(db, only=['photo'])
+        Base = automap_base(metadata=metadata)
+        Base.prepare()
+        photo_table = Base.classes['photo'].__table__
+
+        logging.info("Database connection successful")
+        return db, photo_table
