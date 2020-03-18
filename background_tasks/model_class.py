@@ -88,7 +88,7 @@ class AdjustedDataset(datasets.DatasetFolder):
                 path = os.path.join(r, fname)
                 logging.info('path is {}'.format(path))
                 #stupid error check because some pictures are stored in the wrong area
-                if (path.lower().endswith(('.png', '.jpg'))) and (((path.split('/')[-1]).split('.')[0]) != 'ARRANGEMENT DONE BY LIV'):
+                if path.lower().endswith(('.png', '.jpg')):
                     item = (path, class_to_idx[fname.split('.')[0]])
                     logging.info('appending item {}'.format(item))
                     images.append(item)
@@ -145,13 +145,13 @@ class ModelBuilder:
         
 
     def get_xmp_color_class(self):
-        labels_file = open('Mar13_labeled_images.txt', 'w')
-        none_file = open('Mar13_unlabeled_images.txt', 'w')
+        labels_file = open('Mar18_labeled_images.txt', 'w')
+        none_file = open('Mar18_unlabeled_images.txt', 'w')
         i = 0
 
         for root, _, files in os.walk(self.image_path, topdown=True):
             for name in files:
-                if name.endswith(".JPG"):
+                if name.endswith(".JPG") or name.endswith(".PNG"):
                     with open(os.path.join(root, name), 'rb') as f:
                         img_str = str(f.read())
                         xmp_start = img_str.find('photomechanic:ColorClass')
@@ -164,6 +164,8 @@ class ModelBuilder:
                             else:
                                 none_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
                                 # self.bad_indices.append(i)
+                        else:
+                            none_file.write('0; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
                         i+=1
         
         labels_file.close()
@@ -192,8 +194,8 @@ class ModelBuilder:
     def get_file_color_class(self):
         pic_label_dict = {}
         try:
-            labels_file = open("Mar13_labeled_images.txt", "r")
-            none_file = open("Mar13_unlabeled_images.txt", "r")
+            labels_file = open("Mar18_labeled_images.txt", "r")
+            none_file = open("Mar18_unlabeled_images.txt", "r")
         except OSError:
             logging.error('Could not open Missourian image mapping files')
             sys.exit(1)
