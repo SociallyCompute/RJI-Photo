@@ -87,7 +87,8 @@ class AdjustedDataset(datasets.DatasetFolder):
             for fname in sorted(fnames):
                 path = os.path.join(r, fname)
                 logging.info('path is {}'.format(path))
-                if path.lower().endswith(('.png', '.jpg')):
+                #stupid error check because some pictures are stored in the wrong area
+                if (path.lower().endswith(('.png', '.jpg'))) and (((path.split('/')[-1]).split('.')[0]) != 'ARRANGEMENT DONE BY LIV'):
                     item = (path, class_to_idx[fname.split('.')[0]])
                     logging.info('appending item {}'.format(item))
                     images.append(item)
