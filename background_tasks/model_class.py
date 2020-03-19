@@ -35,63 +35,103 @@ warnings.filterwarnings('ignore')
 """
 AdjustedDataset
     Input: DatasetFolder object
-    __init__: 
-        root to images (string), image to class dict (dict: string, int), transform operator(transform Object), max class (int)
-    Comments:
-        expects 1 class per image. Needs to be adjusted to incorporate 2+ classes per image
-"""
-# https://discuss.pytorch.org/t/custom-label-for-torchvision-imagefolder-class/52300/8
-class AdjustedDataset(datasets.DatasetFolder):
-    def __init__(self, image_path, class_dict, transform=None):
-        """Imports dataset from folder structure.
 
+    Attributes: 
+        transform: (Tensor Object) Description of how to transform an image.
+        classes: (list) List of the class names.
+        class_to_idx: (dict) pairs of (image, class).
+        samples: (list) List of (sample_path, class_index) tuples.
+        targets: (list) class_index value for each image in dataset.
+
+    Methods:
+        __init__
+        __getitem__
+        __len__
+        _find_classes
+        get_class_dict
+        make_dataset
+        pil_loader
+        
+
+    Comments:
+        Based on this - https://discuss.pytorch.org/t/custom-label-for-torchvision-imagefolder-class/52300/8
+        Adjusts dataset to prep for dataloader, map labels to images
+"""
+class AdjustedDataset(datasets.DatasetFolder):
+    """
+    __init__
         Input:
             image_path: (string) Folder where the image samples are kept.
             class_dict: (dict) pairs of (picture, rating)
             transform: (Object) Image processing transformations.
-
-        Attributes: 
-            classes: (list) List of the class names.
-            class_to_idx: (dict) pairs of (image, class).
-            samples: (list) List of (sample_path, class_index) tuples.
-            targets: (list) class_index value for each image in dataset.
-        """
-        #super(AdjustedDataset, self).__init__(image_path, self.pil_loader, extensions=('.jpg', '.png', '.PNG', '.JPG'),transform=transform)
+    """
+    def __init__(self, image_path, class_dict, transform=None):
         self.target_transform = None
         self.transform = transform
         self.classes = [i+1 for i in range(10)] #classes are 1-10
         self.class_to_idx = {i+1 : i for i in range(10)}
-        # self.classes, self.class_to_idx = self._find_classes(class_dict)
         self.samples = self.make_dataset(image_path, class_dict)
         self.targets = [s[1] for s in self.samples]
 
-    def pil_loader(self, full_path):
-        image = Image.open(full_path)
-        image = image.convert('RGB')
-        #tensor_sample = transforms.ToTensor()(image)
-        return image
+    """
+    __getitem__
+        Input:
+            index: (int) Item index
 
+        Output:
+            tuple: (tensor, int) where target is class_index of target_class. Same as DatasetFolder object
+    """
+    def __getitem__(self, index):
+        path, target = self.samples[index]
+        sample = self.pil_loader(path) #transform Image into Tensor
+        if self.transform is not None:
+            sample = self.transform(sample)
+        if self.target_transform is not None:
+            target = self.target_transform(target)
+        return sample, target
+
+    """
+    __len__
+        Comments:
+            DEPRECATED USAGE
+    """
+    def __len__(self):
+        return len(self.samples)
+
+    """
+    _find_classes
+        Comments:
+            DEPRECATED USAGE
+    """
     def _find_classes(self, class_dict):
         classes = list(class_dict.values())
         class_to_idx = {classes[i] : i for i in range(len(classes))}
         return classes, class_to_idx
 
-    def make_dataset(self, root, class_to_idx):
-        '''
+    """
+    get_class_dict
+        Comments:
+            DEPRECATED USAGE
+    """
+    def get_class_dict(self):
+        return self.class_to_idx
+
+    """
+    make_dataset
         Input:
             1. root: (string) root path to images
             2. class_to_idx: (dict: string, int) image name, mapped to class
         
         Output:
             images: [(path, class)] list of paths and mapped classes
-        '''
+    """
+    def make_dataset(self, root, class_to_idx):
         images = []
         root_path = os.path.expanduser(root)
         for r, _, fnames in os.walk(root_path):
             for fname in sorted(fnames):
                 path = os.path.join(r, fname)
                 logging.info('path is {}'.format(path))
-                #stupid error check because some pictures are stored in the wrong area
                 if path.endswith(('.PNG', '.JPG')):
                     item = (path, class_to_idx[fname.split('.')[0]])
                     logging.info('appending item {}'.format(item))
@@ -99,33 +139,65 @@ class AdjustedDataset(datasets.DatasetFolder):
 
         return images
 
+    """
+    pil_loader
+        Input:
+            full_path: (string) path to image for loading
 
-    def get_class_dict(self):
-        """Returns a dictionary of classes mapped to indicies."""
-        return self.class_to_idx
+        Output:
+            RGB PIL image type
+    """
+    def pil_loader(self, full_path):
+        image = Image.open(full_path)
+        image = image.convert('RGB')
+        return image
 
-    def __getitem__(self, index):
-        """Returns tuple: (tensor, int) where target is class_index of
-        target_class. Same as DatasetFolder object
-        
-        Args:
-            idx: (int) Index.
-        """
 
-        path, target = self.samples[index]
-        sample = self.pil_loader(path) #transform Image into Tensor
-        if self.transform is not None:
-            sample = self.transform(sample)
-        if self.target_transform is not None:
-            target = self.target_transform(target)
+"""
+ModelBuilder
+    Attributes:
+        model: (torchvision.model) specify the model to run
+        model_name: (string) name of the model when saving after training or loading for testing
+        batch_size: (int) batch size, 1 - SGD other is minibatch
+        dataset: (int) value to identify dataset in usage
+        limit_num_pictures: (boolean or int) flag for how many images to load
+        rated_indices: (list: int) list to hold indices for images
+        ratings: (list: int) list of image ratings
+        bad_indices: (list: int) list to hold indices for images with zero labels
+        ava_image_path: (string) path to ava images
+        missourian_image_path: (string) path to Missourian images
+        ava_labels_file: (string) path to ava labels
+        ava_tags_file: (string) path to ava label to tag mappings
+        db: (sqlalchemy engine) reference to database engine
+        photo_table: (sqlalchemy table) table
 
-        return sample, target
+    Methods:
+        __init__
+        build_dataloaders
+        get_xmp_color_class
+        get_missourian_mapped_val
+        get_file_color_class
+        get_ava_labels
+        get_classifier_labels
+        make_db_connection
+        test_data_function
+        train_data_function
 
-    def __len__(self):
-        return len(self.samples)
-
+    Comments:
+        ModelBuilder class makes a generalized model. It takes what it is given, creates a dataset and 
+        provides testing/training functions for the model.
+"""
 class ModelBuilder:
 
+    """
+    __init__
+        Input:
+            model: (torchvision.model) model type
+            model_name: (string) name to save or load model
+            batch_size: (int) size of batch
+            dataset: (int) identify which dataset to use
+        Output:
+    """
     def __init__(self, model, model_name, batch_size, dataset):
         self.model = model
         self.model_name = model_name
@@ -147,125 +219,15 @@ class ModelBuilder:
         else:
             logging.info('Using Missourian Dataset to train')
             self.image_path = self.missourian_image_path
-        
 
-    def get_xmp_color_class(self):
-        labels_file = open('Mar18_labeled_images.txt', 'w')
-        none_file = open('Mar18_unlabeled_images.txt', 'w')
-        i = 0
-
-        for root, _, files in os.walk(self.image_path, topdown=True):
-            for name in files:
-                if name.endswith(".JPG") or name.endswith(".PNG"):
-                    with open(os.path.join(root, name), 'rb') as f:
-                        img_str = str(f.read())
-                        xmp_start = img_str.find('photomechanic:ColorClass')
-                        xmp_end = img_str.find('photomechanic:Tagged')
-                        if xmp_start != xmp_end and xmp_start != -1:
-                            xmp_str = img_str[xmp_start:xmp_end]
-                            if xmp_str[26] != '0':
-                                labels_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
-                                # self.rated_indices.append(i)
-                            else:
-                                none_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
-                                # self.bad_indices.append(i)
-                        else:
-                            none_file.write('0; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
-                        i+=1
-        
-        labels_file.close()
-        none_file.close()
-
-    def get_missourian_mapped_val(self, missourian_val):
-        if(missourian_val == 1):
-            return 10
-        elif(missourian_val == 2):
-            return 9
-        elif(missourian_val == 3):
-            return 7
-        elif(missourian_val == 4):
-            return 6
-        elif(missourian_val == 5):
-            return 5
-        elif(missourian_val == 6):
-            return 4
-        elif(missourian_val == 7):
-            return 2
-        elif(missourian_val == 8):
-            return 1
-        else:
-            return 0
-
-    def get_file_color_class(self):
-        pic_label_dict = {}
-        try:
-            labels_file = open("Mar18_labeled_images.txt", "r")
-            none_file = open("Mar18_unlabeled_images.txt", "r")
-        except OSError:
-            logging.error('Could not open Missourian image mapping files')
-            sys.exit(1)
-
-        for line in labels_file:
-            labels_string = line.split(';')
-            file_name = (labels_string[1].split('/')[-1]).split('.')[0]
-            # logging.info(line)
-            self.rated_indices.append(int(labels_string[-1].split('/')[0]))
-            pic_label_dict[file_name] = self.get_missourian_mapped_val(int(labels_string[0]))
-
-        for line in none_file:
-            labels_string = line.split(';')
-            file_name = (labels_string[1].split('/')[-1]).split('.')[0]
-            # logging.info(line)
-            self.bad_indices.append(int(labels_string[-1].split('/')[0]))
-            pic_label_dict[file_name] = 0
-
-        logging.info('Successfully loaded info from Missourian Image Files')
-        labels_file.close()
-        none_file.close()
-        return pic_label_dict
-
-    def get_ava_labels(self):
-        pic_label_dict = {}
-        limit_lines = 1000000
-        try:
-            f = open(self.ava_labels_file, "r")
-            for i, line in enumerate(f):
-                if i >= limit_lines:
-                    logging.info('Reached the developer specified line limit')
-                    break
-                line_array = line.split()
-                picture_name = line_array[1]
-                aesthetic_values = (line_array[2:])[:10]
-                for i in range(0, len(aesthetic_values)): 
-                    aesthetic_values[i] = int(aesthetic_values[i])
-                pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-            logging.info('label dictionary completed')
-            return pic_label_dict
-        except OSError:
-            logging.error('Cannot open AVA label file')
-            sys.exit(1)
-
-    def get_classifier_labels(self):
-        pic_label_dict = {}
-        limit_lines = 1000000
-        try:
-            f = open(self.ava_labels_file, "r")
-            for i, line in enumerate(f):
-                if i >= limit_lines:
-                    logging.info('Reached the developer specified line limit')
-                    break
-                line_array = line.split()
-                picture_name = line_array[1]
-                classifications = (line_array[12:])[:-1]
-                for i in range(0, len(classifications)): 
-                    classifications[i] = int(classifications[i])
-                pic_label_dict[picture_name] = classifications
-            logging.info('label dictionary completed')
-            return pic_label_dict
-        except OSError:
-            logging.error('Unable to open label file, exiting program')
-            sys.exit(1)
-
+    """
+    build_dataloaders
+        Input:
+            class_dict: (dict: path->label) dictionary mapping a string path to an int label
+        Output:
+            train_loader: (torch.utils.data.dataloader) dataloader containing the training images
+            test_loader: (torch.utils.data.dataloader) dataloader containing the testing images
+    """
     def build_dataloaders(self, class_dict):
         _transform = transforms.Compose([
             transforms.Resize(256),
@@ -307,7 +269,253 @@ class ModelBuilder:
         self.model.to(device)
         logging.info('ResNet50 is running on {}'.format(device))
         return train_loader, test_loader
+        
+    """
+    get_xmp_color_class
+        Input:
+            N/A
+        Output:
+            N/A
+        Comments:
+            write string containing Missourian labels to .txt files
+    """
+    def get_xmp_color_class(self):
+        labels_file = open('Mar18_labeled_images.txt', 'w')
+        none_file = open('Mar18_unlabeled_images.txt', 'w')
+        i = 0
 
+        for root, _, files in os.walk(self.image_path, topdown=True):
+            for name in files:
+                if name.endswith(".JPG") or name.endswith(".PNG"):
+                    with open(os.path.join(root, name), 'rb') as f:
+                        img_str = str(f.read())
+                        xmp_start = img_str.find('photomechanic:ColorClass')
+                        xmp_end = img_str.find('photomechanic:Tagged')
+                        if xmp_start != xmp_end and xmp_start != -1:
+                            xmp_str = img_str[xmp_start:xmp_end]
+                            if xmp_str[26] != '0':
+                                labels_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
+                            else:
+                                none_file.write(xmp_str[26] + '; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
+                        else:
+                            none_file.write('0; ' + str(os.path.join(root, name)) + '; ' + str(i) + '\n')
+                        i+=1
+        
+        labels_file.close()
+        none_file.close()
+
+    """
+    get_missourian_mapped_val
+        Input:
+            missourian_val: (int) value read from Missourian XMP metadata
+        Output:
+            (int) converted Missourian Value
+        Comments:
+            Simple helper function to convert Missourian XMP Meta labels to standardized labels
+    """
+    def get_missourian_mapped_val(self, missourian_val):
+        if(missourian_val == 1):
+            return 10
+        elif(missourian_val == 2):
+            return 9
+        elif(missourian_val == 3):
+            return 7
+        elif(missourian_val == 4):
+            return 6
+        elif(missourian_val == 5):
+            return 5
+        elif(missourian_val == 6):
+            return 4
+        elif(missourian_val == 7):
+            return 2
+        elif(missourian_val == 8):
+            return 1
+        else:
+            return 0
+
+    """
+    get_file_color_class
+        Input:
+            N/A
+        Output:
+            pic_label_dict: (dict: path->label) dictionary mapping string path to a specific image to int label
+        Comments:
+            Read .txt files from Missourian and write a dictionary mapping an image to a label
+    """
+    def get_file_color_class(self):
+        pic_label_dict = {}
+        try:
+            labels_file = open("Mar18_labeled_images.txt", "r")
+            none_file = open("Mar18_unlabeled_images.txt", "r")
+        except OSError:
+            logging.error('Could not open Missourian image mapping files')
+            sys.exit(1)
+
+        for line in labels_file:
+            labels_string = line.split(';')
+            file_name = (labels_string[1].split('/')[-1]).split('.')[0]
+            self.rated_indices.append(int(labels_string[-1].split('/')[0]))
+            pic_label_dict[file_name] = self.get_missourian_mapped_val(int(labels_string[0]))
+
+        for line in none_file:
+            labels_string = line.split(';')
+            file_name = (labels_string[1].split('/')[-1]).split('.')[0]
+            self.bad_indices.append(int(labels_string[-1].split('/')[0]))
+            pic_label_dict[file_name] = 0
+
+        logging.info('Successfully loaded info from Missourian Image Files')
+        labels_file.close()
+        none_file.close()
+        return pic_label_dict
+
+    """
+    get_ava_labels
+        Input:
+            N/A
+        Output:
+            pic_label_dict: (dict: path->label) dictionary mapping string path to a specific image to int label
+        Comments:
+            similarly to get_file_color_class
+    """
+    def get_ava_labels(self):
+        pic_label_dict = {}
+        limit_lines = 1000000
+        try:
+            f = open(self.ava_labels_file, "r")
+            for i, line in enumerate(f):
+                if i >= limit_lines:
+                    logging.info('Reached the developer specified line limit')
+                    break
+                line_array = line.split()
+                picture_name = line_array[1]
+                aesthetic_values = (line_array[2:])[:10]
+                for i in range(0, len(aesthetic_values)): 
+                    aesthetic_values[i] = int(aesthetic_values[i])
+                pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
+            logging.info('label dictionary completed')
+            return pic_label_dict
+        except OSError:
+            logging.error('Cannot open AVA label file')
+            sys.exit(1)
+
+    """
+    get_classifier_labels
+        Input:
+            N/A
+        Output:
+            pic_label_dict: (dict: path->label) dictionary mapping string path to a specific image to int classification label
+        Comments:
+            Similar to get_ava_labels but for classification purposes
+    """
+    def get_classifier_labels(self):
+        pic_label_dict = {}
+        limit_lines = 1000000
+        try:
+            f = open(self.ava_labels_file, "r")
+            for i, line in enumerate(f):
+                if i >= limit_lines:
+                    logging.info('Reached the developer specified line limit')
+                    break
+                line_array = line.split()
+                picture_name = line_array[1]
+                classifications = (line_array[12:])[:-1]
+                for i in range(0, len(classifications)): 
+                    classifications[i] = int(classifications[i])
+                pic_label_dict[picture_name] = classifications
+            logging.info('label dictionary completed')
+            return pic_label_dict
+        except OSError:
+            logging.error('Unable to open label file, exiting program')
+            sys.exit(1)
+
+    """
+    make_db_connection
+        Input:
+            N/A
+        Output:
+            db: (sqlalchemy engine) reference to database engine
+            photo_table: (sqlalchemy table) table 
+        Comments:
+            Makes a connection to the database used to store each of the testing values. Allows for 
+            standardization of test values to recieve a decent test result
+    """
+    def make_db_connection(self):
+        DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
+            'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
+        )
+        logging.info("Connecting to database: {}".format(DB_STR))
+
+        dbschema = 'rji'
+        db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
+            connect_args={'options': '-csearch_path={}'.format(dbschema)})
+        metadata = MetaData()
+        metadata.reflect(db, only=['photo'])
+        Base = automap_base(metadata=metadata)
+        Base.prepare()
+        photo_table = Base.classes['photo'].__table__
+
+        logging.info("Database connection successful")
+        return db, photo_table
+
+    """
+    test_data_function
+        Input:
+            test_loader: (torch.utils.data.dataloader) dataloader containing the testing images
+            num_ratings: (int) number of labels in the set (i.e. 10 for labels 1-10)
+        Output:
+            N/A
+        Comments:
+            test results and save them to the database
+    """
+    def test_data_function(self, test_loader, num_ratings):
+        self.model.eval()
+        ratings = []
+        index_progress = 0
+
+        while index_progress < len(test_loader) - 1:
+            try:
+                for i, data in enumerate(test_loader, index_progress):
+                    
+                    inputs, _, photo_path = data
+                    photo_path = photo_path[0]
+
+                    output = self.model(inputs)
+
+                    _, preds = torch.max(output.data, 1)
+                    ratings = output[0].tolist()
+                    
+                    logging.info("\nImage photo_path: {}\n".format(photo_path))
+                    logging.info("Classification for test image #{}: {}\n".format(index_progress, ratings))
+                    
+                    # Prime tuples for database insertion
+                    database_tuple = {}
+                    for n in range(num_ratings):
+                        database_tuple['model_score_{}'.format(n + 1)] = ratings[n]
+
+                    # Include metadata for database tuple
+                    database_tuple['photo_path'] = photo_path
+                    database_tuple['photo_model'] = self.model_name
+                    logging.info("Tuple to insert to database: {}\n".format(database_tuple))
+
+                    # Insert tuple to database
+                    result = self.db.execute(self.photo_table.insert().values(database_tuple))
+                    logging.info("Primary key inserted into the photo table: {}\n".format(result.inserted_primary_key))
+
+                    index_progress += 1
+
+            except Exception as e:
+                logging.info("Ran into error for image #{}: {}\n... Moving on.\n".format(index_progress, e))
+                index_progress += 1
+
+    """
+    train_data_function:
+        Input:
+            test_loader: (torch.utils.data.dataloader) dataloader containing the testing images
+        Output:
+            N/A
+        Comments:
+            Train model and save them as pytorch model. Save images showing accuracy and loss functions over epochs.
+    """
     def train_data_function(self, epochs, train_loader, prev_model):
         if(prev_model != 'N/A'):
             try:
@@ -374,62 +582,3 @@ class ModelBuilder:
         plt.ylabel('loss')
         plt.title('Training Model Loss')
         plt.savefig('Train_Loss_' + self.model_name[:-3] + '.png')
-
-    def test_data_function(self, test_loader, num_ratings):
-        self.model.eval()
-        ratings = []
-        index_progress = 0
-
-        while index_progress < len(test_loader) - 1:
-            try:
-                for i, data in enumerate(test_loader, index_progress):
-                    
-                    inputs, _, photo_path = data
-                    photo_path = photo_path[0]
-
-                    output = self.model(inputs)
-
-                    _, preds = torch.max(output.data, 1)
-                    ratings = output[0].tolist()
-                    
-                    logging.info("\nImage photo_path: {}\n".format(photo_path))
-                    logging.info("Classification for test image #{}: {}\n".format(index_progress, ratings))
-                    
-                    # Prime tuples for database insertion
-                    database_tuple = {}
-                    for n in range(num_ratings):
-                        database_tuple['model_score_{}'.format(n + 1)] = ratings[n]
-
-                    # Include metadata for database tuple
-                    database_tuple['photo_path'] = photo_path
-                    database_tuple['photo_model'] = self.model_name
-                    logging.info("Tuple to insert to database: {}\n".format(database_tuple))
-
-                    # Insert tuple to database
-                    result = self.db.execute(self.photo_table.insert().values(database_tuple))
-                    logging.info("Primary key inserted into the photo table: {}\n".format(result.inserted_primary_key))
-
-                    index_progress += 1
-
-            except Exception as e:
-                logging.info("Ran into error for image #{}: {}\n... Moving on.\n".format(index_progress, e))
-                index_progress += 1
-
-    """ Database Connection """
-    def make_db_connection(self):
-        DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
-            'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
-        )
-        logging.info("Connecting to database: {}".format(DB_STR))
-
-        dbschema = 'rji'
-        db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
-            connect_args={'options': '-csearch_path={}'.format(dbschema)})
-        metadata = MetaData()
-        metadata.reflect(db, only=['photo'])
-        Base = automap_base(metadata=metadata)
-        Base.prepare()
-        photo_table = Base.classes['photo'].__table__
-
-        logging.info("Database connection successful")
-        return db, photo_table

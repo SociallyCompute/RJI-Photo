@@ -27,6 +27,15 @@ import model_class
 import warnings  
 warnings.filterwarnings('ignore')
 
+"""
+vgg16_change_fully_connected_layer
+    Input:
+        output_layer: (int) number of output layers on final fully connected layer
+    Output:
+        N/A
+    Comments:
+        Change fully connected layer for vgg16 and apply a mapping from 4096->output_layer
+"""
 def vgg16_change_fully_connected_layer(output_layer): 
     model.classifier[6].out_features = output_layer
     for param in model.parameters():
@@ -37,6 +46,15 @@ def vgg16_change_fully_connected_layer(output_layer):
     model.classifier = nn.Sequential(*network)
     logging.info('New Layer correctly added to VGG16')
 
+"""
+resnet_change_fully_connected_layer
+    Input:
+        output_layer: (int) number of output layers on final fully connected layer
+    Output:
+        N/A
+    Comments:
+        Change fully connected layer for resnet and apply a mapping from 2048->output_layer
+"""
 def resnet_change_fully_connected_layer(output_layer): 
     model.fc.out_features = output_layer
     for param in model.parameters():
@@ -47,6 +65,18 @@ def resnet_change_fully_connected_layer(output_layer):
     model.fc = nn.Sequential(*network)
     logging.info('New Layer correctly added to ResNet50')
 
+"""
+run_train_model
+    Input:
+        model_type: (string) identify which type of model is being run
+        model_container: (ModelBuilder) custom ModelBuilder base class
+        epochs: (int) total number of times to train the model
+        output_layer: (int) number of output layers on final fully connected layer
+    Output:
+        N/A
+    Comments:
+        Basic run function for training models
+"""
 def run_train_model(model_type, model_container, epochs, output_layer):
     logging.info('Begin running')
     label_dict = {}
@@ -69,6 +99,17 @@ def run_train_model(model_type, model_container, epochs, output_layer):
 
     model_container.train_data_function(epochs, train, 'N/A')
 
+"""
+run_train_model
+    Input:
+        model_type: (string) identify which type of model is being run
+        model_container: (ModelBuilder) custom ModelBuilder base class
+        output_layer: (int) number of output layers on final fully connected layer
+    Output:
+        N/A
+    Comments:
+        Basic run function for testing models
+"""
 def run_test_model(model_type, model_container, output_layer):
     logging.info('Begin running')
     label_dict = {}
