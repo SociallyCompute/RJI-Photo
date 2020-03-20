@@ -65,9 +65,10 @@ class AdjustedDataset(datasets.DatasetFolder):
             class_dict: (dict) pairs of (picture, rating)
             transform: (Object) Image processing transformations.
     """
-    def __init__(self, image_path, class_dict, transform=None):
+    def __init__(self, image_path, class_dict, dataset, transform=None):
         self.target_transform = None
         self.transform = transform
+        self.dataset = dataset
         self.classes = [i+1 for i in range(10)] #classes are 1-10
         self.class_to_idx = {i+1 : i for i in range(10)}
         self.samples = self.make_dataset(image_path, class_dict)
@@ -132,7 +133,8 @@ class AdjustedDataset(datasets.DatasetFolder):
             for fname in sorted(fnames):
                 path = os.path.join(r, fname)
                 logging.info('path is {}'.format(path))
-                if path.endswith(('.PNG', '.JPG')):
+                # AVA dataset has lowercase, Missourian usable pictures are uppercase, unusable are lowercase
+                if (path.lower.endswith(('.png', '.jpg')) and self.dataset == 'AVA') or (path.endswith('.JPG')):
                     item = (path, class_to_idx[fname.split('.')[0]])
                     logging.info('appending item {}'.format(item))
                     images.append(item)
@@ -242,8 +244,8 @@ class ModelBuilder:
         valid_size = 0.2 # percentage of data to use for test set  
 
         # load data and apply the transforms on contained pictures
-        train_data = AdjustedDataset(self.image_path, class_dict, transform=_transform)
-        test_data = AdjustedDataset(self.image_path, class_dict, transform=_transform)
+        train_data = AdjustedDataset(self.image_path, class_dict, self.dataset, transform=_transform)
+        test_data = AdjustedDataset(self.image_path, class_dict, self.dataset, transform=_transform)
         logging.info('Training and Testing Dataset correctly transformed') 
         logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
         
@@ -289,7 +291,7 @@ class ModelBuilder:
 
         for root, _, files in os.walk(self.image_path, topdown=True):
             for name in files:
-                if name.endswith(".JPG") or name.endswith(".PNG"):
+                if name.endswith('.JPG', '.PNG'):
                     with open(os.path.join(root, name), 'rb') as f:
                         img_str = str(f.read())
                         xmp_start = img_str.find('photomechanic:ColorClass')
