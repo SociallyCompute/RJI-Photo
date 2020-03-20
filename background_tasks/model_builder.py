@@ -143,6 +143,8 @@ else:
 model_container = model_class.ModelBuilder(model, model_name, batch_size, dataset)
 
 if os.path.isfile('../neural_net/models/' + model_name):
+    logging.info('Running Model in Testing Mode')
     run_test_model(model_type, model_container, output_layer)
 else:
+    logging.info('Running Model in Training Mode')
     run_train_model(model_type, model_container, epochs, output_layer)

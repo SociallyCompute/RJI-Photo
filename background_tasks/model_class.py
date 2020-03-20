@@ -471,7 +471,7 @@ class ModelBuilder:
         self.model.eval()
         ratings = []
         index_progress = 0
-
+        logging.info('Test_loader is size: {}'.format(len(test_loader)))
         while index_progress < len(test_loader) - 1:
             try:
                 for i, data in enumerate(test_loader, index_progress):
