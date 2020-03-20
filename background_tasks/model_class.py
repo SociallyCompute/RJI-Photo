@@ -134,7 +134,7 @@ class AdjustedDataset(datasets.DatasetFolder):
                 path = os.path.join(r, fname)
                 logging.info('path is {}'.format(path))
                 # AVA dataset has lowercase, Missourian usable pictures are uppercase, unusable are lowercase
-                if (path.lower.endswith(('.png', '.jpg')) and self.dataset == 'AVA') or (path.endswith('.JPG')):
+                if (path.lower().endswith(('.png', '.jpg')) and self.dataset == 'AVA') or (path.endswith('.JPG')):
                     item = (path, class_to_idx[fname.split('.')[0]])
                     logging.info('appending item {}'.format(item))
                     images.append(item)
@@ -384,13 +384,14 @@ class ModelBuilder:
     """
     def get_ava_labels(self):
         pic_label_dict = {}
-        limit_lines = 1000000
+        limit_lines = self.limit_num_pictures
         try:
             f = open(self.ava_labels_file, "r")
             for i, line in enumerate(f):
-                if i >= limit_lines:
-                    logging.info('Reached the developer specified line limit')
-                    break
+                if limit_lines:
+                    if i >= limit_lines:
+                        logging.info('Reached the developer specified line limit')
+                        break
                 line_array = line.split()
                 picture_name = line_array[1]
                 aesthetic_values = (line_array[2:])[:10]
@@ -414,13 +415,14 @@ class ModelBuilder:
     """
     def get_classifier_labels(self):
         pic_label_dict = {}
-        limit_lines = 1000000
+        limit_lines = self.limit_num_pictures
         try:
             f = open(self.ava_labels_file, "r")
             for i, line in enumerate(f):
-                if i >= limit_lines:
-                    logging.info('Reached the developer specified line limit')
-                    break
+                if limit_lines:
+                    if i >= limit_lines:
+                        logging.info('Reached the developer specified line limit')
+                        break
                 line_array = line.split()
                 picture_name = line_array[1]
                 classifications = (line_array[12:])[:-1]
