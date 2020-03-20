@@ -245,6 +245,7 @@ class ModelBuilder:
         train_data = AdjustedDataset(self.image_path, class_dict, transform=_transform)
         test_data = AdjustedDataset(self.image_path, class_dict, transform=_transform)
         logging.info('Training and Testing Dataset correctly transformed') 
+        logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
         
         num_pictures = len(train_data)
         indices = list(range(num_pictures))
@@ -260,9 +261,11 @@ class ModelBuilder:
 
         # Define data loaders, which allow batching and shuffling the data
         train_loader = torch.utils.data.DataLoader(train_data,
-                    sampler=train_sampler, batch_size=1)
+                    sampler=train_sampler, batch_size=self.batch_size)
         test_loader = torch.utils.data.DataLoader(test_data,
-                    sampler=test_sampler, batch_size=1)
+                    sampler=test_sampler, batch_size=self.batch_size)
+
+        logging.info('train_loader size: {}\ntest_loader size: {}'.format(len(train_loader), len(test_loader)))
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
