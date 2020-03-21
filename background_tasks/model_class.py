@@ -479,36 +479,36 @@ class ModelBuilder:
         ratings = []
         index_progress = 0
         logging.info('Test_loader is size: {}'.format(len(test_loader)))
-        while index_progress < len(test_loader) - 1:
+        # while index_progress < len(test_loader) - 1:
+        
+        for data in test_loader:
             try:
-                for i, data in enumerate(test_loader, index_progress):
-                    
-                    inputs, _, photo_path = data
-                    photo_path = photo_path[0]
+                inputs, _, photo_path = data
+                photo_path = photo_path[0]
 
-                    output = self.model(inputs)
+                output = self.model(inputs)
 
-                    _, preds = torch.max(output.data, 1)
-                    ratings = output[0].tolist()
-                    
-                    logging.info("\nImage photo_path: {}\n".format(photo_path))
-                    logging.info("Classification for test image #{}: {}\n".format(index_progress, ratings))
-                    
-                    # Prime tuples for database insertion
-                    database_tuple = {}
-                    for n in range(num_ratings):
-                        database_tuple['model_score_{}'.format(n + 1)] = ratings[n]
+                _, preds = torch.max(output.data, 1)
+                ratings = output[0].tolist()
+                
+                logging.info("\nImage photo_path: {}\n".format(photo_path))
+                logging.info("Classification for test image #{}: {}\n".format(index_progress, ratings))
+                
+                # Prime tuples for database insertion
+                database_tuple = {}
+                for n in range(num_ratings):
+                    database_tuple['model_score_{}'.format(n + 1)] = ratings[n]
 
-                    # Include metadata for database tuple
-                    database_tuple['photo_path'] = photo_path
-                    database_tuple['photo_model'] = self.model_name
-                    logging.info("Tuple to insert to database: {}\n".format(database_tuple))
+                # Include metadata for database tuple
+                database_tuple['photo_path'] = photo_path
+                database_tuple['photo_model'] = self.model_name
+                logging.info("Tuple to insert to database: {}\n".format(database_tuple))
 
-                    # Insert tuple to database
-                    result = self.db.execute(self.photo_table.insert().values(database_tuple))
-                    logging.info("Primary key inserted into the photo table: {}\n".format(result.inserted_primary_key))
+                # Insert tuple to database
+                result = self.db.execute(self.photo_table.insert().values(database_tuple))
+                logging.info("Primary key inserted into the photo table: {}\n".format(result.inserted_primary_key))
 
-                    index_progress += 1
+                index_progress += 1
 
             except Exception as e:
                 logging.info("Ran into error for image #{}: {}\n... Moving on.\n".format(index_progress, e))
