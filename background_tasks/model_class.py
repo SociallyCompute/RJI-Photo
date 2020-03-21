@@ -209,6 +209,8 @@ class ModelBuilder:
         self.rated_indices = []
         self.ratings = []
         self.bad_indices = []
+        self.train_data_samples = None
+        self.test_data_samples = None
         self.ava_image_path = "/mnt/md0/reynolds/ava-dataset/images/"
         self.missourian_image_path = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
         self.ava_labels_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
@@ -245,7 +247,9 @@ class ModelBuilder:
 
         # load data and apply the transforms on contained pictures
         train_data = AdjustedDataset(self.image_path, class_dict, self.dataset, transform=_transform)
+        self.train_data_samples = train_data.samples
         test_data = AdjustedDataset(self.image_path, class_dict, self.dataset, transform=_transform)
+        self.test_data_samples = test_data.samples
         logging.info('Training and Testing Dataset correctly transformed') 
         logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
         
@@ -481,17 +485,18 @@ class ModelBuilder:
         logging.info('Test_loader is size: {}'.format(len(test_loader)))
         # while index_progress < len(test_loader) - 1:
         
-        for data in test_loader:
+        for data, labels in test_loader:
             try:
-                inputs, _, photo_path = data
-                photo_path = photo_path[0]
+                # inputs, _, photo_path = data
+                # photo_path = photo_path[0]
+                photo_path = self.test_data_samples[index_progress][0]
 
-                output = self.model(inputs)
+                output = self.model(data)
 
                 _, preds = torch.max(output.data, 1)
                 ratings = output[0].tolist()
                 
-                logging.info("\nImage photo_path: {}\n".format(photo_path))
+                # logging.info("\nImage photo_path: {}\n".format(photo_path))
                 logging.info("Classification for test image #{}: {}\n".format(index_progress, ratings))
                 
                 # Prime tuples for database insertion
