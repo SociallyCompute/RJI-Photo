@@ -587,10 +587,10 @@ class ModelBuilder:
         plt.xlabel('epochs')
         plt.ylabel('accuracy')
         plt.title('Training Model Accuracy')
-        plt.savefig('Train_Accuracy_' + self.model_name[:-3] + '.png')
+        plt.savefig('graphs/Train_Accuracy_' + self.model_name[:-3] + '.png')
 
         plt.plot([i for i in range(epochs)], training_loss)
         plt.xlabel('epochs')
         plt.ylabel('loss')
         plt.title('Training Model Loss')
-        plt.savefig('Train_Loss_' + self.model_name[:-3] + '.png')
+        plt.savefig('graphs/Train_Loss_' + self.model_name[:-3] + '.png')

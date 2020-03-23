@@ -37,6 +37,7 @@ vgg16_change_fully_connected_layer
         Change fully connected layer for vgg16 and apply a mapping from 4096->output_layer
 """
 def vgg16_change_fully_connected_layer(output_layer): 
+    logging.info('Initial VGG16 Architecture: {}'.format(model.classifier.children()))
     model.classifier[6].out_features = output_layer
     for param in model.parameters():
         param.requires_grad = False
@@ -44,7 +45,8 @@ def vgg16_change_fully_connected_layer(output_layer):
     network = list(model.classifier.children())[:-1]
     network.extend([nn.Linear(4096, output_layer)])
     model.classifier = nn.Sequential(*network)
-    logging.info('New Layer correctly added to VGG16')
+    logging.info('Changed VGG16 Architecture: {}'.format(model.classifier.children()))
+    # logging.info('New Layer correctly added to VGG16')
 
 """
 resnet_change_fully_connected_layer
@@ -56,6 +58,7 @@ resnet_change_fully_connected_layer
         Change fully connected layer for resnet and apply a mapping from 2048->output_layer
 """
 def resnet_change_fully_connected_layer(output_layer): 
+    logging.info('Initial ResNet50 Architecture: {}'.format(model.fc.children()))
     model.fc.out_features = output_layer
     for param in model.parameters():
         param.requires_grad = False
@@ -63,7 +66,8 @@ def resnet_change_fully_connected_layer(output_layer):
     network = list(model.fc.children())[:-1]
     network.extend([nn.Linear(2048, output_layer)])
     model.fc = nn.Sequential(*network)
-    logging.info('New Layer correctly added to ResNet50')
+    logging.info('Changed ResNet50 Architecture: {}'.format(model.fc.children()))
+    # logging.info('New Layer correctly added to ResNet50')
 
 """
 run_train_model
