@@ -1,3 +1,3 @@
 #!/bin/bash
 
-nohup python model_builder.py Mar22_AVA_MINI256_resnet AVA 25 256 resnet &> Mar22AVATrain25_model_builder.out & 
+nohup python model_builder.py Mar23_AVA_15epoch_MINI32_resnet AVA 15 32 resnet &> Mar23AVATrain15resnet_model_builder.out & 
