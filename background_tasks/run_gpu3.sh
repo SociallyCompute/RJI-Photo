@@ -26,13 +26,17 @@ module load miniconda3
 module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
 # Conda Env
-source activate /storage/hpc/group/gogginsgroup/conda_env
+source activate /storage/hpc/group/goggins-project/conda_env
 
 # Science goes here:
-picpath='/storage/hpc/group/gogginsgroup/AVA/images'
-labelpath='/storage/hpc/group/gogginsgroup/AVA/labels'
-modelname='Mar6_MINI32_AVA_vgg16.pt'
+picpath='/storage/hpc/group/goggins-project/AVA/images'
+labelpath='/storage/hpc/group/goggins-project/AVA/labels'
+modelname='Mar25_AVA_15ep_MINI32_resnet'
+dataset='AVA'
+epochs='15'
+batch='32'
+architecture='resnet'
 
-nohup python vgg16_quality_trainer.py $modelname &> vgg16_trainer.out &
+python model_builder.py $modelname $dataset $epochs $batch $architecture 
 
 echo "### Ending at: $(date) ###"
