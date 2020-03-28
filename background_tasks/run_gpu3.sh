@@ -25,16 +25,13 @@ echo "### Starting at: $(date) ###"
 module load miniconda3
 module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
-# Conda Env
-source activate /storage/hpc/group/goggins-project/conda_env4
-
 # Science goes here:
 avapicpath='/storage/hpc/group/augurlabs/images'
 labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
-modelname='Mar25_AVA_15ep_MINI32_resnet'
+modelname='Mar28_AVA_30ep_MINI256_resnet'
 dataset='AVA'
 epochs='30'
-batch='32'
+batch='256'
 architecture='resnet'
 
 python model_builder.py $modelname $dataset $epochs $batch $architecture 
