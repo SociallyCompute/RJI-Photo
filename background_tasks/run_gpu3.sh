@@ -15,7 +15,7 @@
 #SBATCH --output=results-%j.out  # %j is the unique jobID
 
 ## notifications
-#SBATCH --mail-user=username@missouri.edu  # email address for notifications
+#SBATCH --mail-user=mjc6r9@mail.missouri.edu  # email address for notifications
 #SBATCH --mail-type=END,FAIL  # which type of notifications to send
 #-------------------------------------------------------------------------------
 
