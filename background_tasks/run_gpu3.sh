@@ -33,7 +33,7 @@ avapicpath='/storage/hpc/group/augurlabs/images'
 labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
 modelname='Mar25_AVA_15ep_MINI32_resnet'
 dataset='AVA'
-epochs='15'
+epochs='30'
 batch='32'
 architecture='resnet'
 
