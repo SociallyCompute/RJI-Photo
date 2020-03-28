@@ -26,11 +26,11 @@ module load miniconda3
 module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
 # Conda Env
-source activate /storage/hpc/group/goggins-project/conda_env
+source activate /storage/hpc/group/goggins-project/conda_env4
 
 # Science goes here:
-picpath='/storage/hpc/group/goggins-project/AVA/images'
-labelpath='/storage/hpc/group/goggins-project/AVA/labels'
+avapicpath='/storage/hpc/group/augurlabs/images'
+labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
 modelname='Mar25_AVA_15ep_MINI32_resnet'
 dataset='AVA'
 epochs='15'

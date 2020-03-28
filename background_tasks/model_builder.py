@@ -63,7 +63,6 @@ def resnet_change_fully_connected_layer(output_layer):
     for param in model.parameters():
         param.requires_grad = False
     logging.info('All ResNet50 layers frozen')
-    network = list(model.fc.children())[:-1]
     model.fc = nn.Linear(2048, output_layer)
     logging.info('Changed ResNet50 Architecture: {}'.format(model.fc))
     # logging.info('New Layer correctly added to ResNet50')
