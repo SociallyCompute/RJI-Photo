@@ -211,10 +211,14 @@ class ModelBuilder:
         self.bad_indices = []
         self.train_data_samples = None
         self.test_data_samples = None
-        self.ava_image_path = "/storage/hpc/group/augurlabs/images/"
-        self.missourian_image_path = "/storage/hpc/group/augurlabs/2016/Fall/Dump"
-        self.ava_labels_file = "/storage/hpc/group/augurlabs/ava/AVA.txt"
-        self.ava_tags_file = "/storage/hpc/group/augurlabs/ava/tags.txt"
+        #self.ava_image_path = "/storage/hpc/group/augurlabs/images/"
+        self.ava_image_path = "/mnt/md0/reynolds/ava-dataset/images/"
+        #self.missourian_image_path = "/storage/hpc/group/augurlabs/2016/Fall/Dump"
+        self.missourian_image_path = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
+        #self.ava_labels_file = "/storage/hpc/group/augurlabs/ava/AVA.txt"
+        self.ava_labels_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
+        #self.ava_tags_file = "/storage/hpc/group/augurlabs/ava/tags.txt"
+        self.ava_tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
         self.db, self.photo_table = self.make_db_connection()
 
         if(dataset == 'AVA' or dataset == '1'):
@@ -552,7 +556,7 @@ class ModelBuilder:
                             break
                     try:
                         logging.info('label for image {} is {}'.format(i, label))
-                        label = torch.LongTensor(label)
+                        label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
                         optimizer.zero_grad()
                         output = self.model(data)
                         loss = criterion(output, label)
