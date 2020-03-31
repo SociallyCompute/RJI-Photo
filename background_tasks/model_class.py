@@ -556,7 +556,7 @@ class ModelBuilder:
                             break
                     try:
                         logging.info('label for image {} is {}'.format(i, label))
-                        label = torch.LongTensor(label)
+                        label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
                         optimizer.zero_grad()
                         output = self.model(data)
                         loss = criterion(output, label)
