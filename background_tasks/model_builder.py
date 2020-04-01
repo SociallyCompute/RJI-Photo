@@ -82,16 +82,20 @@ run_train_model
 def run_train_model(model_type, model_container, epochs, output_layer):
     logging.info('Begin running')
     label_dict = {}
-    if(model_container.dataset == 'AVA' or model_container.dataset == '1'):
+
+    if(model_container.dataset == 'AVA' or model_container.dataset == '1'): #AVA
         label_dict = model_container.get_ava_labels()
         logging.info('Successfully loaded AVA labels')
-    else:
+    elif(model_container.dataset == 'Missourian' or model_container.dataset == '2'): #Missourian
         if(not path.exists('Mar13_labeled_images.txt') or not path.exists('Mar13_unlabeled_images.txt')):
             logging.info('labeled_images.txt and unlabeled_images.txt not found')
             model_container.get_xmp_color_class()
         else:
             logging.info('labeled_images.txt and unlabeled_images.txt found')
         label_dict = model_container.get_file_color_class()
+    else: #classifier
+        label_dict = model_container.get_classifier_labels()
+
     train, _ = model_container.build_dataloaders(label_dict)
     
     if model_type == "vgg16":
@@ -132,7 +136,11 @@ model_type = sys.argv[5]
 
 logging.basicConfig(filename='logs/' + model_name + '.log', filemode='w', level=logging.DEBUG)
 model_name = model_name + '.pt'
-output_layer = 10
+
+if dataset == 'AVA' or dataset == '1' or dataset == 'Missourian' or dataset == '2':
+    output_layer = 10
+else:
+    output_layer = 67
 
 if model_type == 'vgg16':
     model = models.vgg16(pretrained=True)
