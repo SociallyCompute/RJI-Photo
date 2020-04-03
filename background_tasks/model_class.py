@@ -556,7 +556,14 @@ class ModelBuilder:
                             break
                     try:
                         logging.info('label for image {} is {}'.format(i, label))
-                        label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
+                        if torch.cuda.is_available():
+                            try:
+                                label = torch.cuda.LongTensor(label)
+                            except Exception as e:
+                                logging.error('Error with cuda version. Error {}'.format(e))
+                                sys.exit(1)
+                        else:
+                            torch.LongTensor(label)
                         optimizer.zero_grad()
                         output = self.model(data)
                         loss = criterion(output, label)
