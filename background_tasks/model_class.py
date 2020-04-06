@@ -211,10 +211,14 @@ class ModelBuilder:
         self.bad_indices = []
         self.train_data_samples = None
         self.test_data_samples = None
-        self.ava_image_path = "/mnt/md0/reynolds/ava-dataset/images/"
-        self.missourian_image_path = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
-        self.ava_labels_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
-        self.ava_tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
+        self.ava_image_path = "/storage/hpc/group/augurlabs/images/"
+        # self.ava_image_path = "/mnt/md0/reynolds/ava-dataset/images/"
+        self.missourian_image_path = "/storage/hpc/group/augurlabs/2016/Fall/Dump"
+        # self.missourian_image_path = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
+        self.ava_labels_file = "/storage/hpc/group/augurlabs/ava/AVA.txt"
+        # self.ava_labels_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
+        self.ava_tags_file = "/storage/hpc/group/augurlabs/ava/tags.txt"
+        # self.ava_tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
         self.db, self.photo_table = self.make_db_connection()
 
         if(dataset == 'AVA' or dataset == '1'):
@@ -552,12 +556,23 @@ class ModelBuilder:
                             break
                     try:
                         logging.info('label for image {} is {}'.format(i, label))
-                        label = torch.LongTensor(label)
+                        if torch.cuda.is_available():
+                            try:
+                                # label = torch.cuda.LongTensor(label)
+                                label = torch.cuda.LongTensor(label.to('cuda:0'))
+                                data = data.to('cuda:0')
+                                max_t2 = torch.cuda.LongTensor(1)
+                            except Exception as e:
+                                logging.error('Error with cuda version. Error {}'.format(e))
+                                sys.exit(1)
+                        else:
+                            torch.LongTensor(label)
+                            max_t2 = 1
                         optimizer.zero_grad()
                         output = self.model(data)
                         loss = criterion(output, label)
                         running_loss += loss.item()
-                        _, preds = torch.max(output.data, 1)
+                        _, preds = torch.max(output.data, max_t2)
                         num_correct += (preds == label).sum().item()
                         loss.backward()
                         optimizer.step()
@@ -587,10 +602,10 @@ class ModelBuilder:
         plt.xlabel('epochs')
         plt.ylabel('accuracy')
         plt.title('Training Model Accuracy')
-        plt.savefig('Train_Accuracy_' + self.model_name[:-3] + '.png')
+        plt.savefig('graphs/Train_Accuracy_' + self.model_name[:-3] + '.png')
 
         plt.plot([i for i in range(epochs)], training_loss)
         plt.xlabel('epochs')
         plt.ylabel('loss')
         plt.title('Training Model Loss')
-        plt.savefig('Train_Loss_' + self.model_name[:-3] + '.png')
+        plt.savefig('graphs/Train_Loss_' + self.model_name[:-3] + '.png')

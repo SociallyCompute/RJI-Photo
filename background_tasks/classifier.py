@@ -56,8 +56,8 @@ class AdjustedDataset(datasets.DatasetFolder):
         #super(AdjustedDataset, self).__init__(image_path, self.pil_loader, extensions=('.jpg', '.png', '.PNG', '.JPG'),transform=transform)
         self.target_transform = None
         self.transform = transform
-        self.classes = [i+1 for i in range(10)] #classes are 1-10
-        self.class_to_idx = {i+1 : i for i in range(10)}
+        self.classes = [i+1 for i in range(67)] #classes are 1-10
+        self.class_to_idx = {i+1 : i for i in range(67)}
         # self.classes, self.class_to_idx = self._find_classes(class_dict)
         self.samples = self.make_dataset(image_path, class_dict)
         self.targets = [s[1] for s in self.samples]
@@ -266,7 +266,7 @@ def train_vgg(train_loader, epochs, pic_label_dict, tag_mapping, model_name):
                 try:
                     logging.info('labels for image {} is {} and {}'.format(i, labels[0], labels[1]))
                     for i in range(0, 2):
-                        label = torch.LongTensor(labels[i])
+                        label = torch.cuda.LongTensor(labels[i]) if torch.cuda.is_available() else torch.LongTensor(labels[i])
                         optimizer.zero_grad()
                         output = vgg16(data)
                         loss = criterion(output, label)
@@ -295,7 +295,7 @@ def train_vgg(train_loader, epochs, pic_label_dict, tag_mapping, model_name):
             torch.save(vgg16.state_dict(), '../neural_net/models/' + model_name)
         except Exception:
             logging.error('Unable to save model: {}, saving backup in root dir and exiting program'.format(model_name))
-            torch.save(vgg16.state_dict(), 'Backup_classifier_model.pt')
+            torch.save(vgg16.state_dict(), model_name)
             sys.exit(1)
 
 
