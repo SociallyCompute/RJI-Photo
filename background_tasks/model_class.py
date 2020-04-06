@@ -568,7 +568,7 @@ class ModelBuilder:
                         output = self.model(data)
                         loss = criterion(output, label)
                         running_loss += loss.item()
-                        _, preds = torch.max(output.data, 1)
+                        _, preds = torch.max(output.data, torch.cuda.LongTensor(1)) if torch.cuda.is_available() else torch.max(output.data, 1) 
                         num_correct += (preds == label).sum().item()
                         loss.backward()
                         optimizer.step()
