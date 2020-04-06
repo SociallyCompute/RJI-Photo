@@ -539,6 +539,8 @@ class ModelBuilder:
             except Exception:
                 logging.warning('Failed to find {}, model trained off base resnet50'.format(prev_model))
 
+        self.model.cuda()
+
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.SGD(self.model.parameters(), lr=0.4, momentum=0.9)
 
@@ -568,7 +570,10 @@ class ModelBuilder:
                         loss = criterion(output, label)
                         running_loss += loss.item()
                         _, preds = torch.max(output.data, max_t2)
-                        num_correct += (preds == label).sum().item()
+                        # num_correct += (preds == label).sum().item()
+                        for x1, x2 in preds, label:
+                            if x1 == x2:
+                                num_correct += 1
                         loss.backward()
                         optimizer.step()
                     except Exception as e:
