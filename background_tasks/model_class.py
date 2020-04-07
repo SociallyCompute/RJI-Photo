@@ -539,8 +539,6 @@ class ModelBuilder:
             except Exception:
                 logging.warning('Failed to find {}, model trained off base resnet50'.format(prev_model))
 
-        self.model.cuda()
-
         criterion = nn.CrossEntropyLoss()
         optimizer = optim.SGD(self.model.parameters(), lr=0.4, momentum=0.9)
 
