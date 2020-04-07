@@ -155,7 +155,7 @@ def test_data(test_loader, db, photo_table):
             index_progress += 1
 
 
-""" Define global variables that were configurable """
+""" Define global variables that are configurable """
 
 # model we will be evaluating with
 photo_model = sys.argv[1]
