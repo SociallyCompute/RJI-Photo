@@ -569,8 +569,8 @@ class ModelBuilder:
                         running_loss += loss.item()
                         _, preds = torch.max(output.data, max_t2)
                         # num_correct += (preds == label).sum().item()
-                        for x1, x2 in preds, label:
-                            if x1 == x2:
+                        for i,x1 in enumerate(preds):
+                            if x1 == label[i]:
                                 num_correct += 1
                         loss.backward()
                         optimizer.step()
