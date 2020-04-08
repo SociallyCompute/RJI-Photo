@@ -548,7 +548,7 @@ class ModelBuilder:
 
         for epoch in range(epochs):
             running_loss = 0.0
-            num_correct = 0
+            num_correct = torch.cuda.LongTensor(0) if torch.cuda.is_avaliable() else torch.LongTensor(0)
             try:
                 for i, (data, label) in enumerate(train_loader,0):
                     if self.limit_num_pictures:
@@ -568,10 +568,10 @@ class ModelBuilder:
                         loss = criterion(output, label)
                         running_loss += loss.item()
                         _, preds = torch.max(output.data, max_t2)
-                        # num_correct += (preds == label).sum().item()
-                        for x1, x2 in preds, label:
-                            if x1 == x2:
-                                num_correct += 1
+                        num_correct += (preds == label).sum().item()
+                        # for i,x1 in enumerate(preds):
+                        #     if x1 == label[i]:
+                        #         num_correct += 1
                         loss.backward()
                         optimizer.step()
                     except Exception as e:
