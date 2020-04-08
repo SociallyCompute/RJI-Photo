@@ -548,7 +548,7 @@ class ModelBuilder:
 
         for epoch in range(epochs):
             running_loss = 0.0
-            num_correct = torch.cuda.LongTensor(0) if torch.cuda.is_avaliable() else torch.LongTensor(0)
+            num_correct = 0
             try:
                 for i, (data, label) in enumerate(train_loader,0):
                     if self.limit_num_pictures:

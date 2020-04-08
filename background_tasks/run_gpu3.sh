@@ -27,7 +27,7 @@ module load cudnn/cudnn-7.1.4-cuda-9.0.176
 # Science goes here:
 avapicpath='/storage/hpc/group/augurlabs/images'
 labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
-modelname='Apr7_AVA_30ep_MINI256_resnet'
+modelname='Apr8_AVA_30ep_MINI256_resnet'
 dataset='AVA'
 epochs='30'
 batch='256'
