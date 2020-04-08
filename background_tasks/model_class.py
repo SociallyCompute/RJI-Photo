@@ -211,10 +211,14 @@ class ModelBuilder:
         self.bad_indices = []
         self.train_data_samples = None
         self.test_data_samples = None
-        self.ava_image_path = "/mnt/md0/reynolds/ava-dataset/images/"
-        self.missourian_image_path = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
-        self.ava_labels_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
-        self.ava_tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
+        self.ava_image_path = "/storage/hpc/group/augurlabs/images/"
+        # self.ava_image_path = "/mnt/md0/reynolds/ava-dataset/images/"
+        self.missourian_image_path = "/storage/hpc/group/augurlabs/2016/Fall/Dump"
+        # self.missourian_image_path = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
+        self.ava_labels_file = "/storage/hpc/group/augurlabs/ava/AVA.txt"
+        # self.ava_labels_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/AVA.txt"
+        self.ava_tags_file = "/storage/hpc/group/augurlabs/ava/tags.txt"
+        # self.ava_tags_file = "/mnt/md0/reynolds/ava-dataset/AVA_dataset/tags.txt"
         self.db, self.photo_table = self.make_db_connection()
 
         if(dataset == 'AVA' or dataset == '1'):
@@ -551,18 +555,27 @@ class ModelBuilder:
                         if i > self.limit_num_pictures:
                             break
                     try:
+                        if torch.cuda.is_available():
+                            label = torch.cuda.LongTensor(label.to('cuda:0'))
+                            data = data.to('cuda:0')
+                            max_t2 = torch.cuda.LongTensor(1)
+                        else:
+                            label = torch.LongTensor(label)
+                            max_t2 = 1
                         logging.info('label for image {} is {}'.format(i, label))
-                        label = torch.LongTensor(label)
                         optimizer.zero_grad()
                         output = self.model(data)
                         loss = criterion(output, label)
                         running_loss += loss.item()
-                        _, preds = torch.max(output.data, 1)
-                        num_correct += (preds == label).sum().item()
+                        _, preds = torch.max(output.data, max_t2)
+                        num_correct += (preds == label).cpu().sum().item()
+                        # for i,x1 in enumerate(preds):
+                        #     if x1 == label[i]:
+                        #         num_correct += 1
                         loss.backward()
                         optimizer.step()
-                    except Exception:
-                        logging.warning('Issue calculating loss and optimizing with image #{}, data is\n{}'.format(i, data))
+                    except Exception as e:
+                        logging.warning('Issue calculating loss and optimizing with image #{}, error is {}\ndata is\n{}'.format(i, e, data))
                         continue
                 
                     if i % 2000 == 1999:
