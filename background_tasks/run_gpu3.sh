@@ -5,7 +5,7 @@
 ## resources
 #SBATCH --partition gpu3
 #SBATCH --cpus-per-task=1  # cores per task
-#SBATCH --mem-per-cpu=12G  # memory per core (default is 1GB/core)
+#SBATCH --mem-per-cpu=16G  # memory per core (default is 1GB/core)
 #SBATCH --time 1-23:00     # days-hours:minutes
 #SBATCH --account=general-gpu  # investors will replace this (e.g. `rc-gpu`)
 #SBATCH --gres gpu:1
@@ -27,7 +27,7 @@ module load cudnn/cudnn-7.1.4-cuda-9.0.176
 # Science goes here:
 avapicpath='/storage/hpc/group/augurlabs/images'
 labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
-modelname='Apr3_AVA_30ep_MINI256_resnet'
+modelname='Apr8_AVA_30ep_MINI256_resnet'
 dataset='AVA'
 epochs='30'
 batch='256'

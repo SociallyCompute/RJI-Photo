@@ -555,29 +555,27 @@ class ModelBuilder:
                         if i > self.limit_num_pictures:
                             break
                     try:
-                        logging.info('label for image {} is {}'.format(i, label))
                         if torch.cuda.is_available():
-                            try:
-                                # label = torch.cuda.LongTensor(label)
-                                label = torch.cuda.LongTensor(label.to('cuda:0'))
-                                data = data.to('cuda:0')
-                                max_t2 = torch.cuda.LongTensor(1)
-                            except Exception as e:
-                                logging.error('Error with cuda version. Error {}'.format(e))
-                                sys.exit(1)
+                            label = torch.cuda.LongTensor(label.to('cuda:0'))
+                            data = data.to('cuda:0')
+                            max_t2 = torch.cuda.LongTensor(1)
                         else:
-                            torch.LongTensor(label)
+                            label = torch.LongTensor(label)
                             max_t2 = 1
+                        logging.info('label for image {} is {}'.format(i, label))
                         optimizer.zero_grad()
                         output = self.model(data)
                         loss = criterion(output, label)
                         running_loss += loss.item()
                         _, preds = torch.max(output.data, max_t2)
-                        num_correct += (preds == label).sum().item()
+                        num_correct += (preds == label).cpu().sum().item()
+                        # for i,x1 in enumerate(preds):
+                        #     if x1 == label[i]:
+                        #         num_correct += 1
                         loss.backward()
                         optimizer.step()
-                    except Exception:
-                        logging.warning('Issue calculating loss and optimizing with image #{}, data is\n{}'.format(i, data))
+                    except Exception as e:
+                        logging.warning('Issue calculating loss and optimizing with image #{}, error is {}\ndata is\n{}'.format(i, e, data))
                         continue
                 
                     if i % 2000 == 1999:
