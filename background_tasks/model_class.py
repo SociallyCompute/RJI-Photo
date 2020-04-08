@@ -568,7 +568,7 @@ class ModelBuilder:
                         loss = criterion(output, label)
                         running_loss += loss.item()
                         _, preds = torch.max(output.data, max_t2)
-                        num_correct += (preds == label).sum().item()
+                        num_correct += (preds == label).cpu().sum().item()
                         # for i,x1 in enumerate(preds):
                         #     if x1 == label[i]:
                         #         num_correct += 1
