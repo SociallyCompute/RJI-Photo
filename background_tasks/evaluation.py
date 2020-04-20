@@ -37,43 +37,77 @@ warnings.filterwarnings('ignore')
 # our custom classes for loading images with paths and/or ratings
 from model_class import AdjustedDataset, ModelBuilder
 
+
+""" Define global variables that are configurable """
+
+# model we will be evaluating with
+photo_model = sys.argv[1]
+dataset = sys.argv[2]
+epochs = int(sys.argv[3])
+batch_size = int(sys.argv[4])
+model_type = sys.argv[5]
+
+# setup logger
+logging.basicConfig(filename='evaluation_{}.log'.format(photo_model.split('/')[3].split('.')[0]), filemode='w', level=logging.INFO)
+
+# root directory where the images are stored
+data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
+
+# The number of classification groups
+num_ratings = 10
+
+# we load the pretrained model, the argument pretrained=True implies to load the ImageNet weights for the pre-trained model
+model = models.vgg16(pretrained=True)
+
+model_container = ModelBuilder(model, model_name, batch_size, dataset)
+
+test_loader = build_dataloader(class_dict)
+test_data(test_loader, db, photo_table)
+
+
+
 """ Database Connection """
-def make_db_connection():
-    DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
-        'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
-    )
-    logging.info("Connecting to database: {}".format(DB_STR))
+DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
+    'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
+)
+logging.info("Connecting to database: {}".format(DB_STR))
 
-    dbschema = 'rji'
-    db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
-        connect_args={'options': '-csearch_path={}'.format(dbschema)})
+dbschema = 'rji'
+db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
+    connect_args={'options': '-csearch_path={}'.format(dbschema)})
 
-    # produce our own MetaData object
-    metadata = MetaData()
+# produce our own MetaData object
+metadata = MetaData()
 
-    # we can reflect it ourselves from a database, using options
-    # such as 'only' to limit what tables we look at...
-    metadata.reflect(db, only=['photo'])
+# we can reflect it ourselves from a database, using options
+# such as 'only' to limit what tables we look at...
+metadata.reflect(db, only=['photo'])
 
-    # we can then produce a set of mappings from this MetaData.
-    Base = automap_base(metadata=metadata)
+# we can then produce a set of mappings from this MetaData.
+Base = automap_base(metadata=metadata)
 
-    # calling prepare() just sets up mapped classes and relationships.
-    Base.prepare()
+# calling prepare() just sets up mapped classes and relationships.
+Base.prepare()
 
-    # mapped classes are ready
-    photo_table = Base.classes['photo'].__table__
+# mapped classes are ready
+photo_table = Base.classes['photo'].__table__
 
-    logging.info("Database connection successful")
-    return db, photo_table
+logging.info("Database connection successful")
+
+
 
 """ Model refining for our needs and loading our pretrained model """
 # for param in vgg16.parameters():
 #     param.requires_grad = False #freeze all convolution weights
-def change_fully_connected_layer():
-    network = list(model.classifier.children())[:-1] #remove fully connected layer
-    network.extend([nn.Linear(4096, num_ratings)]) #add new layer of 4096->100 (rating scale with 1 decimal - similar to 1 hot encoding)
-    model.classifier = nn.Sequential(*network)
+
+# remove fully connected layer
+network = list(model.classifier.children())[:-1] 
+
+# add new layer of 4096->100 (rating scale with 
+#     1 decimal - similar to 1 hot encoding)
+network.extend([nn.Linear(4096, num_ratings)]) 
+model.classifier = nn.Sequential(*network)
+
 
 """ Load images and create an iterator """
 def build_dataloader(class_dict):
@@ -154,31 +188,3 @@ def test_data(test_loader, db, photo_table):
             logging.info("Ran into error for image #{}: {}\n... Moving on.\n".format(index_progress, e))
             index_progress += 1
 
-
-""" Define global variables that are configurable """
-
-# model we will be evaluating with
-photo_model = sys.argv[1]
-dataset = sys.argv[2]
-epochs = int(sys.argv[3])
-batch_size = int(sys.argv[4])
-model_type = sys.argv[5]
-
-# setup logger
-logging.basicConfig(filename='evaluation_{}.log'.format(photo_model.split('/')[3].split('.')[0]), filemode='w', level=logging.INFO)
-
-# root directory where the images are stored
-data_dir = "/mnt/md0/mysql-dump-economists/Archives/2017/Fall/Dump"
-
-# The number of classification groups
-num_ratings = 10
-
-# we load the pretrained model, the argument pretrained=True implies to load the ImageNet weights for the pre-trained model
-model = models.vgg16(pretrained=True)
-
-model_container = ModelBuilder(model, model_name, batch_size, dataset)
-
-db, photo_table = make_db_connection()
-change_fully_connected_layer()
-test_loader = build_dataloader(class_dict)
-test_data(test_loader, db, photo_table)
