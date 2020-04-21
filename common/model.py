@@ -20,16 +20,16 @@ import ntpath
 from os import path
 from pathlib2 import Path
 
-import sqlalchemy as s
-from sqlalchemy import MetaData
-from sqlalchemy.ext.automap import automap_base
-
 import matplotlib.pyplot as plt
+
+import sqlalchemy as sqla
 
 import warnings  
 warnings.filterwarnings('ignore')
 
 import config
+import datasets
+import helpers
 
 class ModelBuilder:
 
@@ -42,7 +42,7 @@ class ModelBuilder:
     :param batch_size: (int) batch size, 1 - SGD other is minibatch
     :param dataset: (string) value to identify dataset in usage (ava, missourian)
     """
-    def __init__(self, model_type, model_name, batch_size, dataset):
+    def __init__(self, model_type, model_name, batch_size, dataset, classification_subject):
         
         self.model_type = model_type
         self.model_name = model_name
@@ -63,10 +63,11 @@ class ModelBuilder:
         
         self.train_data_samples = None
         self.test_data_samples = None
+        self.classification_subject = classification_subject
         
-        self.db, self.photo_table = self.make_db_connection()
+        self.db, self.photo_table = helpers.make_db_connection('evaluation')
 
-        if (dataset == 'AVA' or dataset == '1'):
+        if (dataset == 'ava'):
             logging.info('Using AVA Dataset')
             self.image_path = config.AVA_IMAGE_PATH
         else:
@@ -96,11 +97,11 @@ class ModelBuilder:
         valid_size = 0.2 
 
         # load data and apply the transforms on contained pictures
-        train_data = AdjustedDataset(self.image_path, class_dict, 
+        train_data = datasets.AdjustedDataset(self.image_path, class_dict, 
                                      self.dataset, transform=_transform)
         self.train_data_samples = train_data.samples
         
-        test_data = AdjustedDataset(self.image_path, class_dict, self.dataset, transform=_transform)
+        test_data = datasets.AdjustedDataset(self.image_path, class_dict, self.dataset, transform=_transform)
         self.test_data_samples = test_data.samples
         
         logging.info('Training and Testing Dataset correctly transformed') 
@@ -136,34 +137,40 @@ class ModelBuilder:
 
     
     def get_xmp_color_class(self):
-        # CHANGE
         """ Read .txt files from Missourian and write a dictionary mapping an image to a label
         
         :rtype: (dict: path->label) dictionary mapping string path to a specific image to int label
         """
         pic_label_dict = {}
-        try:
-            labels_file = open("Mar18_labeled_images.txt", "r")
-            none_file = open("Mar18_unlabeled_images.txt", "r")
-        except OSError:
-            logging.error('Could not open Missourian image mapping files')
-            sys.exit(1)
+        xmp_db, xmp_table = helpers.make_db_connection('xmp_color_classes')
 
-        for line in labels_file:
-            labels_string = line.split(';')
-            file_name = (labels_string[1].split('/')[-1]).split('.')[0]
-            self.rated_indices.append(int(labels_string[-1].split('/')[0]))
-            pic_label_dict[file_name] = self.get_missourian_mapped_val(int(labels_string[0]))
+        xmp_data_SQL = sqla.sql.text("""
+        SELECT photo_path, color_class
+        FROM xmp_color_classes
+        """)
+        xmp_data = pandas.read_sql(xmp_data_SQL, xmp_db, params={})
+        xmp_data = xmp_data.set_index('photo_path')
+        pic_label_dict = {k : v[0] for k, v in xmp_data.to_dict('list').items()}
+        
+        xmp_rated_index_SQL = sqla.sql.text("""
+        SELECT photo_path, os_walk_index
+        FROM xmp_color_classes
+        WHERE color_class <> 0
+        """)
+        rated_index_data = pandas.read_sql(xmp_rated_index_SQL, xmp_db, params={})
+        rated_index_data = rated_index_data.set_index('photo_path')
+        self.rated_indices = rated_index_data['os_walk_index'].to_list()
 
-        for line in none_file:
-            labels_string = line.split(';')
-            file_name = (labels_string[1].split('/')[-1]).split('.')[0]
-            self.bad_indices.append(int(labels_string[-1].split('/')[0]))
-            pic_label_dict[file_name] = 0
+        xmp_unrated_index_SQL = sqla.sql.text("""
+        SELECT photo_path, os_walk_index
+        FROM xmp_color_classes
+        WHERE color_class = 0
+        """)
+        unrated_index_data = pandas.read_sql(xmp_unrated_index_SQL, xmp_db, params={})
+        unrated_index_data = unrated_index_data.set_index('photo_path')
+        self.bad_indices = unrated_index_data['os_walk_index'].to_list()
 
         logging.info('Successfully loaded info from Missourian Image Files')
-        labels_file.close()
-        none_file.close()
         return pic_label_dict
 
     
@@ -218,32 +225,7 @@ class ModelBuilder:
             logging.error('Unable to open label file, exiting program')
             sys.exit(1)
 
-    
-    def make_db_connection(self):
-        """ Makes a connection to the database used to store each of the testing values. Allows for 
-                standardization of test values to recieve a decent test result
-                
-        :rtype: (sqlalchemy engine, sqlalchemy table) reference to database engine and 
-            table that stores photo evaluation information
-        """
-        DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
-            'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
-        )
-        logging.info("Connecting to database: {}".format(DB_STR))
 
-        dbschema = 'rji'
-        db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
-            connect_args={'options': '-csearch_path={}'.format(dbschema)})
-        metadata = MetaData()
-        metadata.reflect(db, only=['photo'])
-        Base = automap_base(metadata=metadata)
-        Base.prepare()
-        photo_table = Base.classes['photo'].__table__
-
-        logging.info("Database connection successful")
-        return db, photo_table
-
-    
     def evaluate(self, test_loader, num_ratings):
         """ Evaluate the testing set and save them to the database
         
@@ -263,10 +245,16 @@ class ModelBuilder:
 
                     photo_path = self.test_data_samples[index_progress][0]
 
+                    if torch.cuda.is_available():
+                        labels = torch.cuda.LongTensor(labels.to('cuda:0'))
+                        data = data.to('cuda:0')
+                    else:
+                        labels = torch.LongTensor(labels)
+
                     output = self.model(data)
 
-                    _, preds = torch.max(output.data, 1)
-                    ratings = output[0].tolist()
+                    # _, preds = torch.max(output.data, 1)
+                    ratings = output[0].cpu().tolist()
 
                     # Prime tuples for database insertion
                     database_tuple = {}
@@ -306,10 +294,10 @@ class ModelBuilder:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
 
-        criterion = nn.CrossEntropyLoss()
-        optimizer = optim.SGD(self.model.parameters(), lr=0.4, momentum=0.9)
+        criterion = nn.CrossEntropyLoss().cuda() if torch.cuda.is_available() else nn.CrossEntropyLoss()
+        optimizer = optim.SGD(self.model.parameters(), lr=0.01, momentum=0.9)
 
-        self.model.train()
+        # self.model.train()
         training_loss = [0 for i in range(epochs)]
         training_accuracy = [0 for i in range(epochs)]
         
@@ -331,20 +319,19 @@ class ModelBuilder:
                             if torch.cuda.is_available():
                                 label = torch.cuda.LongTensor(label.to('cuda:0'))
                                 data = data.to('cuda:0')
-                                max_t2 = torch.cuda.LongTensor(1)
+                                # max_t2 = torch.cuda.LongTensor(1)
                             else:
                                 label = torch.LongTensor(label)
-                                max_t2 = 1
-                            logging.info('label for image {} is {}'.format(i, label))
+                                # max_t2 = 1
+                            # logging.info('label for image {} is {}'.format(i, label))
                             optimizer.zero_grad()
                             output = self.model(data)
                             loss = criterion(output, label)
-                            running_loss += loss.item()
-                            _, preds = torch.max(output.data, max_t2)
+                            running_loss += loss.cpu().item()
+                            # _, preds = torch.max(output.data, max_t2)
+                            max_vals = torch.max(output.data).long()
+                            preds = torch.argmax(output.data).long()
                             num_correct += (preds == label).cpu().sum().item()
-                            # for i,x1 in enumerate(preds):
-                            #     if x1 == label[i]:
-                            #         num_correct += 1
                             loss.backward()
                             optimizer.step()
                         except Exception as e:

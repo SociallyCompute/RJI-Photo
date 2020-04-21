@@ -16,6 +16,7 @@ from torchvision import datasets, transforms
 
 # no one likes irrelevant warnings
 import warnings  
+import os
 warnings.filterwarnings('ignore')
 
 class ImageFolderWithPaths(datasets.ImageFolder):
@@ -83,15 +84,15 @@ class AdjustedDataset(datasets.DatasetFolder):
             class_dict: (dict) pairs of (picture, rating)
             transform: (Object) Image processing transformations.
     """
-    def __init__(self, image_path, class_dict, dataset, is_classifier=False, transform=None):
+    def __init__(self, image_path, class_dict, dataset, classification_subject, transform=None):
         self.target_transform = None
-        self.is_classifier = is_classifier
+        self.classification_subject = classification_subject
         self.transform = transform
         self.dataset = dataset
         
         # (list) List of the class names.
-        self.classes = [i+1 for i in range(67 if self.is_classifier else 10)]
-        self.class_to_idx = {i+1 : i for i in range(67 if self.is_classifier else 10)}
+        self.classes = [i+1 for i in range(67 if self.classification_subject == 'content' else 10)]
+        self.class_to_idx = {i+1 : i for i in range(67 if self.classification_subject == 'content' else 10)}
         self.samples = self.make_dataset(image_path, class_dict)
         self.targets = [s[1] for s in self.samples]
 
@@ -129,8 +130,8 @@ class AdjustedDataset(datasets.DatasetFolder):
 
                 # AVA dataset has lowercase, Missourian usable pictures 
                 #     are uppercase, unusable are lowercase
-                if (path.lower().endswith(('.png', '.jpg')) \
-                    and self.dataset == 'AVA') or (path.endswith('.JPG')):
+                if ((path.lower().endswith(('.png', '.jpg')) \
+                    and self.dataset == 'AVA') or (path.endswith('.JPG'))):
                     
                     item = (path, class_to_idx[fname.split('.')[0]])
                     images.append(item)

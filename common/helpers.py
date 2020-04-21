@@ -1,10 +1,19 @@
-def find_size_bounds(limit_num_pictures=None):
+import datasets
+import os
+import config
+import logging
+
+import sqlalchemy as s
+from sqlalchemy import MetaData
+from sqlalchemy.ext.automap import automap_base
+
+def find_size_bounds(data_dir, limit_num_pictures=None):
     """ Will print and return min/max width/height of pictures in the dataset 
     
     :param limit_num_pictures - limits the number of pictures analyzed if you purposefully 
         want to work with a smaller dataset
     """
-    data = ImageFolderWithPaths(data_dir)
+    data = datasets.ImageFolderWithPaths(data_dir)
     print(data[0][0].size)
     max_h = (data[0][0]).size[1]
     min_h = data[0][0].size[1]
@@ -41,9 +50,10 @@ def find_size_bounds(limit_num_pictures=None):
 def write_xmp_color_class(self):
     """ Write string containing Missourian labels to .txt files                
     """
-
-    labels_file = open('Mar18_labeled_images.txt', 'w')
-    none_file = open('Mar18_unlabeled_images.txt', 'w')
+    db, xmp_table = make_db_connection('xmp_color_classes')
+    database_tuple = {}
+    # labels_file = open('Mar18_labeled_images.txt', 'w')
+    # none_file = open('Mar18_unlabeled_images.txt', 'w')
     i = 0
 
     for root, _, files in os.walk(config.MISSOURIAN_IMAGE_PATH, topdown=True):
@@ -57,16 +67,49 @@ def write_xmp_color_class(self):
                 xmp_end = img_str.find('photomechanic:Tagged')
                 if xmp_start != xmp_end and xmp_start != -1:
                     xmp_str = img_str[xmp_start:xmp_end]
-                    if xmp_str[26] != '0':
-                        labels_file.write(xmp_str[26] + '; ' + str(
-                            os.path.join(root, name)) + '; ' + str(i) + '\n')
-                    else:
-                        none_file.write(xmp_str[26] + '; ' + str(
-                            os.path.join(root, name)) + '; ' + str(i) + '\n')
+                    # if xmp_str[26] != '0':
+                    database_tuple['color_class'] = int(xmp_str[26])
+                    database_tuple['photo_path'] = str(os.path.join(root, name))
+                    database_tuple['os_walk_index'] = i
+                        # labels_file.write(xmp_str[26] + '; ' + str(
+                            # os.path.join(root, name)) + '; ' + str(i) + '\n')
+                    # else:
+                    #     none_file.write(xmp_str[26] + '; ' + str(
+                    #         os.path.join(root, name)) + '; ' + str(i) + '\n')
                 else:
-                    none_file.write('0; ' + str(
-                        os.path.join(root, name)) + '; ' + str(i) + '\n')
+                    database_tuple['color_class'] = 0
+                    database_tuple['photo_path'] = str(os.path.join(root, name))
+                    database_tuple['os_walk_index'] = i
+                    # none_file.write('0; ' + str(
+                        # os.path.join(root, name)) + '; ' + str(i) + '\n')
                 i+=1
 
-    labels_file.close()
-    none_file.close()
+    # labels_file.close()
+    # none_file.close()
+
+
+def make_db_connection(table_name):
+    """ Makes a connection to the database used to store each of the testing values. Allows for 
+            standardization of test values to recieve a decent test result
+
+    :param table_name - name of the table to be reflected in SQLAlchemy metadata
+
+    :rtype: (sqlalchemy engine, sqlalchemy table) reference to database engine and 
+        specified table
+    """
+    DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
+        'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
+    )
+    logging.info("Connecting to database: {}".format(DB_STR))
+
+    dbschema = 'rji'
+    db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
+        connect_args={'options': '-csearch_path={}'.format(dbschema)})
+    metadata = MetaData()
+    metadata.reflect(db, only=[table_name])
+    Base = automap_base(metadata=metadata)
+    Base.prepare()
+    r_table = Base.classes[table_name].__table__
+
+    logging.info("Database connection successful")
+    return db, r_table

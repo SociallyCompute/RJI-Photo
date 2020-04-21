@@ -19,7 +19,7 @@ import os.path
 import ntpath
 from os import path
 from pathlib2 import Path
-import model_class
+from common import model
 
 import warnings  
 warnings.filterwarnings('ignore')
@@ -30,15 +30,15 @@ def vgg16_change_fully_connected_layer(output_layer):
     
     :param output_layer: (int) number of output layers on final fully connected layer
     """
-    logging.info('Initial VGG16 Architecture: {}'.format(list(model.classifier.children())))
-    model.classifier[6].out_features = output_layer
-    for param in model.parameters():
+    logging.info('Initial VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
+    model_active.classifier[6].out_features = output_layer
+    for param in model_active.parameters():
         param.requires_grad = False
     logging.info('All VGG16 layers frozen')
-    network = list(model.classifier.children())[:-1]
+    network = list(model_active.classifier.children())[:-1]
     network.extend([nn.Linear(4096, output_layer)])
-    model.classifier = nn.Sequential(*network)
-    logging.info('Changed VGG16 Architecture: {}'.format(list(model.classifier.children())))
+    model_active.classifier = nn.Sequential(*network)
+    logging.info('Changed VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
     # logging.info('New Layer correctly added to VGG16')
 
 """
@@ -51,13 +51,13 @@ resnet_change_fully_connected_layer
         Change fully connected layer for resnet and apply a mapping from 2048->output_layer
 """
 def resnet_change_fully_connected_layer(output_layer): 
-    logging.info('Initial ResNet50 final layer Architecture: {}'.format(model.fc))
-    model.fc.out_features = output_layer
-    for param in model.parameters():
+    logging.info('Initial ResNet50 final layer Architecture: {}'.format(model_active.fc))
+    model_active.fc.out_features = output_layer
+    for param in model_active.parameters():
         param.requires_grad = False
     logging.info('All ResNet50 layers frozen')
-    model.fc = nn.Linear(2048, output_layer)
-    logging.info('Changed ResNet50 Architecture: {}'.format(model.fc))
+    model_active.fc = nn.Linear(2048, output_layer)
+    logging.info('Changed ResNet50 Architecture: {}'.format(model_active.fc))
     # logging.info('New Layer correctly added to ResNet50')
 
 """
@@ -142,15 +142,15 @@ else:
     sys.exit(1)
 
 if model_type == 'vgg16':
-    model = models.vgg16(pretrained=True)
+    model_active = models.vgg16(pretrained=True).cuda() if torch.cuda.is_avaliable() else models.vgg16(pretrained=True)
 elif model_type == 'resnet':
-    model = models.resnet50(pretrained=True)
+    model_active = models.resnet50(pretrained=True).cuda() if torch.cuda.is_available() else models.resnet50(pretrained=True)
 else:
-    logging.info('Invalid model requested: {}. '.format(model)
+    logging.info('Invalid model requested: {}. '.format(model_active)
                 'Please choose from \'vgg16\' or \'resnet\'\n')
     sys.exit('Invalid Model')
 
-model_container = model_class.ModelBuilder(model, model_name, batch_size, dataset)
+model_container = model.ModelBuilder(model_active, model_name, batch_size, dataset, classification_subject)
 
 if os.path.isfile('../neural_net/models/' + model_name):
     logging.info('Running Model in Testing Mode')
