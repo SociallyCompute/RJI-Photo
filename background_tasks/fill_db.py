@@ -1,4 +1,5 @@
-from common import helpers
+import sys
+from ..common import helpers
 import logging
 
 logging.basicConfig(filename='logs/fill_db.log', 

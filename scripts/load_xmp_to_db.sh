@@ -21,6 +21,6 @@
 
 echo "### Starting at: $(date) ###"
 
-python ../background_tasks/fill_db.python
+python ../background_tasks/fill_db.py
 
 echo "### Ending at: $(date) ###"

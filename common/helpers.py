@@ -74,9 +74,8 @@ def write_xmp_color_class():
                         database_tuple['os_walk_index'] = i
                     i+=1
                     result = db.execute(xmp_table.insert().values(database_tuple))
-                except Exception as e:
-                logging.info('Ran into error for {}\n... '
-                             'Moving on.\n'.format(e))
+            except Exception as e:
+                logging.info('Ran into error for {}\n...\nMoving on.\n'.format(e))
 
     logging.info('Finished writing xmp color classes to database')
     # labels_file.close()
