@@ -83,7 +83,7 @@ run_train_model
 def run_train_model(model_type, model_container, epochs, output_layer):
     # AVA
     if(model_container.dataset == 'ava'): 
-        label_df = model_container.get_ava_quality_labels()
+        label_dict = model_container.get_ava_quality_labels()
 
     # Missourian
     elif(model_container.dataset == 'missourian'): 
@@ -104,7 +104,7 @@ def run_train_model(model_type, model_container, epochs, output_layer):
     else:
         resnet_change_fully_connected_layer(output_layer)
 
-    model_container.train_data_function(epochs, train, 'N/A')
+    model_container.train(epochs, train, 'N/A')
 
 
 def run_test_model(model_type, model_container, output_layer):
