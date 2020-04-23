@@ -14,11 +14,14 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
 
 import logging
-import sys
+import sys, os
 import os.path
 import ntpath
 from os import path
 from pathlib2 import Path
+
+sys.path.append(os.path.split(sys.path[0])[0])
+
 from common import model
 
 import warnings  
@@ -137,7 +140,7 @@ if classification_subject == 'quality':
 elif classification_subject == 'content':
     output_layer = 67
 else:
-    logging.info('The classification subject you specified ({}) '.format(classification_subject)
+    logging.info('The classification subject you specified ({}) '.format(classification_subject),
                 'does not exist, please choose from \'quality\' or \'content\'\n')
     sys.exit(1)
 
@@ -146,7 +149,7 @@ if model_type == 'vgg16':
 elif model_type == 'resnet':
     model_active = models.resnet50(pretrained=True).cuda() if torch.cuda.is_available() else models.resnet50(pretrained=True)
 else:
-    logging.info('Invalid model requested: {}. '.format(model_active)
+    logging.info('Invalid model requested: {}. '.format(model_active),
                 'Please choose from \'vgg16\' or \'resnet\'\n')
     sys.exit('Invalid Model')
 

@@ -1,6 +1,6 @@
-import datasets
+from common import datasets
 import os
-import config
+from common import config
 import logging
 
 import sqlalchemy as s

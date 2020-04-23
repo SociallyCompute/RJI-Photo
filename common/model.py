@@ -27,9 +27,9 @@ import sqlalchemy as sqla
 import warnings  
 warnings.filterwarnings('ignore')
 
-import config
-import datasets
-import helpers
+from common import config
+from common import datasets
+from common import misc
 
 class ModelBuilder:
 
@@ -126,7 +126,7 @@ class ModelBuilder:
         test_loader = torch.utils.data.DataLoader(test_data,
                     sampler=test_sampler, batch_size=self.batch_size)
 
-        logging.info('train_loader size: {}\n'.format(len(train_loader))
+        logging.info('train_loader size: {}\n'.format(len(train_loader)),
                      'test_loader size: {}'.format(len(test_loader)))
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
@@ -306,7 +306,7 @@ class ModelBuilder:
             num_correct = 0
             
             index_progress = 0
-            logging.info('Epoch #{} Running the training of images in the '.format(epoch)
+            logging.info('Epoch #{} Running the training of images in the '.format(epoch),
                          'train_loader of size: {}...'.format(len(train_loader)))
             
             while index_progress < num_pictures - 1:
@@ -335,7 +335,7 @@ class ModelBuilder:
                             loss.backward()
                             optimizer.step()
                         except Exception as e:
-                            logging.warning('Issue calculating loss and optimizing with image '
+                            logging.warning('Issue calculating loss and optimizing with image ',
                                             '#{}, error is {}\ndata is\n{}'.format(i, e, data))
                             continue
 
@@ -344,7 +344,7 @@ class ModelBuilder:
                             
                 except Exception:
                     (data, label) = train_loader
-                    logging.error('Error on epoch #{}, train_loader issue '
+                    logging.error('Error on epoch #{}, train_loader issue ',
                                   'with data: {}\nlabel: {}'.format(epoch, data, label))
                     torch.save(self.model.state_dict(), self.model_name)
                     sys.exit(1)
@@ -358,7 +358,7 @@ class ModelBuilder:
             try:
                 torch.save(self.model.state_dict(), '../neural_net/models/' + self.model_name)
             except Exception:
-                logging.error('Unable to save model: {}, '.format(self.model_name)
+                logging.error('Unable to save model: {}, '.format(self.model_name),
                               'saving backup in root dir and exiting program')
                 torch.save(self.model.state_dict(), self.model_name)
                 sys.exit(1)
