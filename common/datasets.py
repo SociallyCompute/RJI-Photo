@@ -131,7 +131,7 @@ class AdjustedDataset(datasets.DatasetFolder):
                 # AVA dataset has lowercase, Missourian usable pictures 
                 #     are uppercase, unusable are lowercase
                 if ((path.lower().endswith(('.png', '.jpg')) \
-                    and self.dataset == 'AVA') or (path.endswith('.JPG'))):
+                    and self.dataset == 'ava') or (path.endswith('.JPG'))):
                     
                     item = (path, class_to_idx[fname.split('.')[0]])
                     images.append(item)

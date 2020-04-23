@@ -84,6 +84,7 @@ def run_train_model(model_type, model_container, epochs, output_layer):
     # AVA
     if(model_container.dataset == 'ava'): 
         label_dict = model_container.get_ava_quality_labels()
+        logging.info(label_dict)
 
     # Missourian
     elif(model_container.dataset == 'missourian'): 

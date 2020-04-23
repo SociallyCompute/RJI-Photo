@@ -128,8 +128,8 @@ class ModelBuilder:
         test_loader = torch.utils.data.DataLoader(test_data,
                     sampler=test_sampler, batch_size=self.batch_size)
 
-        logging.info('train_loader size: {}\n'.format(len(train_loader)),
-                     'test_loader size: {}'.format(len(test_loader)))
+        logging.info('train_loader size: {}'.format(len(train_loader)))
+        logging.info('test_loader size: {}'.format(len(test_loader)))
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -309,8 +309,8 @@ class ModelBuilder:
             running_loss = 0.0
             num_correct = 0
             index_progress = 0
-            logging.info('Epoch #{} Running the training of images in the '.format(epoch),
-                         'train_loader of size: {}...'.format(len(train_loader)))
+            logging.info("""Epoch #{} Running the training of images in the 
+                        train_loader of size: {}...""".format(epoch, len(train_loader)))
             
             while index_progress < num_pictures - 1:
                 try:
