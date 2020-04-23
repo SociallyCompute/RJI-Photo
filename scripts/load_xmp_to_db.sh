@@ -5,13 +5,13 @@
 ## resources
 #SBATCH --partition gpu3
 #SBATCH --cpus-per-task=1  # cores per task
-#SBATCH --mem-per-cpu=16G  # memory per core (default is 1GB/core)
-#SBATCH --time 1-23:00     # days-hours:minutes
+#SBATCH --mem-per-cpu=1G   # memory per core (default is 1GB/core)
+#SBATCH --time 1-00:00     # days-hours:minutes
 #SBATCH --account=general-gpu  # investors will replace this (e.g. `rc-gpu`)
 #SBATCH --gres gpu:1
 
 ## labels and outputs
-#SBATCH --job-name=goggins_gpu_test
+#SBATCH --job-name=goggins_test_prj
 #SBATCH --output=results-%j.out  # %j is the unique jobID
 
 ## notifications
@@ -21,6 +21,6 @@
 
 echo "### Starting at: $(date) ###"
 
-python ../background_tasks/fill_db.py
+python ../common/misc.py
 
 echo "### Ending at: $(date) ###"

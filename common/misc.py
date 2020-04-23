@@ -55,7 +55,8 @@ def write_xmp_color_class():
 
     for root, _, files in os.walk(config.MISSOURIAN_IMAGE_PATH, topdown=True):
         for name in files:
-            if not name.endswith('.JPG', '.PNG'):
+            logging.info('name: {}\ntype: {}'.format(name, type(name)))
+            if not name.endswith('.JPG') and not name.endswith('.PNG'):
                 continue
             try:
                 with open(os.path.join(root, name), 'rb') as f:
@@ -107,3 +108,7 @@ def make_db_connection(table_name):
 
     logging.info("Database connection successful")
     return db, r_table
+
+if __name__ == '__main__':
+    logging.basicConfig(filename='fill_db.log', filemode='w', level=logging.DEBUG)
+    write_xmp_color_class()

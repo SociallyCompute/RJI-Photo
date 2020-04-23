@@ -1,9 +1,9 @@
 import sys
 # from ..common import helpers
-from common import misc
+from misc import write_xmp_color_class
 import logging
 
 logging.basicConfig(filename='logs/fill_db.log', 
                     filemode='w', level=logging.DEBUG)
 
-misc.write_xmp_color_class()
+write_xmp_color_class()
