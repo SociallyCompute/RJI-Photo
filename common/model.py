@@ -309,8 +309,8 @@ class ModelBuilder:
             running_loss = 0.0
             num_correct = 0
             index_progress = 0
-            logging.info("""Epoch #{} Running the training of images in the 
-                        train_loader of size: {}...""".format(epoch, len(train_loader)))
+            logging.info('Epoch #{} Running the training of images in the train_loader of size: {}...'.format(
+                epoch, len(train_loader)))
             
             while index_progress < num_pictures - 1:
                 try:
@@ -338,8 +338,8 @@ class ModelBuilder:
                             loss.backward()
                             optimizer.step()
                         except Exception as e:
-                            logging.warning("""Issue calculating loss and optimizing 
-                                with image #{}, error is {}\ndata is\n{}""".format(i, e, data))
+                            logging.exception('Issue calculating loss and optimizing with image #{}, error is {}\ndata is\n{}'.format(
+                                i, e, data))
                             continue
 
                         if i % 2000 == 1999:
