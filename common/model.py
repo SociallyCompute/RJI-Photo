@@ -27,6 +27,8 @@ import sqlalchemy as sqla
 import warnings  
 warnings.filterwarnings('ignore')
 
+sys.path.append(os.path.split(sys.path[0])[0])
+
 from common import config
 from common import datasets
 from common import misc

@@ -1,5 +1,7 @@
+import sys, os
+
+sys.path.append(os.path.split(sys.path[0])[0])
 from common import datasets
-import os
 from common import config
 import logging
 
