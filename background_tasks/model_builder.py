@@ -40,6 +40,7 @@ def vgg16_change_fully_connected_layer(output_layer):
     logging.info('All VGG16 layers frozen')
     network = list(model_active.classifier.children())[:-1]
     network.extend([nn.Linear(4096, output_layer)])
+    network.extend([nn.Softmax()])
     model_active.classifier = nn.Sequential(*network)
     logging.info('Changed VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
     # logging.info('New Layer correctly added to VGG16')
@@ -59,7 +60,11 @@ def resnet_change_fully_connected_layer(output_layer):
     for param in model_active.parameters():
         param.requires_grad = False
     logging.info('All ResNet50 layers frozen')
-    model_active.fc = nn.Linear(2048, output_layer)
+    new_lin = nn.Sequential(
+        nn.Linear(2048, output_layer),
+        nn.Softmax()
+    )
+    model_active.fc = new_lin
     logging.info('Changed ResNet50 Architecture: {}'.format(model_active.fc))
     # logging.info('New Layer correctly added to ResNet50')
 

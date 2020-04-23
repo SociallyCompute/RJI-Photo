@@ -67,7 +67,7 @@ class ModelBuilder:
         self.test_data_samples = None
         self.classification_subject = classification_subject
         
-        self.db, self.photo_table = helpers.make_db_connection('evaluation')
+        self.db, self.photo_table = misc.make_db_connection('evaluation')
 
         if (dataset == 'ava'):
             logging.info('Using AVA Dataset')
@@ -100,10 +100,10 @@ class ModelBuilder:
 
         # load data and apply the transforms on contained pictures
         train_data = datasets.AdjustedDataset(self.image_path, class_dict, 
-                                     self.dataset, transform=_transform)
+                                     self.dataset, self.classification_subject, transform=_transform)
         self.train_data_samples = train_data.samples
         
-        test_data = datasets.AdjustedDataset(self.image_path, class_dict, self.dataset, transform=_transform)
+        test_data = datasets.AdjustedDataset(self.image_path, class_dict, self.dataset, self.classification_subject, transform=_transform)
         self.test_data_samples = test_data.samples
         
         logging.info('Training and Testing Dataset correctly transformed') 
@@ -133,7 +133,7 @@ class ModelBuilder:
 
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-        self.model.to(device)
+        self.model_type.to(device)
         logging.info('ResNet50 is running on {}'.format(device))
         return train_loader, test_loader
 
@@ -144,7 +144,7 @@ class ModelBuilder:
         :rtype: (dict: path->label) dictionary mapping string path to a specific image to int label
         """
         pic_label_dict = {}
-        xmp_db, xmp_table = helpers.make_db_connection('xmp_color_classes')
+        xmp_db, xmp_table = misc.make_db_connection('xmp_color_classes')
 
         xmp_data_SQL = sqla.sql.text("""
         SELECT photo_path, color_class
@@ -184,7 +184,7 @@ class ModelBuilder:
         pic_label_dict = {}
         limit_lines = self.limit_num_pictures
 
-        f = open(self.ava_labels_file, "r")
+        f = open(config.AVA_QUALITY_LABELS_FILE, "r")
         for i, line in enumerate(f):
             if limit_lines:
                 if i >= limit_lines:
@@ -209,7 +209,7 @@ class ModelBuilder:
         pic_label_dict = {}
         limit_lines = self.limit_num_pictures
         try:
-            f = open(self.ava_labels_file, "r")
+            f = open(config.AVA_CONTENT_LABELS_FILE, "r")
             for i, line in enumerate(f):
                 if limit_lines:
                     if i >= limit_lines:
@@ -235,8 +235,9 @@ class ModelBuilder:
         :param num_ratings: (int) number of labels in the set (i.e. 10 for labels 1-10)
         """
         
-        self.model.eval()
+        self.model_type.eval()
         ratings = []
+        num_pictures = len(test_loader)
         index_progress = 0
         logging.info('Running evaluation images in the test_loader of size: '
                      '{}...'.format(len(test_loader)))
@@ -253,7 +254,7 @@ class ModelBuilder:
                     else:
                         labels = torch.LongTensor(labels)
 
-                    output = self.model(data)
+                    output = self.model_type(data)
 
                     # _, preds = torch.max(output.data, 1)
                     ratings = output[0].cpu().tolist()
@@ -274,7 +275,7 @@ class ModelBuilder:
                 logging.info('Ran into error for image #{}: {}\n... '
                              'Moving on.\n'.format(index_progress, e))
                 
-            index_progress += 1
+            index_progress += test_loader.batch_size
             
         logging.info('Finished evaluation of images in the test_loader, the '
                      'results are stored in the photo table in the database')
@@ -291,22 +292,22 @@ class ModelBuilder:
         """
         if(prev_model != 'N/A'):
             try:
-                self.model.load_state_dict(torch.load('../neural_net/models/' + prev_model))
+                self.model_type.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model))
             except Exception:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
 
         criterion = nn.CrossEntropyLoss().cuda() if torch.cuda.is_available() else nn.CrossEntropyLoss()
-        optimizer = optim.SGD(self.model.parameters(), lr=0.01, momentum=0.9)
+        optimizer = optim.SGD(self.model_type.parameters(), lr=0.01, momentum=0.9)
 
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
         training_accuracy = [0 for i in range(epochs)]
+        num_pictures = len(train_loader.dataset)
         
         for epoch in range(epochs):
             running_loss = 0.0
             num_correct = 0
-            
             index_progress = 0
             logging.info('Epoch #{} Running the training of images in the '.format(epoch),
                          'train_loader of size: {}...'.format(len(train_loader)))
@@ -327,7 +328,7 @@ class ModelBuilder:
                                 # max_t2 = 1
                             # logging.info('label for image {} is {}'.format(i, label))
                             optimizer.zero_grad()
-                            output = self.model(data)
+                            output = self.model_type(data)
                             loss = criterion(output, label)
                             running_loss += loss.cpu().item()
                             # _, preds = torch.max(output.data, max_t2)
@@ -337,8 +338,8 @@ class ModelBuilder:
                             loss.backward()
                             optimizer.step()
                         except Exception as e:
-                            logging.warning('Issue calculating loss and optimizing with image ',
-                                            '#{}, error is {}\ndata is\n{}'.format(i, e, data))
+                            logging.warning("""Issue calculating loss and optimizing 
+                                with image #{}, error is {}\ndata is\n{}""".format(i, e, data))
                             continue
 
                         if i % 2000 == 1999:
@@ -346,23 +347,23 @@ class ModelBuilder:
                             
                 except Exception:
                     (data, label) = train_loader
-                    logging.error('Error on epoch #{}, train_loader issue ',
-                                  'with data: {}\nlabel: {}'.format(epoch, data, label))
-                    torch.save(self.model.state_dict(), self.model_name)
+                    logging.error("""Error on epoch #{}, train_loader issue
+                                  with data: {}\nlabel: {}""".format(epoch, data, label))
+                    torch.save(self.model_type.state_dict(), self.model_name)
                     sys.exit(1)
                     
-                index_progress += 1
+                index_progress += train_loader.batch_size
 
-            training_loss[epoch] = running_loss/len(train_loader.dataset)
-            training_accuracy[epoch] = 100 * num_correct/len(train_loader.dataset)
+            training_loss[epoch] = running_loss/num_pictures
+            training_accuracy[epoch] = 100 * num_correct/num_pictures
             logging.info('training loss: {}\ntraining accuracy: {}'.format(
                 training_loss[epoch], training_accuracy[epoch]))
             try:
-                torch.save(self.model.state_dict(), '../neural_net/models/' + self.model_name)
+                torch.save(self.model_type.state_dict(), config.MODEL_STORAGE_PATH + self.model_name)
             except Exception:
                 logging.error('Unable to save model: {}, '.format(self.model_name),
                               'saving backup in root dir and exiting program')
-                torch.save(self.model.state_dict(), self.model_name)
+                torch.save(self.model_type.state_dict(), self.model_name)
                 sys.exit(1)
 
         plt.plot([i for i in range(epochs)], training_accuracy)
