@@ -54,8 +54,9 @@ def write_xmp_color_class():
     """
     db, xmp_table = make_db_connection('xmp_color_classes')
     i = 0
-
+    logging.info('path: {}'.format(config.MISSOURIAN_IMAGE_PATH))
     for root, _, files in os.walk(config.MISSOURIAN_IMAGE_PATH, topdown=True):
+        logging.info('root: {}\nfiles: {}'.format(root, files))
         for name in files:
             logging.info('name: {}\ntype: {}'.format(name, type(name)))
             if not name.endswith('.JPG') and not name.endswith('.PNG'):

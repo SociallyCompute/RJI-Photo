@@ -11,7 +11,7 @@
 #SBATCH --gres gpu:1
 
 ## labels and outputs
-#SBATCH --job-name=goggins_gpu_test
+#SBATCH --job-name=resnet_train
 #SBATCH --output=results-%j.out  # %j is the unique jobID
 
 ## notifications
@@ -27,7 +27,7 @@ module load cudnn/cudnn-7.1.4-cuda-9.0.176
 # Science goes here:
 avapicpath='/storage/hpc/group/augurlabs/images'
 labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
-modelname='Apr23_ava_30ep_MINI256_resnet'
+modelname='Apr26_ava_30ep_MINI256_resnet'
 dataset='ava'
 epochs='30'
 batch='256'
