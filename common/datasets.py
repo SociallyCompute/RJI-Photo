@@ -84,9 +84,10 @@ class AdjustedDataset(datasets.DatasetFolder):
             class_dict: (dict) pairs of (picture, rating)
             transform: (Object) Image processing transformations.
     """
-    def __init__(self, image_path, class_dict, dataset, classification_subject, transform=None):
+    def __init__(self, image_path, class_dict, dataset, classification_subject, device, transform=None):
         self.target_transform = None
         self.classification_subject = classification_subject
+        self.device = device
         self.transform = transform
         self.dataset = dataset
         
@@ -107,10 +108,9 @@ class AdjustedDataset(datasets.DatasetFolder):
         path, target = self.samples[index]
         sample = self.pil_loader(path) #transform Image into Tensor
         if self.transform is not None:
-            sample = self.transform(sample).cuda() if torch.cuda.is_available() else self.transform(sample)
+            sample = self.transform(sample).to(self.device)
         if self.target_transform is not None:
-            target = self.target_transform(target).cuda() if \
-                torch.cuda.is_available() else self.target_transform(target)
+            target = self.target_transform(target).to(self.device)
         return sample, target
 
     

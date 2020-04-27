@@ -159,7 +159,9 @@ else:
                 'Please choose from \'vgg16\' or \'resnet\'\n')
     sys.exit('Invalid Model')
 
-model_container = model.ModelBuilder(model_active, model_name, batch_size, dataset, classification_subject)
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
+model_container = model.ModelBuilder(model_active, model_name, batch_size, dataset, classification_subject, device)
 
 if os.path.isfile('../neural_net/models/' + model_name):
     logging.info('Running Model in Testing Mode')

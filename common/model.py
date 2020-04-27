@@ -44,7 +44,7 @@ class ModelBuilder:
     :param batch_size: (int) batch size, 1 - SGD other is minibatch
     :param dataset: (string) value to identify dataset in usage (ava, missourian)
     """
-    def __init__(self, model_type, model_name, batch_size, dataset, classification_subject):
+    def __init__(self, model_type, model_name, batch_size, dataset, classification_subject, device):
         
         self.model_type = model_type
         self.model_name = model_name
@@ -66,6 +66,8 @@ class ModelBuilder:
         self.train_data_samples = None
         self.test_data_samples = None
         self.classification_subject = classification_subject
+
+        self.device = device
         
         self.db, self.photo_table = misc.make_db_connection('evaluation')
 
@@ -100,10 +102,11 @@ class ModelBuilder:
 
         # load data and apply the transforms on contained pictures
         train_data = datasets.AdjustedDataset(self.image_path, class_dict, 
-                                     self.dataset, self.classification_subject, transform=_transform)
+                                     self.dataset, self.classification_subject, self.device, transform=_transform)
         self.train_data_samples = train_data.samples
         
-        test_data = datasets.AdjustedDataset(self.image_path, class_dict, self.dataset, self.classification_subject, transform=_transform)
+        test_data = datasets.AdjustedDataset(self.image_path, class_dict, 
+                                    self.dataset, self.classification_subject, self.device, transform=_transform)
         self.test_data_samples = test_data.samples
         
         logging.info('Training and Testing Dataset correctly transformed') 
@@ -131,9 +134,9 @@ class ModelBuilder:
         logging.info('train_loader size: {}'.format(len(train_loader)))
         logging.info('test_loader size: {}'.format(len(test_loader)))
 
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-        self.model_type.to(device)
+        self.model_type.to(self.device)
         logging.info('ResNet50 is running on {}'.format(device))
         return train_loader, test_loader
 
@@ -248,11 +251,13 @@ class ModelBuilder:
 
                     photo_path = self.test_data_samples[index_progress][0]
 
-                    if torch.cuda.is_available():
-                        labels = torch.cuda.LongTensor(labels.to('cuda:0'))
-                        data = data.to('cuda:0')
-                    else:
-                        labels = torch.LongTensor(labels)
+                    # if torch.cuda.is_available():
+                    #     labels = torch.cuda.LongTensor(labels.to('cuda:0'))
+                    #     data = data.to('cuda:0')
+                    # else:
+                    #     labels = torch.LongTensor(labels)
+                    labels = torch.LongTensor(labels.to(self.device)).to(self.device)
+                    data = data.to(self.device)
 
                     output = self.model_type(data)
 
@@ -297,7 +302,7 @@ class ModelBuilder:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
 
-        criterion = nn.CrossEntropyLoss().cuda() if torch.cuda.is_available() else nn.CrossEntropyLoss()
+        criterion = nn.CrossEntropyLoss().to(self.device)
         optimizer = optim.SGD(self.model_type.parameters(), lr=0.01, momentum=0.9)
 
         # self.model.train()
@@ -319,12 +324,16 @@ class ModelBuilder:
                             if i > self.limit_num_pictures:
                                 break
                         try:
-                            if torch.cuda.is_available():
-                                label = torch.cuda.LongTensor(label.to('cuda:0'))
-                                data = data.to('cuda:0')
-                                # max_t2 = torch.cuda.LongTensor(1)
-                            else:
-                                label = torch.LongTensor(label)
+                            # if torch.cuda.is_available():
+                            #     label = torch.cuda.LongTensor(label.to('cuda:0'))
+                            #     data = data.to('cuda:0')
+                            #     # max_t2 = torch.cuda.LongTensor(1)
+                            # else:
+                            #     label = torch.LongTensor(label)
+
+                            label = label.to(self.device)
+                            label = torch.LongTensor(label).to(self.device)
+                            data = data.to(self.device)
                                 # max_t2 = 1
                             # logging.info('label for image {} is {}'.format(i, label))
                             optimizer.zero_grad()
