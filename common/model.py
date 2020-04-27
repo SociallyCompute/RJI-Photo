@@ -297,7 +297,7 @@ class ModelBuilder:
         """
         if(prev_model != 'N/A'):
             try:
-                self.model_type.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model))
+                self.model_type.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model)).to(self.device)
             except Exception:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
@@ -332,15 +332,15 @@ class ModelBuilder:
                         logging.info('label is cuda: {}'.format(label.is_cuda))
                         label = label.to(self.device)
                         logging.info('label is cuda after: {}'.format(label.is_cuda))
-                        label = torch.LongTensor(label).to(self.device)
+                        label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
                         logging.info('label is cuda LongTensor: {}'.format(label.is_cuda))
-                        data = data.to(self.device)
-                        logging.info('data is cuda after: {}'.format(data.is_cuda))
-                        logging.info('model is cuda: {}'.format(self.model_type.device))
+                        # data = data.to(self.device)
+                        # logging.info('data is cuda after: {}'.format(data.is_cuda))
+                        # logging.info('model is cuda: {}'.format(self.model_type.to_cuda))
                             # max_t2 = 1
                         # logging.info('label for image {} is {}'.format(i, label))
                         optimizer.zero_grad()
-                        output = self.model_type(data)
+                        output = self.model_type(data).to(self.device)
                         loss = criterion(output, label)
                         running_loss += loss.cpu().item()
                         # _, preds = torch.max(output.data, max_t2)
