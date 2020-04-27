@@ -23,6 +23,7 @@ from pathlib2 import Path
 sys.path.append(os.path.split(sys.path[0])[0])
 
 from common import model
+from common import config
 
 import warnings  
 warnings.filterwarnings('ignore')
@@ -163,7 +164,7 @@ device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 model_container = model.ModelBuilder(model_active, model_name, batch_size, dataset, classification_subject, device)
 
-if os.path.isfile('../neural_net/models/' + model_name):
+if os.path.isfile(config.MODEL_STORAGE_PATH + model_name):
     logging.info('Running Model in Testing Mode')
     run_test_model(model_type, model_container, output_layer)
 else:

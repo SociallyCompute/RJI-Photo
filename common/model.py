@@ -137,7 +137,7 @@ class ModelBuilder:
         # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
         self.model_type.to(self.device)
-        logging.info('ResNet50 is running on {}'.format(device))
+        logging.info('ResNet50 is running on {}'.format(self.device))
         return train_loader, test_loader
 
     
@@ -313,55 +313,57 @@ class ModelBuilder:
         for epoch in range(epochs):
             running_loss = 0.0
             num_correct = 0
-            index_progress = 0
             logging.info('Epoch #{} Running the training of images in the train_loader of size: {}...'.format(
                 epoch, len(train_loader)))
             
-            while index_progress < num_pictures - 1:
-                try:
-                    for i, (data, label) in enumerate(train_loader,0):
-                        if self.limit_num_pictures:
-                            if i > self.limit_num_pictures:
-                                break
-                        try:
-                            # if torch.cuda.is_available():
-                            #     label = torch.cuda.LongTensor(label.to('cuda:0'))
-                            #     data = data.to('cuda:0')
-                            #     # max_t2 = torch.cuda.LongTensor(1)
-                            # else:
-                            #     label = torch.LongTensor(label)
+            try:
+                for i, (data, label) in enumerate(train_loader,0):
+                    if self.limit_num_pictures:
+                        if i > self.limit_num_pictures:
+                            break
+                    try:
+                        # if torch.cuda.is_available():
+                        #     label = torch.cuda.LongTensor(label.to('cuda:0'))
+                        #     data = data.to('cuda:0')
+                        #     # max_t2 = torch.cuda.LongTensor(1)
+                        # else:
+                        #     label = torch.LongTensor(label)
+                        logging.info('data is cuda: {}'.format(data.is_cuda))
+                        logging.info('label is cuda: {}'.format(label.is_cuda))
+                        label = label.to(self.device)
+                        logging.info('label is cuda after: {}'.format(label.is_cuda))
+                        label = torch.LongTensor(label).to(self.device)
+                        logging.info('label is cuda LongTensor: {}'.format(label.is_cuda))
+                        data = data.to(self.device)
+                        logging.info('data is cuda after: {}'.format(data.is_cuda))
+                        logging.info('model is cuda: {}'.format(self.model_type.device))
+                            # max_t2 = 1
+                        # logging.info('label for image {} is {}'.format(i, label))
+                        optimizer.zero_grad()
+                        output = self.model_type(data)
+                        loss = criterion(output, label)
+                        running_loss += loss.cpu().item()
+                        # _, preds = torch.max(output.data, max_t2)
+                        max_vals = torch.max(output.data).long()
+                        preds = torch.argmax(output.data).long()
+                        num_correct += (preds == label).cpu().sum().item()
+                        loss.backward()
+                        optimizer.step()
+                    except Exception as e:
+                        logging.exception('Issue calculating loss and optimizing with image #{}, error is {}\ndata is\n{}'.format(
+                            i, e, data))
+                        continue
 
-                            label = label.to(self.device)
-                            label = torch.LongTensor(label).to(self.device)
-                            data = data.to(self.device)
-                                # max_t2 = 1
-                            # logging.info('label for image {} is {}'.format(i, label))
-                            optimizer.zero_grad()
-                            output = self.model_type(data)
-                            loss = criterion(output, label)
-                            running_loss += loss.cpu().item()
-                            # _, preds = torch.max(output.data, max_t2)
-                            max_vals = torch.max(output.data).long()
-                            preds = torch.argmax(output.data).long()
-                            num_correct += (preds == label).cpu().sum().item()
-                            loss.backward()
-                            optimizer.step()
-                        except Exception as e:
-                            logging.exception('Issue calculating loss and optimizing with image #{}, error is {}\ndata is\n{}'.format(
-                                i, e, data))
-                            continue
-
-                        if i % 2000 == 1999:
-                            running_loss = 0
-                            
-                except Exception:
-                    (data, label) = train_loader
-                    logging.error("""Error on epoch #{}, train_loader issue
-                                  with data: {}\nlabel: {}""".format(epoch, data, label))
-                    torch.save(self.model_type.state_dict(), self.model_name)
-                    sys.exit(1)
+                    if i % 2000 == 1999:
+                        running_loss = 0
+                        
+            except Exception:
+                (data, label) = train_loader
+                logging.error("""Error on epoch #{}, train_loader issue
+                                with data: {}\nlabel: {}""".format(epoch, data, label))
+                torch.save(self.model_type.state_dict(), self.model_name)
+                sys.exit(1)
                     
-                index_progress += train_loader.batch_size
 
             training_loss[epoch] = running_loss/num_pictures
             training_accuracy[epoch] = 100 * num_correct/num_pictures
