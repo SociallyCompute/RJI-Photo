@@ -101,7 +101,7 @@ def make_db_connection(table_name):
     logging.info("Connecting to database: {}".format(DB_STR))
 
     dbschema = 'rji'
-    db = s.create_engine(DB_STR, poolclass=s.pool.NullPool,
+    db = s.create_engine(DB_STR, poolclass=s.pool.NullPool, pool_pre_ping=True,
         connect_args={'options': '-csearch_path={}'.format(dbschema)})
     metadata = MetaData()
     metadata.reflect(db, only=[table_name])

@@ -29,7 +29,7 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def vgg16_change_fully_connected_layer(output_layer): 
+def vgg16_change_fully_connected_layer(output_layer, device): 
     """ Change fully connected layer for vgg16 and apply a mapping from 4096->output_layer
     
     :param output_layer: (int) number of output layers on final fully connected layer
@@ -55,7 +55,7 @@ resnet_change_fully_connected_layer
     Comments:
         Change fully connected layer for resnet and apply a mapping from 2048->output_layer
 """
-def resnet_change_fully_connected_layer(output_layer): 
+def resnet_change_fully_connected_layer(output_layer, device): 
     logging.info('Initial ResNet50 final layer Architecture: {}'.format(model_active.fc))
     model_active.fc.out_features = output_layer
     for param in model_active.parameters():
@@ -81,7 +81,7 @@ run_train_model
     Comments:
         Basic run function for training models
 """
-def run_train_model(model_type, model_container, epochs, output_layer):
+def run_train_model(model_type, model_container, epochs, output_layer, device):
     # AVA
     if(model_container.dataset == 'ava'): 
         label_dict = model_container.get_ava_quality_labels()
@@ -102,14 +102,14 @@ def run_train_model(model_type, model_container, epochs, output_layer):
     train, _ = model_container.build_dataloaders(label_dict)
 
     if model_type == "vgg16":
-        vgg16_change_fully_connected_layer(output_layer)
+        vgg16_change_fully_connected_layer(output_layer, device)
     else:
-        resnet_change_fully_connected_layer(output_layer)
+        resnet_change_fully_connected_layer(output_layer, device)
 
     model_container.train(epochs, train, 'N/A')
 
 
-def run_test_model(model_type, model_container, output_layer):
+def run_test_model(model_type, model_container, output_layer, device):
     """ Test models
     
     :param model_type: (string) identify which type of model is being run
@@ -121,9 +121,9 @@ def run_test_model(model_type, model_container, output_layer):
     label_dict = model_container.get_file_color_class()
     _, test = model_container.build_dataloaders(label_dict)
     if model_type == 'vgg16':
-        vgg16_change_fully_connected_layer(output_layer)
+        vgg16_change_fully_connected_layer(output_layer, device)
     else:
-        resnet_change_fully_connected_layer(output_layer)
+        resnet_change_fully_connected_layer(output_layer, device)
 
     model_container.test_data_function(test, output_layer)
 
@@ -151,25 +151,25 @@ else:
                 'does not exist, please choose from \'quality\' or \'content\'\n')
     sys.exit(1)
 
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
+
 if model_type == 'vgg16':
-    model_active = models.vgg16(pretrained=True).cuda() if torch.cuda.is_avaliable() else models.vgg16(pretrained=True)
+    model_active = models.vgg16(pretrained=True).to(device)
 elif model_type == 'resnet':
-    model_active = models.resnet50(pretrained=True).cuda() if torch.cuda.is_available() else models.resnet50(pretrained=True)
+    model_active = models.resnet50(pretrained=True).to(device)
 else:
     logging.info('Invalid model requested: {}. '.format(model_active),
                 'Please choose from \'vgg16\' or \'resnet\'\n')
     sys.exit('Invalid Model')
 
-device = "cuda:0" if torch.cuda.is_available() else "cpu"
-
 model_container = model.ModelBuilder(model_active, model_name, batch_size, dataset, classification_subject, device)
 
 if os.path.isfile(config.MODEL_STORAGE_PATH + model_name):
     logging.info('Running Model in Testing Mode')
-    run_test_model(model_type, model_container, output_layer)
+    run_test_model(model_type, model_container, output_layer, device)
 else:
     logging.info('Running Model in Training Mode')
-    run_train_model(model_type, model_container, epochs, output_layer)
+    run_train_model(model_type, model_container, epochs, output_layer, device)
     
 
 

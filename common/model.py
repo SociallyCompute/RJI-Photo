@@ -230,6 +230,15 @@ class ModelBuilder:
             logging.error('Unable to open label file, exiting program')
             sys.exit(1)
 
+    def to_device(self, data):
+        """Switch data to model device
+
+        :param data: ((list, tuple), Tensor, or nn.Layer) data to be converted to specified device
+        """
+        if isinstance(data, (list,tuple)):
+            return [self.to_device(x) for x in data]
+        return data.to(self.device, non_blocking=True)
+
 
     def evaluate(self, test_loader, num_ratings):
         """ Evaluate the testing set and save them to the database
@@ -238,6 +247,7 @@ class ModelBuilder:
         :param num_ratings: (int) number of labels in the set (i.e. 10 for labels 1-10)
         """
         
+        self.to_device(self.model_type)
         self.model_type.eval()
         ratings = []
         num_pictures = len(test_loader)
@@ -251,11 +261,6 @@ class ModelBuilder:
 
                     photo_path = self.test_data_samples[index_progress][0]
 
-                    # if torch.cuda.is_available():
-                    #     labels = torch.cuda.LongTensor(labels.to('cuda:0'))
-                    #     data = data.to('cuda:0')
-                    # else:
-                    #     labels = torch.LongTensor(labels)
                     labels = torch.LongTensor(labels.to(self.device)).to(self.device)
                     data = data.to(self.device)
 
@@ -302,6 +307,8 @@ class ModelBuilder:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
 
+        self.to_device(self.model_type)
+
         criterion = nn.CrossEntropyLoss().to(self.device)
         optimizer = optim.SGD(self.model_type.parameters(), lr=0.01, momentum=0.9)
 
@@ -322,24 +329,14 @@ class ModelBuilder:
                         if i > self.limit_num_pictures:
                             break
                     try:
-                        # if torch.cuda.is_available():
-                        #     label = torch.cuda.LongTensor(label.to('cuda:0'))
-                        #     data = data.to('cuda:0')
-                        #     # max_t2 = torch.cuda.LongTensor(1)
-                        # else:
-                        #     label = torch.LongTensor(label)
                         logging.info('data is cuda: {}'.format(data.is_cuda))
                         logging.info('label is cuda: {}'.format(label.is_cuda))
                         label = label.to(self.device)
                         logging.info('label is cuda after: {}'.format(label.is_cuda))
                         label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
                         logging.info('label is cuda LongTensor: {}'.format(label.is_cuda))
-                        # data = data.to(self.device)
-                        # logging.info('data is cuda after: {}'.format(data.is_cuda))
-                        # logging.info('model is cuda: {}'.format(self.model_type.to_cuda))
-                            # max_t2 = 1
-                        # logging.info('label for image {} is {}'.format(i, label))
                         optimizer.zero_grad()
+                        print(self.model_type)
                         output = self.model_type(data).to(self.device)
                         loss = criterion(output, label)
                         running_loss += loss.cpu().item()
