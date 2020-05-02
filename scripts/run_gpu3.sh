@@ -27,10 +27,10 @@ module load cudnn/cudnn-7.1.4-cuda-9.0.176
 # Science goes here:
 avapicpath='/storage/hpc/group/augurlabs/images'
 labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
-modelname='May1_ava_30ep_MINI256_resnet'
+modelname='May2_ava_30ep_MINI32_resnet'
 dataset='ava'
 epochs='30'
-batch='256'
+batch='32'
 architecture='resnet'
 classification='quality'
 

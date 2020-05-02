@@ -309,8 +309,11 @@ class ModelBuilder:
 
         self.to_device(self.model_type)
 
+        learning_rate = 0.01
+        mo = 0.9
+
         criterion = nn.CrossEntropyLoss().to(self.device)
-        optimizer = optim.SGD(self.model_type.parameters(), lr=0.01, momentum=0.9)
+        optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo)
 
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
@@ -329,12 +332,8 @@ class ModelBuilder:
                         if i > self.limit_num_pictures:
                             break
                     try:
-                        logging.info('data is cuda: {}'.format(data.is_cuda))
-                        logging.info('label is cuda: {}'.format(label.is_cuda))
                         label = label.to(self.device)
-                        logging.info('label is cuda after: {}'.format(label.is_cuda))
                         label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
-                        logging.info('label is cuda LongTensor: {}'.format(label.is_cuda))
                         optimizer.zero_grad()
                         print(self.model_type)
                         output = self.model_type(data).to(self.device)
@@ -342,8 +341,10 @@ class ModelBuilder:
                         running_loss += loss.cpu().item()
                         # _, preds = torch.max(output.data, max_t2)
                         max_vals = torch.max(output.data).long()
-                        preds = torch.argmax(output.data).long()
-                        num_correct += (preds == label).cpu().sum().item()
+                        prediction = torch.argmax(output.data).long()
+                        logging.info('prediction: {}\nlabel: {}'.format(prediction, label))
+                        num_correct += (prediction == label).cpu().sum().item()
+                        logging.info('num_correct: {}'.format(num_correct))
                         loss.backward()
                         optimizer.step()
                     except Exception as e:
@@ -364,6 +365,18 @@ class ModelBuilder:
 
             training_loss[epoch] = running_loss/num_pictures
             training_accuracy[epoch] = 100 * num_correct/num_pictures
+
+            db_tuple = {}
+            db, train_table = misc.make_db_connection('training')
+            db_tuple['te_dataset'] = self.dataset
+            db_tuple['te_learning_rate'] = learning_rate
+            db_tuple['te_momentum'] = mo
+            db_tuple['te_accuracy'] = training_accuracy[epoch]
+            db_tuple['te_model'] = self.model_type
+            db_tuple['te_epoch'] = epoch
+            db_tuple['te_batch_size'] = self.batch_size
+            result = db.execute(train_table.insert().values(db_tuple))
+
             logging.info('training loss: {}\ntraining accuracy: {}'.format(
                 training_loss[epoch], training_accuracy[epoch]))
             try:
