@@ -342,7 +342,7 @@ class ModelBuilder:
                         # _, preds = torch.max(output.data, max_t2)
                         max_vals = torch.max(output.data).long()
                         prediction = torch.argmax(output.data).long()
-                        logging.info('prediction: {}\nlabel: {}'.format(prediction, label))
+                        logging.info('output.data: {}\nprediction: {}\nlabel: {}'.format(output.data, prediction, label))
                         num_correct += (prediction == label).cpu().sum().item()
                         logging.info('num_correct: {}'.format(num_correct))
                         loss.backward()
