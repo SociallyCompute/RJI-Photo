@@ -1,6 +1,3 @@
-"""
-SCRIPT IMPORTS
-"""
 import numpy as np
 import math, pandas
 import matplotlib.image as mpimg
@@ -17,35 +14,36 @@ from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
 
 import logging
-import sys
+import sys, os
 import os.path
 import ntpath
 from os import path
 from pathlib2 import Path
-import model_class
+
+sys.path.append(os.path.split(sys.path[0])[0])
+
+from common import model
+from common import config
 
 import warnings  
 warnings.filterwarnings('ignore')
 
-"""
-vgg16_change_fully_connected_layer
-    Input:
-        output_layer: (int) number of output layers on final fully connected layer
-    Output:
-        N/A
-    Comments:
-        Change fully connected layer for vgg16 and apply a mapping from 4096->output_layer
-"""
-def vgg16_change_fully_connected_layer(output_layer): 
-    logging.info('Initial VGG16 Architecture: {}'.format(list(model.classifier.children())))
-    model.classifier[6].out_features = output_layer
-    for param in model.parameters():
+
+def vgg16_change_fully_connected_layer(output_layer, device): 
+    """ Change fully connected layer for vgg16 and apply a mapping from 4096->output_layer
+    
+    :param output_layer: (int) number of output layers on final fully connected layer
+    """
+    logging.info('Initial VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
+    model_active.classifier[6].out_features = output_layer
+    for param in model_active.parameters():
         param.requires_grad = False
     logging.info('All VGG16 layers frozen')
-    network = list(model.classifier.children())[:-1]
+    network = list(model_active.classifier.children())[:-1]
     network.extend([nn.Linear(4096, output_layer)])
-    model.classifier = nn.Sequential(*network)
-    logging.info('Changed VGG16 Architecture: {}'.format(list(model.classifier.children())))
+    network.extend([nn.Softmax()])
+    model_active.classifier = nn.Sequential(*network)
+    logging.info('Changed VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
     # logging.info('New Layer correctly added to VGG16')
 
 """
@@ -57,14 +55,18 @@ resnet_change_fully_connected_layer
     Comments:
         Change fully connected layer for resnet and apply a mapping from 2048->output_layer
 """
-def resnet_change_fully_connected_layer(output_layer): 
-    logging.info('Initial ResNet50 final layer Architecture: {}'.format(model.fc))
-    model.fc.out_features = output_layer
-    for param in model.parameters():
+def resnet_change_fully_connected_layer(output_layer, device): 
+    logging.info('Initial ResNet50 final layer Architecture: {}'.format(model_active.fc))
+    model_active.fc.out_features = output_layer
+    for param in model_active.parameters():
         param.requires_grad = False
     logging.info('All ResNet50 layers frozen')
-    model.fc = nn.Linear(2048, output_layer)
-    logging.info('Changed ResNet50 Architecture: {}'.format(model.fc))
+    new_lin = nn.Sequential(
+        nn.Linear(2048, output_layer),
+        nn.Softmax()
+    )
+    model_active.fc = new_lin
+    logging.info('Changed ResNet50 Architecture: {}'.format(model_active.fc))
     # logging.info('New Layer correctly added to ResNet50')
 
 """
@@ -79,16 +81,17 @@ run_train_model
     Comments:
         Basic run function for training models
 """
-def run_train_model(model_type, model_container, epochs, output_layer):
-    logging.info('Begin running')
-    label_dict = {}
+def run_train_model(model_type, model_container, epochs, output_layer, device):
+    # AVA
+    if(model_container.dataset == 'ava'): 
+        label_dict = model_container.get_ava_quality_labels()
+        # logging.info(label_dict)
 
-    if(model_container.dataset == 'AVA' or model_container.dataset == '1'): #AVA
-        label_dict = model_container.get_ava_labels()
-        logging.info('Successfully loaded AVA labels')
-    elif(model_container.dataset == 'Missourian' or model_container.dataset == '2'): #Missourian
-        if(not path.exists('Mar13_labeled_images.txt') or not path.exists('Mar13_unlabeled_images.txt')):
-            logging.info('labeled_images.txt and unlabeled_images.txt not found')
+    # Missourian
+    elif(model_container.dataset == 'missourian'): 
+        if(not path.exists('Mar13_labeled_images.txt') or \
+           not path.exists('Mar13_unlabeled_images.txt')):
+            logging.info('labeled_images.txt or unlabeled_images.txt not found')
             model_container.get_xmp_color_class()
         else:
             logging.info('labeled_images.txt and unlabeled_images.txt found')
@@ -97,64 +100,79 @@ def run_train_model(model_type, model_container, epochs, output_layer):
         label_dict = model_container.get_classifier_labels()
 
     train, _ = model_container.build_dataloaders(label_dict)
-    
+
     if model_type == "vgg16":
-        vgg16_change_fully_connected_layer(output_layer)
+        vgg16_change_fully_connected_layer(output_layer, device)
     else:
-        resnet_change_fully_connected_layer(output_layer)
+        resnet_change_fully_connected_layer(output_layer, device)
 
-    model_container.train_data_function(epochs, train, 'N/A')
+    model_container.train(epochs, train, 'N/A')
 
-"""
-run_train_model
-    Input:
-        model_type: (string) identify which type of model is being run
-        model_container: (ModelBuilder) custom ModelBuilder base class
-        output_layer: (int) number of output layers on final fully connected layer
-    Output:
-        N/A
-    Comments:
-        Basic run function for testing models
-"""
-def run_test_model(model_type, model_container, output_layer):
+
+def run_test_model(model_type, model_container, output_layer, device):
+    """ Test models
+    
+    :param model_type: (string) identify which type of model is being run
+    :param model_container: (ModelBuilder) custom ModelBuilder base class
+    :param output_layer: (int) number of output layers on final fully connected layer
+    """
     logging.info('Begin running')
     label_dict = {}
     label_dict = model_container.get_file_color_class()
     _, test = model_container.build_dataloaders(label_dict)
     if model_type == 'vgg16':
-        vgg16_change_fully_connected_layer(output_layer)
+        vgg16_change_fully_connected_layer(output_layer, device)
     else:
-        resnet_change_fully_connected_layer(output_layer)
-    
+        resnet_change_fully_connected_layer(output_layer, device)
+
     model_container.test_data_function(test, output_layer)
 
 model_name = sys.argv[1]
 dataset = sys.argv[2]
 epochs = int(sys.argv[3])
 batch_size = int(sys.argv[4])
-model_type = sys.argv[5]
 
-logging.basicConfig(filename='logs/' + model_name + '.log', filemode='w', level=logging.DEBUG)
+# 'vgg16' or 'resnet'
+model_type = sys.argv[5] 
+
+# 'content' or 'quality'
+classification_subject = sys.argv[6]
+
+logging.basicConfig(filename='logs/' + model_name + '.log', 
+                    filemode='w', level=logging.DEBUG)
 model_name = model_name + '.pt'
 
-if dataset == 'AVA' or dataset == '1' or dataset == 'Missourian' or dataset == '2':
+if classification_subject == 'quality':
     output_layer = 10
-else:
+elif classification_subject == 'content':
     output_layer = 67
+else:
+    logging.info('The classification subject you specified ({}) '.format(classification_subject),
+                'does not exist, please choose from \'quality\' or \'content\'\n')
+    sys.exit(1)
+
+device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
 if model_type == 'vgg16':
-    model = models.vgg16(pretrained=True)
+    model_active = models.vgg16(pretrained=True).to(device)
 elif model_type == 'resnet':
-    model = models.resnet50(pretrained=True)
+    model_active = models.resnet50(pretrained=True).to(device)
 else:
-    logging.info('Invalid model requested: {}'.format(model))
+    logging.info('Invalid model requested: {}. '.format(model_active),
+                'Please choose from \'vgg16\' or \'resnet\'\n')
     sys.exit('Invalid Model')
 
-model_container = model_class.ModelBuilder(model, model_name, batch_size, dataset)
+model_container = model.ModelBuilder(model_active, model_name, model_type, batch_size, dataset, classification_subject, device)
 
-if os.path.isfile('../neural_net/models/' + model_name):
+if os.path.isfile(config.MODEL_STORAGE_PATH + model_name):
     logging.info('Running Model in Testing Mode')
-    run_test_model(model_type, model_container, output_layer)
+    run_test_model(model_type, model_container, output_layer, device)
 else:
     logging.info('Running Model in Training Mode')
-    run_train_model(model_type, model_container, epochs, output_layer)
+    run_train_model(model_type, model_container, epochs, output_layer, device)
+    
+
+
+
+
+
