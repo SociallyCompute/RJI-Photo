@@ -25,14 +25,12 @@ echo "### Starting at: $(date) ###"
 module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
 # Science goes here:
-avapicpath='/storage/hpc/group/augurlabs/images'
-labelpath='/storage/hpc/group/augurlabs/ava/AVA.txt'
-modelname='May2_ava_30ep_MINI32_resnet'
+modelname='May4_ava_30ep_MINI32_resnet'
 dataset='ava'
 epochs='30'
 batch='32'
 architecture='resnet'
-classification='quality'
+classification='content'
 
 python ../background_tasks/model_builder.py $modelname $dataset $epochs $batch $architecture $classification
 

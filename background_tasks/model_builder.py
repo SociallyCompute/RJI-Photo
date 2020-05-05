@@ -85,7 +85,7 @@ def run_train_model(model_type, model_container, epochs, output_layer, device):
     # AVA
     if(model_container.dataset == 'ava'): 
         label_dict = model_container.get_ava_quality_labels()
-        logging.info(label_dict)
+        # logging.info(label_dict)
 
     # Missourian
     elif(model_container.dataset == 'missourian'): 
@@ -162,7 +162,7 @@ else:
                 'Please choose from \'vgg16\' or \'resnet\'\n')
     sys.exit('Invalid Model')
 
-model_container = model.ModelBuilder(model_active, model_name, batch_size, dataset, classification_subject, device)
+model_container = model.ModelBuilder(model_active, model_name, model_type, batch_size, dataset, classification_subject, device)
 
 if os.path.isfile(config.MODEL_STORAGE_PATH + model_name):
     logging.info('Running Model in Testing Mode')

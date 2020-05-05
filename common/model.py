@@ -44,10 +44,11 @@ class ModelBuilder:
     :param batch_size: (int) batch size, 1 - SGD other is minibatch
     :param dataset: (string) value to identify dataset in usage (ava, missourian)
     """
-    def __init__(self, model_type, model_name, batch_size, dataset, classification_subject, device):
+    def __init__(self, model_type, model_name, model_type_name, batch_size, dataset, classification_subject, device):
         
         self.model_type = model_type
         self.model_name = model_name
+        self.model_type_name = model_type_name
         self.batch_size = batch_size
         self.dataset = dataset
         
@@ -340,11 +341,7 @@ class ModelBuilder:
                         loss = criterion(output, label)
                         running_loss += loss.cpu().item()
                         max_vals, prediction = torch.max(output.data, 1)
-                        # max_vals = torch.max(output.data).long()
-                        # prediction = torch.argmax(output.data).long()
-                        # logging.info('output.data: {}\nprediction: {}\nlabel: {}'.format(output.data, prediction, label))
                         num_correct += (prediction == label).cpu().sum().item()
-                        # logging.info('num_correct: {}'.format(num_correct))
                         loss.backward()
                         optimizer.step()
                     except Exception as e:
@@ -372,9 +369,10 @@ class ModelBuilder:
             db_tuple['te_learning_rate'] = learning_rate
             db_tuple['te_momentum'] = mo
             db_tuple['te_accuracy'] = training_accuracy[epoch]
-            db_tuple['te_model'] = self.model_type
+            db_tuple['te_model'] = self.model_type_name
             db_tuple['te_epoch'] = epoch
             db_tuple['te_batch_size'] = self.batch_size
+            db_tuple['te_optimizer'] = 'sgd'
             result = db.execute(train_table.insert().values(db_tuple))
 
             logging.info('training loss: {}\ntraining accuracy: {}'.format(
