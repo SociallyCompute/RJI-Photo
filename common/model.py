@@ -333,11 +333,14 @@ class ModelBuilder:
                         if i > self.limit_num_pictures:
                             break
                     try:
-                        label = label.to(self.device)
-                        label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
+                        # label = label.to(self.device)
+                        # label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
+                        labels = torch.LongTensor(labels.to(self.device)).to(self.device)
+                        data = data.to(self.device)
+
                         optimizer.zero_grad()
-                        print(self.model_type)
-                        output = self.model_type(data).to(self.device)
+                        # print(self.model_type)
+                        output = self.model_type(data)#.to(self.device)
                         loss = criterion(output, label)
                         running_loss += loss.cpu().item()
                         max_vals, prediction = torch.max(output.data, 1)

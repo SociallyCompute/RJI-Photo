@@ -108,9 +108,9 @@ class AdjustedDataset(datasets.DatasetFolder):
         path, target = self.samples[index]
         sample = self.pil_loader(path) #transform Image into Tensor
         if self.transform is not None:
-            sample = self.transform(sample).to(self.device)
+            sample = self.transform(sample)#.to(self.device)
         if self.target_transform is not None:
-            target = self.target_transform(target).to(self.device)
+            target = self.target_transform(target)#.to(self.device)
         return sample, target
 
     

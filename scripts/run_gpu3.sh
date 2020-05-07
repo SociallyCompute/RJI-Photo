@@ -5,7 +5,7 @@
 ## resources
 #SBATCH --partition gpu3
 #SBATCH --cpus-per-task=1  # cores per task
-#SBATCH --mem-per-cpu=32G  # memory per core (default is 1GB/core)
+#SBATCH --mem-per-cpu=16G  # memory per core (default is 1GB/core)
 #SBATCH --time 1-23:00     # days-hours:minutes
 #SBATCH --account=general-gpu  # investors will replace this (e.g. `rc-gpu`)
 #SBATCH --gres gpu:1
