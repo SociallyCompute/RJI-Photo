@@ -342,7 +342,12 @@ class ModelBuilder:
 
                         # print(self.model_type)
                         output = self.model_type(data).to(self.device) #run model and get output
+                        logging.info('output shape: {}'.format(output.size()))
+                        logging.info('labels shape: {}'.format(labels.size()))
+                        logging.info('output results: {}'.format(output))
+                        logging.info('labels results: {}'.format(labels))
                         loss = criterion(output, labels) #calculate CrossEntropyLoss given output and labels
+                        logging.info('loss calc: {}'.format(loss))
                         optimizer.zero_grad() #zero all gradients in fully connected layer
                         loss.backward() #compute new gradients
                         optimizer.step() #update gradients
@@ -394,12 +399,14 @@ class ModelBuilder:
                 sys.exit(1)
 
         #plot for all epochs
+        plt.figure(0)
         plt.plot([i for i in range(epochs)], training_accuracy)
         plt.xlabel('epochs')
         plt.ylabel('accuracy')
         plt.title('Training Model Accuracy')
         plt.savefig('graphs/Train_Accuracy_' + self.model_name[:-3] + '.png')
 
+        plt.figure(1)
         plt.plot([i for i in range(epochs)], training_loss)
         plt.xlabel('epochs')
         plt.ylabel('loss')
