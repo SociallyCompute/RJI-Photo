@@ -110,8 +110,8 @@ class ModelBuilder:
                                     self.dataset, self.classification_subject, self.device, transform=_transform)
         self.test_data_samples = test_data.samples
         
-        logging.info('Training and Testing Dataset correctly transformed') 
-        logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
+        # logging.info('Training and Testing Dataset correctly transformed') 
+        # logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
         
         num_pictures = len(train_data)
         indices = list(range(num_pictures))
@@ -200,7 +200,7 @@ class ModelBuilder:
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-        logging.info('label dictionary completed')
+        # logging.info('label dictionary completed')
         return pic_label_dict
 
     
@@ -217,7 +217,7 @@ class ModelBuilder:
             for i, line in enumerate(f):
                 if limit_lines:
                     if i >= limit_lines:
-                        logging.info('Reached the developer specified line limit')
+                        # logging.info('Reached the developer specified line limit')
                         break
                 line_array = line.split()
                 picture_name = line_array[1]
@@ -225,7 +225,7 @@ class ModelBuilder:
                 for i in range(0, len(classifications)): 
                     classifications[i] = int(classifications[i])
                 pic_label_dict[picture_name] = classifications
-            logging.info('label dictionary completed')
+            # logging.info('label dictionary completed')
             return pic_label_dict
         except OSError:
             logging.error('Unable to open label file, exiting program')
@@ -253,8 +253,8 @@ class ModelBuilder:
         ratings = []
         num_pictures = len(test_loader)
         index_progress = 0
-        logging.info('Running evaluation images in the test_loader of size: '
-                     '{}...'.format(len(test_loader)))
+        # logging.info('Running evaluation images in the test_loader of size: '
+        #              '{}...'.format(len(test_loader)))
 
         while index_progress < num_pictures - 1:
             try:
@@ -288,8 +288,8 @@ class ModelBuilder:
                 
             index_progress += test_loader.batch_size
             
-        logging.info('Finished evaluation of images in the test_loader, the '
-                     'results are stored in the photo table in the database')
+        # logging.info('Finished evaluation of images in the test_loader, the '
+        #              'results are stored in the photo table in the database')
 
 
     def train(self, epochs, train_loader, prev_model):
@@ -301,6 +301,7 @@ class ModelBuilder:
             containing the testing images
         :param prev_model:    
         """
+        #check if this is 
         if(prev_model != 'N/A'):
             try:
                 self.model_type.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model)).to(self.device)
@@ -308,49 +309,62 @@ class ModelBuilder:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
 
-        self.to_device(self.model_type)
-
-        learning_rate = 0.01
+        #TODO
+        #need to move these hyperparameters to be changed via the bash scripts
+        learning_rate = 0.1
         mo = 0.9
 
-        criterion = nn.CrossEntropyLoss().to(self.device)
-        optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo)
+        self.model_type.train() #set model to training mode
+        self.to_device(self.model_type) #put model on GPU
+        criterion = nn.CrossEntropyLoss() #declare after all params are on device
+        optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo) #declare after all params are on device
 
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
         training_accuracy = [0 for i in range(epochs)]
         num_pictures = len(train_loader.dataset)
+        logging.info('batches: {} num_pictures: {}'.format(len(train_loader), num_pictures))
         
         for epoch in range(epochs):
             running_loss = 0.0
             num_correct = 0
-            logging.info('Epoch #{} Running the training of images in the train_loader of size: {}...'.format(
-                epoch, len(train_loader)))
+            # logging.info("""Epoch #{} Running the training of images in the train_loader 
+            #                 of size: {}...""".format(epoch, len(train_loader)))
             
             try:
-                for i, (data, label) in enumerate(train_loader,0):
+                for i, (data, labels) in enumerate(train_loader,0):
                     if self.limit_num_pictures:
                         if i > self.limit_num_pictures:
                             break
                     try:
-                        label = label.to(self.device)
-                        label = torch.cuda.LongTensor(label) if torch.cuda.is_available() else torch.LongTensor(label)
-                        optimizer.zero_grad()
-                        print(self.model_type)
-                        output = self.model_type(data).to(self.device)
-                        loss = criterion(output, label)
-                        running_loss += loss.cpu().item()
-                        max_vals, prediction = torch.max(output.data, 1)
-                        num_correct += (prediction == label).cpu().sum().item()
-                        loss.backward()
-                        optimizer.step()
+                        labels = labels.to(self.device)
+                        labels = torch.cuda.LongTensor(labels) if torch.cuda.is_available() else torch.LongTensor(labels)
+                        data = data.to(self.device)
+
+                        # print(self.model_type)
+                        output = self.model_type(data).to(self.device) #run model and get output
+                        # logging.info('output shape: {}'.format(output.size()))
+                        # logging.info('labels shape: {}'.format(labels.size()))
+                        # logging.info('output results: {}'.format(output))
+                        # logging.info('labels results: {}'.format(labels))
+                        loss = criterion(output, labels) #calculate CrossEntropyLoss given output and labels
+                        # logging.info('loss calc: {}'.format(loss))
+                        optimizer.zero_grad() #zero all gradients in fully connected layer
+                        loss.backward() #compute new gradients
+                        optimizer.step() #update gradients
+                        running_loss += loss.cpu().item() #send loss tensor to cpu, then grab the value out of it
+                        max_vals, prediction = torch.max(output.data, 1) 
+                        corr = (prediction == labels).cpu().sum().item()
+                        num_correct += corr #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
+                        logging.info('epoch:{} batch: {} accuracy: {} loss: {} total num_correct: {}'.format(epoch, 
+                            i, (100* (corr/32)), loss.cpu().item(), num_correct))
                     except Exception as e:
-                        logging.exception('Issue calculating loss and optimizing with image #{}, error is {}\ndata is\n{}'.format(
-                            i, e, data))
+                        logging.exception("""Issue calculating loss and optimizing with 
+                                            image #{}, error is {}\ndata is\n{}""".format(i, e, data))
                         continue
 
-                    if i % 2000 == 1999:
-                        running_loss = 0
+                    # if i % 2000 == 1999:
+                    #     running_loss = 0
                         
             except Exception:
                 (data, label) = train_loader
@@ -358,11 +372,12 @@ class ModelBuilder:
                                 with data: {}\nlabel: {}""".format(epoch, data, label))
                 torch.save(self.model_type.state_dict(), self.model_name)
                 sys.exit(1)
-                    
 
+            #final calculation for epoch
             training_loss[epoch] = running_loss/num_pictures
-            training_accuracy[epoch] = 100 * num_correct/num_pictures
+            training_accuracy[epoch] = 100 * (num_correct/num_pictures)
 
+            #values to insert into db
             db_tuple = {}
             db, train_table = misc.make_db_connection('training')
             db_tuple['te_dataset'] = self.dataset
@@ -377,6 +392,8 @@ class ModelBuilder:
 
             logging.info('training loss: {}\ntraining accuracy: {}'.format(
                 training_loss[epoch], training_accuracy[epoch]))
+
+            #final save of new model
             try:
                 torch.save(self.model_type.state_dict(), config.MODEL_STORAGE_PATH + self.model_name)
             except Exception:
@@ -385,12 +402,15 @@ class ModelBuilder:
                 torch.save(self.model_type.state_dict(), self.model_name)
                 sys.exit(1)
 
+        #plot for all epochs
+        plt.figure(0)
         plt.plot([i for i in range(epochs)], training_accuracy)
         plt.xlabel('epochs')
         plt.ylabel('accuracy')
         plt.title('Training Model Accuracy')
         plt.savefig('graphs/Train_Accuracy_' + self.model_name[:-3] + '.png')
 
+        plt.figure(1)
         plt.plot([i for i in range(epochs)], training_loss)
         plt.xlabel('epochs')
         plt.ylabel('loss')

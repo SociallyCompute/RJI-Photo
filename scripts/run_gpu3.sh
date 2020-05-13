@@ -8,7 +8,7 @@
 #SBATCH --mem-per-cpu=16G  # memory per core (default is 1GB/core)
 #SBATCH --time 1-23:00     # days-hours:minutes
 #SBATCH --account=general-gpu  # investors will replace this (e.g. `rc-gpu`)
-#SBATCH --gres gpu:1
+#SBATCH --gres gpu:"GeForce GTX 1080 Ti":1
 
 ## labels and outputs
 #SBATCH --job-name=resnet_train
@@ -22,15 +22,15 @@
 echo "### Starting at: $(date) ###"
 
 ## Module Commands
-module load cudnn/cudnn-7.1.4-cuda-9.0.176
+# module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
 # Science goes here:
-modelname='May4_ava_30ep_MINI32_resnet'
+modelname='May13_ava_30ep_MINI32_resnet'
 dataset='ava'
 epochs='30'
 batch='32'
 architecture='resnet'
-classification='content'
+classification='quality'
 
 python ../background_tasks/model_builder.py $modelname $dataset $epochs $batch $architecture $classification
 
