@@ -56,17 +56,20 @@ resnet_change_fully_connected_layer
         Change fully connected layer for resnet and apply a mapping from 2048->output_layer
 """
 def resnet_change_fully_connected_layer(output_layer, device): 
-    logging.info('Initial ResNet50 final layer Architecture: {}'.format(model_active.fc))
+    # logging.info('Initial ResNet50 final layer Architecture: {}'.format(model_active.fc))
     model_active.fc.out_features = output_layer
-    for param in model_active.parameters():
-        param.requires_grad = False
-    logging.info('All ResNet50 layers frozen')
-    new_lin = nn.Sequential(
+    # for param in model_active.parameters():
+    #     param.requires_grad = False
+    # logging.info('All ResNet50 layers frozen')
+    # new_lin = nn.Sequential(
+    #     nn.Linear(2048, output_layer),
+    #     nn.Softmax()
+    # )
+    model_active.fc = nn.Sequential(
         nn.Linear(2048, output_layer),
         nn.Softmax()
     )
-    model_active.fc = new_lin
-    logging.info('Changed ResNet50 Architecture: {}'.format(model_active.fc))
+    # logging.info('Changed ResNet50 Architecture: {}'.format(model_active.fc))
     # logging.info('New Layer correctly added to ResNet50')
 
 """

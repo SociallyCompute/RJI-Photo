@@ -110,8 +110,8 @@ class ModelBuilder:
                                     self.dataset, self.classification_subject, self.device, transform=_transform)
         self.test_data_samples = test_data.samples
         
-        logging.info('Training and Testing Dataset correctly transformed') 
-        logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
+        # logging.info('Training and Testing Dataset correctly transformed') 
+        # logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
         
         num_pictures = len(train_data)
         indices = list(range(num_pictures))
@@ -200,7 +200,7 @@ class ModelBuilder:
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
             pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-        logging.info('label dictionary completed')
+        # logging.info('label dictionary completed')
         return pic_label_dict
 
     
@@ -217,7 +217,7 @@ class ModelBuilder:
             for i, line in enumerate(f):
                 if limit_lines:
                     if i >= limit_lines:
-                        logging.info('Reached the developer specified line limit')
+                        # logging.info('Reached the developer specified line limit')
                         break
                 line_array = line.split()
                 picture_name = line_array[1]
@@ -225,7 +225,7 @@ class ModelBuilder:
                 for i in range(0, len(classifications)): 
                     classifications[i] = int(classifications[i])
                 pic_label_dict[picture_name] = classifications
-            logging.info('label dictionary completed')
+            # logging.info('label dictionary completed')
             return pic_label_dict
         except OSError:
             logging.error('Unable to open label file, exiting program')
@@ -253,8 +253,8 @@ class ModelBuilder:
         ratings = []
         num_pictures = len(test_loader)
         index_progress = 0
-        logging.info('Running evaluation images in the test_loader of size: '
-                     '{}...'.format(len(test_loader)))
+        # logging.info('Running evaluation images in the test_loader of size: '
+        #              '{}...'.format(len(test_loader)))
 
         while index_progress < num_pictures - 1:
             try:
@@ -288,8 +288,8 @@ class ModelBuilder:
                 
             index_progress += test_loader.batch_size
             
-        logging.info('Finished evaluation of images in the test_loader, the '
-                     'results are stored in the photo table in the database')
+        # logging.info('Finished evaluation of images in the test_loader, the '
+        #              'results are stored in the photo table in the database')
 
 
     def train(self, epochs, train_loader, prev_model):
@@ -323,12 +323,13 @@ class ModelBuilder:
         training_loss = [0 for i in range(epochs)]
         training_accuracy = [0 for i in range(epochs)]
         num_pictures = len(train_loader.dataset)
+        logging.info('batches: {} num_pictures: {}'.format(len(train_loader), num_pictures))
         
         for epoch in range(epochs):
             running_loss = 0.0
             num_correct = 0
-            logging.info("""Epoch #{} Running the training of images in the train_loader 
-                            of size: {}...""".format(epoch, len(train_loader)))
+            # logging.info("""Epoch #{} Running the training of images in the train_loader 
+            #                 of size: {}...""".format(epoch, len(train_loader)))
             
             try:
                 for i, (data, labels) in enumerate(train_loader,0):
@@ -342,18 +343,21 @@ class ModelBuilder:
 
                         # print(self.model_type)
                         output = self.model_type(data).to(self.device) #run model and get output
-                        logging.info('output shape: {}'.format(output.size()))
-                        logging.info('labels shape: {}'.format(labels.size()))
-                        logging.info('output results: {}'.format(output))
-                        logging.info('labels results: {}'.format(labels))
+                        # logging.info('output shape: {}'.format(output.size()))
+                        # logging.info('labels shape: {}'.format(labels.size()))
+                        # logging.info('output results: {}'.format(output))
+                        # logging.info('labels results: {}'.format(labels))
                         loss = criterion(output, labels) #calculate CrossEntropyLoss given output and labels
-                        logging.info('loss calc: {}'.format(loss))
+                        # logging.info('loss calc: {}'.format(loss))
                         optimizer.zero_grad() #zero all gradients in fully connected layer
                         loss.backward() #compute new gradients
                         optimizer.step() #update gradients
                         running_loss += loss.cpu().item() #send loss tensor to cpu, then grab the value out of it
                         max_vals, prediction = torch.max(output.data, 1) 
-                        num_correct += (prediction == labels).cpu().sum().item() #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
+                        corr = (prediction == labels).cpu().sum().item()
+                        num_correct += corr #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
+                        logging.info('epoch:{} batch: {} accuracy: {} loss: {} total num_correct: {}'.format(epoch, 
+                            i, (100* (corr/len(train_loader))), loss.cpu().item(), num_correct))
                     except Exception as e:
                         logging.exception("""Issue calculating loss and optimizing with 
                                             image #{}, error is {}\ndata is\n{}""".format(i, e, data))
