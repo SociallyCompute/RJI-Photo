@@ -357,7 +357,7 @@ class ModelBuilder:
                         corr = (prediction == labels).cpu().sum().item()
                         num_correct += corr #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
                         logging.info('epoch:{} batch: {} accuracy: {} loss: {} total num_correct: {}'.format(epoch, 
-                            i, (100* (corr/len(train_loader))), loss.cpu().item(), num_correct))
+                            i, (100* (corr/32)), loss.cpu().item(), num_correct))
                     except Exception as e:
                         logging.exception("""Issue calculating loss and optimizing with 
                                             image #{}, error is {}\ndata is\n{}""".format(i, e, data))
