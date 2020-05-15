@@ -1,5 +1,5 @@
 AVA_IMAGE_PATH = '/storage/hpc/group/augurlabs/images/'
-MISSOURIAN_IMAGE_PATH = '/storage/hpc/group/augurlabs/2017/Fall/Dump/Johnson, Jeremy'
+MISSOURIAN_IMAGE_PATH = '/storage/hpc/group/augurlabs/2017/Fall/Dump/Liu, Olivia'
 AVA_QUALITY_LABELS_FILE = '/storage/hpc/group/augurlabs/ava/AVA.txt'
 AVA_CONTENT_LABELS_FILE = '/storage/hpc/group/augurlabs/ava/tags.txt'
 MODEL_STORAGE_PATH = '/storage/hpc/group/augurlabs/models/'

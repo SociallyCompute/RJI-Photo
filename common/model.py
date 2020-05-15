@@ -99,7 +99,7 @@ class ModelBuilder:
         ])
 
         # percentage of data to use for test set 
-        valid_size = 0.2 
+        valid_size = 0.5 
 
         # load data and apply the transforms on contained pictures
         train_data = datasets.AdjustedDataset(self.image_path, class_dict, 
@@ -311,18 +311,19 @@ class ModelBuilder:
 
         #TODO
         #need to move these hyperparameters to be changed via the bash scripts
-        learning_rate = 0.1
+        learning_rate = 0.0001
         mo = 0.9
 
         self.model_type.train() #set model to training mode
         self.to_device(self.model_type) #put model on GPU
         criterion = nn.CrossEntropyLoss() #declare after all params are on device
-        optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo) #declare after all params are on device
+        # optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo) #declare after all params are on device
+        optimizer = optim.Adam(self.model_type.parameters(), lr=learning_rate)
 
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
         training_accuracy = [0 for i in range(epochs)]
-        num_pictures = len(train_loader.dataset)
+        num_pictures = len(train_loader) * self.batch_size
         logging.info('batches: {} num_pictures: {}'.format(len(train_loader), num_pictures))
         
         for epoch in range(epochs):
@@ -387,7 +388,7 @@ class ModelBuilder:
             db_tuple['te_model'] = self.model_type_name
             db_tuple['te_epoch'] = epoch
             db_tuple['te_batch_size'] = self.batch_size
-            db_tuple['te_optimizer'] = 'sgd'
+            db_tuple['te_optimizer'] = 'adam'
             result = db.execute(train_table.insert().values(db_tuple))
 
             logging.info('training loss: {}\ntraining accuracy: {}'.format(
