@@ -31,7 +31,11 @@ epochs='30'
 batch='32'
 architecture='resnet'
 classification='quality'
+freeze='freeze'
+lr='0.0001'
+mo='0.9'
+optimizer='adam'
 
-python ../background_tasks/model_builder.py $modelname $dataset $epochs $batch $architecture $classification
+python ../background_tasks/model_builder.py $modelname $dataset $epochs $batch $architecture $classification $freeze $lr $mo $optimizer
 
 echo "### Ending at: $(date) ###"

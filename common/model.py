@@ -292,7 +292,7 @@ class ModelBuilder:
         #              'results are stored in the photo table in the database')
 
 
-    def train(self, epochs, train_loader, prev_model):
+    def train(self, epochs, train_loader, prev_model, lr, mom, opt):
         """ Train model and save them as pytorch model. Save images 
             showing accuracy and loss functions over epochs.
             
@@ -301,7 +301,7 @@ class ModelBuilder:
             containing the testing images
         :param prev_model:    
         """
-        #check if this is 
+
         if(prev_model != 'N/A'):
             try:
                 self.model_type.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model)).to(self.device)
@@ -309,16 +309,16 @@ class ModelBuilder:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
 
-        #TODO
-        #need to move these hyperparameters to be changed via the bash scripts
-        learning_rate = 0.0001
-        mo = 0.9
+        learning_rate = float(lr)
+        mo = float(mom)
 
         self.model_type.train() #set model to training mode
         self.to_device(self.model_type) #put model on GPU
         criterion = nn.CrossEntropyLoss() #declare after all params are on device
-        # optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo) #declare after all params are on device
-        optimizer = optim.Adam(self.model_type.parameters(), lr=learning_rate)
+        if opt == 'sgd':
+            optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo) #declare after all params are on device
+        elif opt == 'adam':
+            optimizer = optim.Adam(self.model_type.parameters(), lr=learning_rate)
 
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
@@ -394,6 +394,8 @@ class ModelBuilder:
             logging.info('training loss: {}\ntraining accuracy: {}'.format(
                 training_loss[epoch], training_accuracy[epoch]))
 
+            logging.info(torch.cuda.memory_summary())
+            
             #final save of new model
             try:
                 torch.save(self.model_type.state_dict(), config.MODEL_STORAGE_PATH + self.model_name)

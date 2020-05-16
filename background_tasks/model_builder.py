@@ -29,21 +29,22 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-def vgg16_change_fully_connected_layer(output_layer, device): 
+def vgg16_fc_layer(output_layer, device, freeze_layers): 
     """ Change fully connected layer for vgg16 and apply a mapping from 4096->output_layer
     
     :param output_layer: (int) number of output layers on final fully connected layer
     """
-    logging.info('Initial VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
+    # logging.info('Initial VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
     model_active.classifier[6].out_features = output_layer
-    for param in model_active.parameters():
-        param.requires_grad = False
-    logging.info('All VGG16 layers frozen')
+    if freeze_layers == 'freeze':
+        for param in model_active.parameters():
+            param.requires_grad = False
+    # logging.info('All VGG16 layers frozen')
     network = list(model_active.classifier.children())[:-1]
     network.extend([nn.Linear(4096, output_layer)])
     network.extend([nn.Softmax()])
     model_active.classifier = nn.Sequential(*network)
-    logging.info('Changed VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
+    # logging.info('Changed VGG16 Architecture: {}'.format(list(model_active.classifier.children())))
     # logging.info('New Layer correctly added to VGG16')
 
 """
@@ -55,11 +56,12 @@ resnet_change_fully_connected_layer
     Comments:
         Change fully connected layer for resnet and apply a mapping from 2048->output_layer
 """
-def resnet_change_fully_connected_layer(output_layer, device): 
+def resnet_fc_layer(output_layer, device, freeze_layers): 
     # logging.info('Initial ResNet50 final layer Architecture: {}'.format(model_active.fc))
     model_active.fc.out_features = output_layer
-    # for param in model_active.parameters():
-    #     param.requires_grad = False
+    if freeze_layers == 'freeze':
+        for param in model_active.parameters():
+            param.requires_grad = False
     # logging.info('All ResNet50 layers frozen')
     # new_lin = nn.Sequential(
     #     nn.Linear(2048, output_layer),
@@ -105,11 +107,11 @@ def run_train_model(model_type, model_container, epochs, output_layer, device):
     train, _ = model_container.build_dataloaders(label_dict)
 
     if model_type == "vgg16":
-        vgg16_change_fully_connected_layer(output_layer, device)
+        vgg16_fc_layer(output_layer, device, freeze_layers)
     else:
-        resnet_change_fully_connected_layer(output_layer, device)
+        resnet_fc_layer(output_layer, device, freeze_layers)
 
-    model_container.train(epochs, train, 'N/A')
+    model_container.train(epochs, train, 'N/A', learning_rate, momentum, optimizer)
 
 
 def run_test_model(model_type, model_container, output_layer, device):
@@ -124,9 +126,9 @@ def run_test_model(model_type, model_container, output_layer, device):
     label_dict = model_container.get_file_color_class()
     _, test = model_container.build_dataloaders(label_dict)
     if model_type == 'vgg16':
-        vgg16_change_fully_connected_layer(output_layer, device)
+        vgg16_fc_layer(output_layer, device, freeze_layers)
     else:
-        resnet_change_fully_connected_layer(output_layer, device)
+        resnet_fc_layer(output_layer, device, freeze_layers)
 
     model_container.test_data_function(test, output_layer)
 
@@ -140,6 +142,10 @@ model_type = sys.argv[5]
 
 # 'content' or 'quality'
 classification_subject = sys.argv[6]
+freeze_layers = sys.argv[7]
+learning_rate = sys.argv[8]
+momentum = sys.argv[9]
+optimizer = sys.argv[10]
 
 logging.basicConfig(filename='logs/' + model_name + '.log', 
                     filemode='w', level=logging.DEBUG)
