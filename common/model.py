@@ -304,7 +304,7 @@ class ModelBuilder:
 
         if(prev_model != 'N/A'):
             try:
-                self.model_type.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model)).to(self.device)
+                self.model_type.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model))
             except Exception:
                 logging.warning(
                     'Failed to find {}, model trained off base resnet50'.format(prev_model))
@@ -320,6 +320,9 @@ class ModelBuilder:
         elif opt == 'adam':
             optimizer = optim.Adam(self.model_type.parameters(), lr=learning_rate)
 
+        decay_rate = 0.95 #decay the lr each step to 95% of previous lr
+        lr_sch = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=decay_rate)
+
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
         training_accuracy = [0 for i in range(epochs)]
@@ -329,8 +332,6 @@ class ModelBuilder:
         for epoch in range(epochs):
             running_loss = 0.0
             num_correct = 0
-            # logging.info("""Epoch #{} Running the training of images in the train_loader 
-            #                 of size: {}...""".format(epoch, len(train_loader)))
             
             try:
                 for i, (data, labels) in enumerate(train_loader,0):
@@ -344,12 +345,7 @@ class ModelBuilder:
 
                         # print(self.model_type)
                         output = self.model_type(data).to(self.device) #run model and get output
-                        # logging.info('output shape: {}'.format(output.size()))
-                        # logging.info('labels shape: {}'.format(labels.size()))
-                        # logging.info('output results: {}'.format(output))
-                        # logging.info('labels results: {}'.format(labels))
                         loss = criterion(output, labels) #calculate CrossEntropyLoss given output and labels
-                        # logging.info('loss calc: {}'.format(loss))
                         optimizer.zero_grad() #zero all gradients in fully connected layer
                         loss.backward() #compute new gradients
                         optimizer.step() #update gradients
@@ -377,6 +373,7 @@ class ModelBuilder:
             #final calculation for epoch
             training_loss[epoch] = running_loss/num_pictures
             training_accuracy[epoch] = 100 * (num_correct/num_pictures)
+            lr_sch.step() #decrease learning rate based on scheduler each epoch
 
             #values to insert into db
             db_tuple = {}

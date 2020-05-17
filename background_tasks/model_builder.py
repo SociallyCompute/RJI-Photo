@@ -111,7 +111,7 @@ def run_train_model(model_type, model_container, epochs, output_layer, device):
     else:
         resnet_fc_layer(output_layer, device, freeze_layers)
 
-    model_container.train(epochs, train, 'N/A', learning_rate, momentum, optimizer)
+    model_container.train(epochs, train, model_name, learning_rate, momentum, optimizer)
 
 
 def run_test_model(model_type, model_container, output_layer, device):
@@ -146,6 +146,7 @@ freeze_layers = sys.argv[7]
 learning_rate = sys.argv[8]
 momentum = sys.argv[9]
 optimizer = sys.argv[10]
+test_flag = sys.argv[11]
 
 logging.basicConfig(filename='logs/' + model_name + '.log', 
                     filemode='w', level=logging.DEBUG)
@@ -173,7 +174,7 @@ else:
 
 model_container = model.ModelBuilder(model_active, model_name, model_type, batch_size, dataset, classification_subject, device)
 
-if os.path.isfile(config.MODEL_STORAGE_PATH + model_name):
+if os.path.isfile(config.MODEL_STORAGE_PATH + model_name) and test_flag == '1':
     logging.info('Running Model in Testing Mode')
     run_test_model(model_type, model_container, output_layer, device)
 else:

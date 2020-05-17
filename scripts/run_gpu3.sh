@@ -25,17 +25,18 @@ echo "### Starting at: $(date) ###"
 # module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
 # Science goes here:
-modelname='May15_ava_30ep_MINI32_resnet_adam'
+modelname='May17_ava_30ep_MINI64_resnet_adam'
 dataset='ava'
 epochs='30'
-batch='32'
+batch='64'
 architecture='resnet'
 classification='quality'
 freeze='freeze'
-lr='0.0001'
+lr='0.2'
 mo='0.9'
 optimizer='adam'
+testflag='0'
 
-python ../background_tasks/model_builder.py $modelname $dataset $epochs $batch $architecture $classification $freeze $lr $mo $optimizer
+python ../background_tasks/model_builder.py $modelname $dataset $epochs $batch $architecture $classification $freeze $lr $mo $optimizer $testflag
 
 echo "### Ending at: $(date) ###"
