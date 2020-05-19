@@ -69,7 +69,8 @@ def resnet_fc_layer(output_layer, device, freeze_layers):
     # )
     model_active.fc = nn.Sequential(
         nn.Linear(2048, output_layer),
-        nn.Softmax()
+        #nn.Softmax()
+        # nn.Sigmoid()
     )
     # logging.info('Changed ResNet50 Architecture: {}'.format(model_active.fc))
     # logging.info('New Layer correctly added to ResNet50')
@@ -153,7 +154,7 @@ logging.basicConfig(filename='logs/' + model_name + '.log',
 model_name = model_name + '.pt'
 
 if classification_subject == 'quality':
-    output_layer = 10
+    output_layer = 1
 elif classification_subject == 'content':
     output_layer = 67
 else:

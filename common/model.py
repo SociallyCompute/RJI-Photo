@@ -199,7 +199,8 @@ class ModelBuilder:
             aesthetic_values = (line_array[2:])[:10]
             for i in range(0, len(aesthetic_values)): 
                 aesthetic_values[i] = int(aesthetic_values[i])
-            pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
+            # pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
+            pic_label_dict[picture_name] = np.mean(np.asarray(aesthetic_values))
         # logging.info('label dictionary completed')
         return pic_label_dict
 
@@ -314,14 +315,15 @@ class ModelBuilder:
 
         self.model_type.train() #set model to training mode
         self.to_device(self.model_type) #put model on GPU
-        criterion = nn.CrossEntropyLoss() #declare after all params are on device
+        # criterion = nn.CrossEntropyLoss() #declare after all params are on device
+        criterion = nn.MSELoss()
         if opt == 'sgd':
             optimizer = optim.SGD(self.model_type.parameters(), lr=learning_rate, momentum=mo) #declare after all params are on device
         elif opt == 'adam':
             optimizer = optim.Adam(self.model_type.parameters(), lr=learning_rate)
 
-        decay_rate = 0.95 #decay the lr each step to 95% of previous lr
-        lr_sch = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=decay_rate)
+        # decay_rate = 0.95 #decay the lr each step to 95% of previous lr
+        # lr_sch = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=decay_rate)
 
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
@@ -345,16 +347,21 @@ class ModelBuilder:
 
                         # print(self.model_type)
                         output = self.model_type(data).to(self.device) #run model and get output
-                        loss = criterion(output, labels) #calculate CrossEntropyLoss given output and labels
+                        loss = criterion(output, labels) #calculate MSELoss given output and labels
                         optimizer.zero_grad() #zero all gradients in fully connected layer
                         loss.backward() #compute new gradients
                         optimizer.step() #update gradients
-                        running_loss += loss.cpu().item() #send loss tensor to cpu, then grab the value out of it
-                        max_vals, prediction = torch.max(output.data, 1) 
-                        corr = (prediction == labels).cpu().sum().item()
-                        num_correct += corr #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
-                        logging.info('epoch:{} batch: {} accuracy: {} loss: {} total num_correct: {}'.format(epoch, 
-                            i, (100* (corr/32)), loss.cpu().item(), num_correct))
+                        running_loss += loss.cpu().sum().item() #send loss tensor to cpu, then grab the value out of it
+
+                        #NO ACCURACY CALCULATION WITH REGRESSION
+                        # max_vals, prediction = torch.max(output.data, 1) 
+                        # corr = (prediction == labels).cpu().sum().item()
+                        # num_correct += corr #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
+                        # logging.info('epoch:{} batch: {} accuracy: {} loss: {} total num_correct: {}'.format(epoch, 
+                        #     i, (100* (corr/self.batch_size)), loss.cpu().item(), num_correct))
+
+                        logging.info('epoch:{} batch: {} loss: {} total num_correct: {}'.format(epoch, 
+                            i, loss.cpu().item(), num_correct))
                     except Exception as e:
                         logging.exception("""Issue calculating loss and optimizing with 
                                             image #{}, error is {}\ndata is\n{}""".format(i, e, data))
@@ -372,8 +379,8 @@ class ModelBuilder:
 
             #final calculation for epoch
             training_loss[epoch] = running_loss/num_pictures
-            training_accuracy[epoch] = 100 * (num_correct/num_pictures)
-            lr_sch.step() #decrease learning rate based on scheduler each epoch
+            # training_accuracy[epoch] = 100 * (num_correct/num_pictures)
+            # lr_sch.step() #decrease learning rate based on scheduler each epoch
 
             #values to insert into db
             db_tuple = {}
@@ -381,15 +388,17 @@ class ModelBuilder:
             db_tuple['te_dataset'] = self.dataset
             db_tuple['te_learning_rate'] = learning_rate
             db_tuple['te_momentum'] = mo
-            db_tuple['te_accuracy'] = training_accuracy[epoch]
+            # db_tuple['te_accuracy'] = training_accuracy[epoch]
             db_tuple['te_model'] = self.model_type_name
             db_tuple['te_epoch'] = epoch
             db_tuple['te_batch_size'] = self.batch_size
             db_tuple['te_optimizer'] = 'adam'
             result = db.execute(train_table.insert().values(db_tuple))
 
-            logging.info('training loss: {}\ntraining accuracy: {}'.format(
-                training_loss[epoch], training_accuracy[epoch]))
+            # logging.info('training loss: {}\ntraining accuracy: {}'.format(
+            #     training_loss[epoch], training_accuracy[epoch]))
+                
+            logging.info('training loss: {}'.format(training_loss[epoch]))
 
             logging.info(torch.cuda.memory_summary())
             
@@ -403,12 +412,12 @@ class ModelBuilder:
                 sys.exit(1)
 
         #plot for all epochs
-        plt.figure(0)
-        plt.plot([i for i in range(epochs)], training_accuracy)
-        plt.xlabel('epochs')
-        plt.ylabel('accuracy')
-        plt.title('Training Model Accuracy')
-        plt.savefig('graphs/Train_Accuracy_' + self.model_name[:-3] + '.png')
+        # plt.figure(0)
+        # plt.plot([i for i in range(epochs)], training_accuracy)
+        # plt.xlabel('epochs')
+        # plt.ylabel('accuracy')
+        # plt.title('Training Model Accuracy')
+        # plt.savefig('graphs/Train_Accuracy_' + self.model_name[:-3] + '.png')
 
         plt.figure(1)
         plt.plot([i for i in range(epochs)], training_loss)
