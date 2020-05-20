@@ -322,8 +322,8 @@ class ModelBuilder:
         elif opt == 'adam':
             optimizer = optim.Adam(self.model_type.parameters(), lr=learning_rate)
 
-        # decay_rate = 0.95 #decay the lr each step to 95% of previous lr
-        # lr_sch = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=decay_rate)
+        decay_rate = 0.95 #decay the lr each step to 95% of previous lr
+        lr_sch = torch.optim.lr_scheduler.ExponentialLR(optimizer=optimizer, gamma=decay_rate)
 
         # self.model.train()
         training_loss = [0 for i in range(epochs)]
@@ -342,7 +342,7 @@ class ModelBuilder:
                             break
                     try:
                         labels = labels.to(self.device)
-                        labels = torch.cuda.LongTensor(labels) if torch.cuda.is_available() else torch.LongTensor(labels)
+                        labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
                         data = data.to(self.device)
 
                         # print(self.model_type)
@@ -380,7 +380,7 @@ class ModelBuilder:
             #final calculation for epoch
             training_loss[epoch] = running_loss/num_pictures
             # training_accuracy[epoch] = 100 * (num_correct/num_pictures)
-            # lr_sch.step() #decrease learning rate based on scheduler each epoch
+            
 
             #values to insert into db
             db_tuple = {}
@@ -393,7 +393,10 @@ class ModelBuilder:
             db_tuple['te_epoch'] = epoch
             db_tuple['te_batch_size'] = self.batch_size
             db_tuple['te_optimizer'] = 'adam'
+            db_tuple['te_loss'] = training_loss[epoch]
             result = db.execute(train_table.insert().values(db_tuple))
+            lr_sch.step() #decrease learning rate based on scheduler each epoch
+            learning_rate = lr_sch.get_lr()
 
             # logging.info('training loss: {}\ntraining accuracy: {}'.format(
             #     training_loss[epoch], training_accuracy[epoch]))

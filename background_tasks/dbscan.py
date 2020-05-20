@@ -9,19 +9,23 @@ import os.path
 from os import path
 import sys
 ImageFile.LOAD_TRUNCATED_IMAGES = True
+from sqlalchemy.orm import Session
 
 sys.path.append(os.path.split(sys.path[0])[0])
 
 from common import config
+from common import misc
 
 def build_image_matrix(image_path):
     image_list = []
+    name_list = []
     for root, _, files in os.walk(image_path, topdown=True):
         for name in files:
             if name.endswith('.JPG', '.PNG'):
                 image_list.append(np.array(Image.open(str(os.path.join(root, name)))).flatten())
+                name_list.append(name)
     image_matrix = np.hstack(image_list) #done to comply with n_samples x n_features of DBSCAN
-    return image_matrix
+    return image_matrix, name_list
 
 def cluster_dbscan(image_matrix, eps, minPts):
     #need to ensure image_matrix is (n_samples, n_features)
@@ -36,5 +40,29 @@ def cluster_dbscan(image_matrix, eps, minPts):
     print('Estimated number of noise points: %d' % n_noise_)
     print("Silhouette Coefficient: %0.3f"
         % metrics.silhouette_score(image_matrix, labels))
+    
+    return labels, n_clusters_
 
-im_mat = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
+
+#how close each picture is to each other (lower is closer, higher is farther)
+epsilon = 0.4
+#total number of similar pictures to consider the picture a "core point" in DBSCAN
+minimum_points = 9
+im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
+labels, clusters = cluster_dbscan(im_mat, epsilon, minimum_points)
+
+db_tuple = {}
+db, table = misc.make_db_connection('dbscan_groupings')
+conn = db.connect()
+conn.execute(
+    table.insert(),
+    [
+        dict(
+            photo_name=nm_list[i],
+            label=labels[i],
+        )
+        for i in range(labels)
+    ],
+)
+
+
