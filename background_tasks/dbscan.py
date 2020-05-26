@@ -10,11 +10,14 @@ from os import path
 import sys
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 from sqlalchemy.orm import Session
+import sqlalchemy as sqla
+import pandas
 
 sys.path.append(os.path.split(sys.path[0])[0])
 
 from common import config
 from common import misc
+from common import connections
 
 def build_image_matrix(image_path):
     image_list = []
@@ -51,14 +54,31 @@ minimum_points = 9
 im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
 labels, clusters = cluster_dbscan(im_mat, epsilon, minimum_points)
 
-db_tuple = {}
-db, table = misc.make_db_connection('dbscan_groupings')
-conn = db.connect()
+session_db_tuple = {}
+session_db, session_table = connections.make_db_connection('cluster_session')
+session_db_tuple['distance_between_points'] = epsilon
+session_db_tuple['minimum_points'] = minimum_points
+
+result = session_db.execute(session_table.insert().values(session_db_tuple))
+
+data_SQL = sqla.sql.text("""
+        SELECT cluster_session_id
+        FROM cluster_session
+        ORDER BY date_collection_date
+        LIMIT 1;
+        """)
+
+xmp_data = pandas.read_sql(data_SQL, session_db, params={})
+c_s_id = int(list(set(xmp_data)))
+
+results_db, results_table = connections.make_db_connection('cluster_results')
+conn = results_db.connect()
 conn.execute(
-    table.insert(),
+    results_table.insert(),
     [
         dict(
-            photo_name=nm_list[i],
+            cluster_session_id=c_s_id,
+            photo_path=nm_list[i],
             label=labels[i],
         )
         for i in range(labels)

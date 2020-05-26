@@ -3,11 +3,8 @@ import sys, os
 sys.path.append(os.path.split(sys.path[0])[0])
 from common import datasets
 from common import config
+from common import connections
 import logging
-
-import sqlalchemy as s
-from sqlalchemy import MetaData
-from sqlalchemy.ext.automap import automap_base
 
 def find_size_bounds(data_dir, limit_num_pictures=None):
     """ Will print and return min/max width/height of pictures in the dataset 
@@ -52,7 +49,7 @@ def find_size_bounds(data_dir, limit_num_pictures=None):
 def write_xmp_color_class():
     """ Write string containing Missourian labels to .txt files                
     """
-    db, xmp_table = make_db_connection('xmp_color_classes')
+    db, xmp_table = connections.make_db_connection('xmp_color_classes')
     i = 0
     logging.info('path: {}'.format(config.MISSOURIAN_IMAGE_PATH))
     for root, _, files in os.walk(config.MISSOURIAN_IMAGE_PATH, topdown=True):
@@ -84,33 +81,6 @@ def write_xmp_color_class():
     logging.info('Finished writing xmp color classes to database')
     # labels_file.close()
     # none_file.close()
-
-
-def make_db_connection(table_name):
-    """ Makes a connection to the database used to store each of the testing values. Allows for 
-            standardization of test values to recieve a decent test result
-
-    :param table_name - name of the table to be reflected in SQLAlchemy metadata
-
-    :rtype: (sqlalchemy engine, sqlalchemy table) reference to database engine and 
-        specified table
-    """
-    DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
-        'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
-    )
-    logging.info("Connecting to database: {}".format(DB_STR))
-
-    dbschema = 'rji'
-    db = s.create_engine(DB_STR, poolclass=s.pool.NullPool, pool_pre_ping=True,
-        connect_args={'options': '-csearch_path={}'.format(dbschema)})
-    metadata = MetaData()
-    metadata.reflect(db, only=[table_name])
-    Base = automap_base(metadata=metadata)
-    Base.prepare()
-    r_table = Base.classes[table_name].__table__
-
-    logging.info("Database connection successful")
-    return db, r_table
 
 if __name__ == '__main__':
     logging.basicConfig(filename='fill_db.log', filemode='w', level=logging.DEBUG)

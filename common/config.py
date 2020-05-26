@@ -1,8 +1,11 @@
 AVA_IMAGE_PATH = '/storage/hpc/group/augurlabs/images/'
-MISSOURIAN_IMAGE_PATH = '/storage/hpc/group/augurlabs/2017/Fall/Dump/Nguyen, Phu'
+MISSOURIAN_IMAGE_PATH = '/storage/hpc/group/augurlabs/2017/Fall/Dump/zz_CompostStory(rough)'
 AVA_QUALITY_LABELS_FILE = '/storage/hpc/group/augurlabs/ava/AVA.txt'
 AVA_CONTENT_LABELS_FILE = '/storage/hpc/group/augurlabs/ava/tags.txt'
 MODEL_STORAGE_PATH = '/storage/hpc/group/augurlabs/models/'
+DB_STR = 'postgresql://{}:{}@{}:{}/{}'.format(
+        'rji', 'donuts', 'nekocase.augurlabs.io', '5433', 'rji'
+    )
 
 # Convert Missourian XMP Meta labels to standardized labels
 XMP_AVA_MAP = {

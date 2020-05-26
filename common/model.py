@@ -32,6 +32,7 @@ sys.path.append(os.path.split(sys.path[0])[0])
 from common import config
 from common import datasets
 from common import misc
+from common import connections
 
 class ModelBuilder:
 
@@ -70,7 +71,7 @@ class ModelBuilder:
 
         self.device = device
         
-        self.db, self.photo_table = misc.make_db_connection('evaluation')
+        self.db, self.photo_table = connections.make_db_connection('evaluation')
 
         if (dataset == 'ava'):
             logging.info('Using AVA Dataset')
@@ -148,7 +149,7 @@ class ModelBuilder:
         :rtype: (dict: path->label) dictionary mapping string path to a specific image to int label
         """
         pic_label_dict = {}
-        xmp_db, xmp_table = misc.make_db_connection('xmp_color_classes')
+        xmp_db, xmp_table = connections.make_db_connection('xmp_color_classes')
 
         xmp_data_SQL = sqla.sql.text("""
         SELECT photo_path, color_class
@@ -384,7 +385,7 @@ class ModelBuilder:
 
             #values to insert into db
             db_tuple = {}
-            db, train_table = misc.make_db_connection('training')
+            db, train_table = connections.make_db_connection('training')
             db_tuple['te_dataset'] = self.dataset
             db_tuple['te_learning_rate'] = learning_rate
             db_tuple['te_momentum'] = mo
