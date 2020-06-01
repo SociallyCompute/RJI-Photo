@@ -24,7 +24,9 @@ def build_image_matrix(image_path):
     name_list = []
     for root, _, files in os.walk(image_path, topdown=True):
         for name in files:
-            if name.endswith('.JPG', '.PNG'):
+            path = os.path.join(root, name)
+            logging.info(name)
+            if name.endswith('.JPG'):
                 image_list.append(np.array(Image.open(str(os.path.join(root, name)))).flatten())
                 name_list.append(name)
     image_matrix = np.hstack(image_list) #done to comply with n_samples x n_features of DBSCAN
@@ -46,7 +48,7 @@ def cluster_dbscan(image_matrix, eps, minPts):
     
     return labels, n_clusters_
 
-
+logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBUG)
 #how close each picture is to each other (lower is closer, higher is farther)
 epsilon = 0.4
 #total number of similar pictures to consider the picture a "core point" in DBSCAN

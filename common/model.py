@@ -33,6 +33,7 @@ from common import config
 from common import datasets
 from common import misc
 from common import connections
+from common import image_processing
 
 class ModelBuilder:
 
@@ -141,97 +142,6 @@ class ModelBuilder:
         self.model_type.to(self.device)
         logging.info('ResNet50 is running on {}'.format(self.device))
         return train_loader, test_loader
-
-    
-    def get_xmp_color_class(self):
-        """ Read .txt files from Missourian and write a dictionary mapping an image to a label
-        
-        :rtype: (dict: path->label) dictionary mapping string path to a specific image to int label
-        """
-        pic_label_dict = {}
-        xmp_db, xmp_table = connections.make_db_connection('xmp_color_classes')
-
-        xmp_data_SQL = sqla.sql.text("""
-        SELECT photo_path, color_class
-        FROM xmp_color_classes
-        """)
-        xmp_data = pandas.read_sql(xmp_data_SQL, xmp_db, params={})
-        xmp_data = xmp_data.set_index('photo_path')
-        pic_label_dict = {k : v[0] for k, v in xmp_data.to_dict('list').items()}
-        
-        xmp_rated_index_SQL = sqla.sql.text("""
-        SELECT photo_path, os_walk_index
-        FROM xmp_color_classes
-        WHERE color_class <> 0
-        """)
-        rated_index_data = pandas.read_sql(xmp_rated_index_SQL, xmp_db, params={})
-        rated_index_data = rated_index_data.set_index('photo_path')
-        self.rated_indices = rated_index_data['os_walk_index'].to_list()
-
-        xmp_unrated_index_SQL = sqla.sql.text("""
-        SELECT photo_path, os_walk_index
-        FROM xmp_color_classes
-        WHERE color_class = 0
-        """)
-        unrated_index_data = pandas.read_sql(xmp_unrated_index_SQL, xmp_db, params={})
-        unrated_index_data = unrated_index_data.set_index('photo_path')
-        self.bad_indices = unrated_index_data['os_walk_index'].to_list()
-
-        logging.info('Successfully loaded info from Missourian Image Files')
-        return pic_label_dict
-
-    
-    def get_ava_quality_labels(self):
-        """ Read .txt files from AVA dataset and write a dictionary mapping an image to a label
-        
-        :rtype: (dict: path->label) dictionary mapping string path to a specific image to int label
-        """
-        pic_label_dict = {}
-        limit_lines = self.limit_num_pictures
-
-        f = open(config.AVA_QUALITY_LABELS_FILE, "r")
-        for i, line in enumerate(f):
-            if limit_lines:
-                if i >= limit_lines:
-                    logging.info('Reached the developer specified line limit')
-                    break
-            line_array = line.split()
-            picture_name = line_array[1]
-            aesthetic_values = (line_array[2:])[:10]
-            for i in range(0, len(aesthetic_values)): 
-                aesthetic_values[i] = int(aesthetic_values[i])
-            # pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
-            pic_label_dict[picture_name] = np.mean(np.asarray(aesthetic_values))
-        # logging.info('label dictionary completed')
-        return pic_label_dict
-
-    
-    def get_ava_content_labels(self):
-        """ Similar to get_ava_labels but for classification purposes
-        
-        :rtype: (dict: path->label) dictionary mapping string path to a specific 
-            image to int classification label                
-        """
-        pic_label_dict = {}
-        limit_lines = self.limit_num_pictures
-        try:
-            f = open(config.AVA_CONTENT_LABELS_FILE, "r")
-            for i, line in enumerate(f):
-                if limit_lines:
-                    if i >= limit_lines:
-                        # logging.info('Reached the developer specified line limit')
-                        break
-                line_array = line.split()
-                picture_name = line_array[1]
-                classifications = (line_array[12:])[:-1]
-                for i in range(0, len(classifications)): 
-                    classifications[i] = int(classifications[i])
-                pic_label_dict[picture_name] = classifications
-            # logging.info('label dictionary completed')
-            return pic_label_dict
-        except OSError:
-            logging.error('Unable to open label file, exiting program')
-            sys.exit(1)
 
     def to_device(self, data):
         """Switch data to model device
@@ -394,6 +304,7 @@ class ModelBuilder:
             db_tuple['te_epoch'] = epoch
             db_tuple['te_batch_size'] = self.batch_size
             db_tuple['te_optimizer'] = 'adam'
+            # db_tuple['te_indices'] = self.rated_indices
             db_tuple['te_loss'] = training_loss[epoch]
             result = db.execute(train_table.insert().values(db_tuple))
             lr_sch.step() #decrease learning rate based on scheduler each epoch

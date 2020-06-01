@@ -24,6 +24,7 @@ sys.path.append(os.path.split(sys.path[0])[0])
 
 from common import model
 from common import config
+from common import image_processing as im
 
 import warnings  
 warnings.filterwarnings('ignore')
@@ -90,7 +91,7 @@ run_train_model
 def run_train_model(model_type, model_container, epochs, output_layer, device):
     # AVA
     if(model_container.dataset == 'ava'): 
-        label_dict = model_container.get_ava_quality_labels()
+        label_dict = im.get_ava_quality_labels(model_container.limit_num_pictures)
         # logging.info(label_dict)
 
     # Missourian
@@ -98,7 +99,7 @@ def run_train_model(model_type, model_container, epochs, output_layer, device):
         if(not path.exists('Mar13_labeled_images.txt') or \
            not path.exists('Mar13_unlabeled_images.txt')):
             logging.info('labeled_images.txt or unlabeled_images.txt not found')
-            model_container.get_xmp_color_class()
+            im.get_xmp_color_class(model_container.rated_indices, model_container.bad_indices)
         else:
             logging.info('labeled_images.txt and unlabeled_images.txt found')
         label_dict = model_container.get_file_color_class()
