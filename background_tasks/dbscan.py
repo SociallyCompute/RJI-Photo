@@ -13,6 +13,8 @@ from sqlalchemy.orm import Session
 import sqlalchemy as sqla
 import pandas
 
+from torchvision import datasets, transforms
+
 sys.path.append(os.path.split(sys.path[0])[0])
 
 from common import config
@@ -20,6 +22,15 @@ from common import misc
 from common import connections
 
 def build_image_matrix(image_path):
+    _transform = transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize(
+                mean=[0.485, 0.456, 0.406],
+                std=[0.229, 0.224, 0.225]
+            )
+        ])
     image_list = []
     name_list = []
     for root, _, files in os.walk(image_path, topdown=True):
@@ -27,7 +38,7 @@ def build_image_matrix(image_path):
             path = os.path.join(root, name)
             logging.info(name)
             if name.endswith('.JPG'):
-                image_list.append(np.array(Image.open(str(os.path.join(root, name)))).flatten())
+                image_list.append(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))).flatten())
                 name_list.append(name)
     image_matrix = np.hstack(image_list) #done to comply with n_samples x n_features of DBSCAN
     return image_matrix, name_list
