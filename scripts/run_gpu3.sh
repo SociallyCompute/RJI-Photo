@@ -25,14 +25,14 @@ echo "### Starting at: $(date) ###"
 # module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
 # Science goes here:
-modelname='May19_ava_30ep_MINI64_resnet_adam_regression'
+modelname='June1_ava_30ep_MINI512_resnet_adam_regression'
 dataset='ava'
 epochs='30'
-batch='64'
+batch='512'
 architecture='resnet'
 classification='quality'
 freeze='freeze'
-lr='0.01'
+lr='0.1'
 mo='0.9'
 optimizer='adam'
 testflag='0'
