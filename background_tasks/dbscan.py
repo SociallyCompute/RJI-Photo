@@ -55,9 +55,10 @@ im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
 labels, clusters = cluster_dbscan(im_mat, epsilon, minimum_points)
 
 session_db_tuple = {}
-session_db, session_table = connections.make_db_connection('cluster_session')
+session_db, session_table = connections.make_db_connection('cluster_sessions')
 session_db_tuple['distance_between_points'] = epsilon
 session_db_tuple['minimum_points'] = minimum_points
+session_db_tuple['num_clusters'] = clusters
 
 result = session_db.execute(session_table.insert().values(session_db_tuple))
 
@@ -79,7 +80,7 @@ conn.execute(
         dict(
             cluster_session_id=c_s_id,
             photo_path=nm_list[i],
-            label=labels[i],
+            cluster_number=labels[i],
         )
         for i in range(labels)
     ],
