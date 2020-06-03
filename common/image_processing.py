@@ -1,27 +1,19 @@
+import logging, os.path, pandas, sys, torch, warnings
+
 import numpy as np
-import math, pandas
-from PIL import Image, ImageFile
-ImageFile.LOAD_TRUNCATED_IMAGES = True
-
-import logging
-import sys
-import os.path
-import ntpath
-from os import path
-from pathlib2 import Path
-
-import matplotlib.pyplot as plt
-
 import sqlalchemy as sqla
 
-import warnings  
-warnings.filterwarnings('ignore')
+from os import path
+from PIL import Image, ImageFile
+from torch.utils.data.sampler import SubsetRandomSampler
+from torchvision import datasets, transforms
 
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+warnings.filterwarnings('ignore')
 sys.path.append(os.path.split(sys.path[0])[0])
 
 from common import config
 from common import datasets
-from common import misc
 from common import connections
 from common import model
 
@@ -112,3 +104,63 @@ def get_ava_content_labels(limit_num_pictures):
     except OSError:
         logging.error('Unable to open label file, exiting program')
         sys.exit(1)
+
+def build_dataloaders(model, class_dict):
+    """
+    :param class_dict: (dict: path->label) dictionary mapping a string path to an int label
+    :rtype: ((torch.utils.data.dataloader), (torch.utils.data.dataloader)) training and 
+        testing dataloaders (respectively) containing the training images
+            test_loader:  dataloader containing the testing images
+    """
+    _transform = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(
+            mean=[0.485, 0.456, 0.406],
+            std=[0.229, 0.224, 0.225]
+        )
+    ])
+
+    # percentage of data to use for test set 
+    valid_size = 0.5 
+
+    # load data and apply the transforms on contained pictures
+    train_data = datasets.AdjustedDataset(model.image_path, class_dict, 
+                                    model.dataset, model.classification_subject, model.device, transform=_transform)
+    model.train_data_samples = train_data.samples
+    
+    test_data = datasets.AdjustedDataset(model.image_path, class_dict, 
+                                model.dataset, model.classification_subject, model.device, transform=_transform)
+    model.test_data_samples = test_data.samples
+    
+    # logging.info('Training and Testing Dataset correctly transformed') 
+    # logging.info('Training size: {}\nTesting size: {}'.format(len(train_data), len(test_data)))
+    
+    num_pictures = len(train_data)
+    indices = list(range(num_pictures))
+    split = int(np.floor(valid_size * num_pictures))
+    
+    if(model.dataset == 2):
+        train_idx, test_idx = model.rated_indices, model.bad_indices
+    else:
+        train_idx, test_idx = indices[split:], indices[:split]
+
+    # Define samplers that sample elements randomly without replacement
+    train_sampler = SubsetRandomSampler(train_idx)
+    test_sampler = SubsetRandomSampler(test_idx)
+
+    # Define data loaders, which allow batching and shuffling the data
+    train_loader = torch.utils.data.DataLoader(train_data,
+                sampler=train_sampler, batch_size=model.batch_size)
+    test_loader = torch.utils.data.DataLoader(test_data,
+                sampler=test_sampler, batch_size=model.batch_size)
+
+    logging.info('train_loader size: {}'.format(len(train_loader)))
+    logging.info('test_loader size: {}'.format(len(test_loader)))
+
+    # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    model.model_type.to(model.device)
+    logging.info('ResNet50 is running on {}'.format(model.device))
+    return train_loader, test_loader

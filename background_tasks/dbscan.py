@@ -40,7 +40,7 @@ def build_image_matrix(image_path):
             if name.endswith('.JPG'):
                 image_list.append(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))).flatten())
                 name_list.append(name)
-    image_matrix = np.hstack(image_list) #done to comply with n_samples x n_features of DBSCAN
+    image_matrix = np.vstack(image_list) #done to comply with n_samples x n_features of DBSCAN
     return image_matrix, name_list
 
 def cluster_dbscan(image_matrix, eps, minPts):
@@ -54,8 +54,8 @@ def cluster_dbscan(image_matrix, eps, minPts):
 
     print('Estimated number of clusters: %d' % n_clusters_)
     print('Estimated number of noise points: %d' % n_noise_)
-    print("Silhouette Coefficient: %0.3f"
-        % metrics.silhouette_score(image_matrix, labels))
+    # print("Silhouette Coefficient: %0.3f"
+    #     % metrics.silhouette_score(image_matrix, labels))
     
     return labels, n_clusters_
 
@@ -63,7 +63,7 @@ logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBU
 #how close each picture is to each other (lower is closer, higher is farther)
 epsilon = 0.4
 #total number of similar pictures to consider the picture a "core point" in DBSCAN
-minimum_points = 9
+minimum_points = 3
 im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
 labels, clusters = cluster_dbscan(im_mat, epsilon, minimum_points)
 

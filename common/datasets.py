@@ -111,7 +111,7 @@ class AdjustedDataset(datasets.DatasetFolder):
             sample = self.transform(sample)#.to(self.device)
         if self.target_transform is not None:
             target = self.target_transform(target)#.to(self.device)
-        return sample, target
+        return sample, target, index
 
     
     def make_dataset(self, root, class_to_idx):
