@@ -149,7 +149,6 @@ class ModelBuilder:
             containing the testing images
         :param prev_model:    
         """
-
         if(prev_model != 'N/A'):
             try:
                 self.model.load_state_dict(torch.load(config.MODEL_STORAGE_PATH + prev_model))
