@@ -89,11 +89,11 @@ class ModelBuilder:
         return data.to(self.device, non_blocking=True)
 
 
-    def evaluate(self, test_loader, num_ratings):
+    def evaluate(self, test_loader, outputs):
         """ Evaluate the testing set and save them to the database
         
         :param test_loader: (torch.utils.data.dataloader) dataloader containing the testing images
-        :param num_ratings: (int) number of labels in the set (i.e. 10 for labels 1-10)
+        :param outputs: (int) number of labels in the set (i.e. 10 for labels 1-10)
         """
         
         self.to_device(self.model)
@@ -120,7 +120,7 @@ class ModelBuilder:
 
                     # Prime tuples for database insertion
                     database_tuple = {}
-                    for n in range(num_ratings):
+                    for n in range(outputs):
                         database_tuple['model_score_{}'.format(n + 1)] = ratings[n]
 
                     # Include metadata for database tuple
@@ -197,7 +197,6 @@ class ModelBuilder:
                         labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
                         data = data.to(self.device)
 
-                        # print(self.model)
                         output = self.model(data).to(self.device) #run model and get output
                         loss = criterion(output, labels) #calculate MSELoss given output and labels
                         optimizer.zero_grad() #zero all gradients in fully connected layer

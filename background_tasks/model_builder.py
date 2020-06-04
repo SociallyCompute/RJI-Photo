@@ -25,7 +25,7 @@ def run_train_model(model_name, custom_model, epochs, outputs, device):
     """
     # AVA
     if(custom_model.dataset == 'ava'): 
-        label_dict = im.get_ava_quality_labels(custom_model.limit_num_pictures)
+        label_dict = im.get_ava_quality_labels(custom_model.pic_limit)
         # logging.info(label_dict)
 
     # Missourian
@@ -59,7 +59,7 @@ def run_test_model(model_name, custom_model, outputs, device):
     _, test = im.build_dataloaders(custom_model, label_dict)
     custom_model.switch_fcc(freeze)
 
-    custom_model.test_data_function(test, outputs)
+    custom_model.evaluate(test, outputs)
 
 """
 Basic Script Functions, defines global vars and starts functions

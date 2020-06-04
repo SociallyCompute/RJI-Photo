@@ -61,9 +61,9 @@ def cluster_dbscan(image_matrix, eps, minPts):
 
 logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBUG)
 #how close each picture is to each other (lower is closer, higher is farther)
-epsilon = 0.4
+epsilon = 0.8
 #total number of similar pictures to consider the picture a "core point" in DBSCAN
-minimum_points = 3
+minimum_points = 2
 im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
 labels, clusters = cluster_dbscan(im_mat, epsilon, minimum_points)
 
@@ -77,8 +77,8 @@ result = session_db.execute(session_table.insert().values(session_db_tuple))
 
 data_SQL = sqla.sql.text("""
         SELECT cluster_session_id
-        FROM cluster_session
-        ORDER BY date_collection_date
+        FROM cluster_sessions
+        ORDER BY data_collection_time
         LIMIT 1;
         """)
 
