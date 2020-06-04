@@ -127,11 +127,11 @@ def build_dataloaders(model, class_dict):
 
     # load data and apply the transforms on contained pictures
     train_data = datasets.AdjustedDataset(model.image_path, class_dict, 
-                                    model.dataset, model.classification_subject, model.device, transform=_transform)
+                                    model.dataset, model.subject, model.device, transform=_transform)
     model.train_data_samples = train_data.samples
     
     test_data = datasets.AdjustedDataset(model.image_path, class_dict, 
-                                model.dataset, model.classification_subject, model.device, transform=_transform)
+                                model.dataset, model.subject, model.device, transform=_transform)
     model.test_data_samples = test_data.samples
     
     # logging.info('Training and Testing Dataset correctly transformed') 
@@ -152,15 +152,15 @@ def build_dataloaders(model, class_dict):
 
     # Define data loaders, which allow batching and shuffling the data
     train_loader = torch.utils.data.DataLoader(train_data,
-                sampler=train_sampler, batch_size=model.batch_size)
+                sampler=train_sampler, batch_size=model.batch)
     test_loader = torch.utils.data.DataLoader(test_data,
-                sampler=test_sampler, batch_size=model.batch_size)
+                sampler=test_sampler, batch_size=model.batch)
 
     logging.info('train_loader size: {}'.format(len(train_loader)))
     logging.info('test_loader size: {}'.format(len(test_loader)))
 
     # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    model.model_type.to(model.device)
+    model.model.to(model.device)
     logging.info('ResNet50 is running on {}'.format(model.device))
     return train_loader, test_loader
