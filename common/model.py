@@ -72,8 +72,8 @@ class ModelBuilder:
             network.extend([nn.Softmax()])
             self.model.classifier = nn.Sequential(*network)
         else: #resnet
-            model_active.fc = nn.Sequential(
-            nn.Linear(2048, self.output),
+            self.model.fc = nn.Sequential(
+            nn.Linear(2048, self.outputs),
             #nn.Softmax()
             #nn.Sigmoid()
             )
@@ -194,7 +194,12 @@ class ModelBuilder:
                             break
                     try:
                         labels = labels.to(self.device)
-                        labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
+
+                        if self.classification == True:
+                            labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
+                        else:
+                            labels = torch.cuda.LongTensor(labels) if torch.cuda.is_available() else torch.LongTensor(labels)
+                            
                         data = data.to(self.device)
 
                         output = self.model(data).to(self.device) #run model and get output

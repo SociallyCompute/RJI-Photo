@@ -62,7 +62,7 @@ def cluster_dbscan(image_matrix, eps, minPts):
 
 logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBUG)
 #how close each picture is to each other (lower is closer, higher is farther)
-epsilon = 15.5
+epsilon = 150.5
 #total number of similar pictures to consider the picture a "core point" in DBSCAN
 minimum_points = 4
 im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
@@ -96,7 +96,7 @@ conn.execute(
             photo_path=nm_list[i],
             cluster_number=labels[i],
         )
-        for i in range(labels)
+        for i in enumerate(labels, 0)
     ],
 )
 
