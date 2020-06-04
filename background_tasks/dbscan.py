@@ -62,7 +62,7 @@ def cluster_dbscan(image_matrix, eps, minPts):
 
 logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBUG)
 #how close each picture is to each other (lower is closer, higher is farther)
-epsilon = 150.5
+epsilon = 300.5
 #total number of similar pictures to consider the picture a "core point" in DBSCAN
 minimum_points = 4
 im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
@@ -84,7 +84,8 @@ data_SQL = sqla.sql.text("""
         """)
 
 xmp_data = pandas.read_sql(data_SQL, session_db, params={})
-c_s_id = list(set(xmp_data))[0]
+logging.info(set(xmp_data))
+c_s_id = list(set(xmp_data))[1]
 
 results_db, results_table = connections.make_db_connection('cluster_results')
 conn = results_db.connect()
@@ -96,7 +97,7 @@ conn.execute(
             photo_path=nm_list[i],
             cluster_number=labels[i],
         )
-        for i in enumerate(labels, 0)
+        for i in range(len(labels))
     ],
 )
 

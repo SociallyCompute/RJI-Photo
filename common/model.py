@@ -196,10 +196,10 @@ class ModelBuilder:
                         labels = labels.to(self.device)
 
                         if self.classification == True:
-                            labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
-                        else:
                             labels = torch.cuda.LongTensor(labels) if torch.cuda.is_available() else torch.LongTensor(labels)
-                            
+                        else:
+                            labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
+
                         data = data.to(self.device)
 
                         output = self.model(data).to(self.device) #run model and get output
