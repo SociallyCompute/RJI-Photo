@@ -41,7 +41,7 @@ def build_image_matrix(image_path):
                 image_list.append(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))).flatten())
                 name_list.append(name)
     image_matrix = np.vstack(image_list) #done to comply with n_samples x n_features of DBSCAN
-    logging.info(image_matrix)
+    # logging.info(image_matrix)
     return image_matrix, name_list
 
 def cluster_dbscan(image_matrix, eps, minPts):
@@ -62,9 +62,9 @@ def cluster_dbscan(image_matrix, eps, minPts):
 
 logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBUG)
 #how close each picture is to each other (lower is closer, higher is farther)
-epsilon = 300.5
+epsilon = 150.5
 #total number of similar pictures to consider the picture a "core point" in DBSCAN
-minimum_points = 4
+minimum_points = 2
 im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
 labels, clusters = cluster_dbscan(im_mat, epsilon, minimum_points)
 
@@ -76,6 +76,8 @@ session_db_tuple['num_clusters'] = clusters
 
 result = session_db.execute(session_table.insert().values(session_db_tuple))
 
+session_db, session_table = connections.make_db_connection('cluster_sessions')
+
 data_SQL = sqla.sql.text("""
         SELECT cluster_session_id
         FROM cluster_sessions
@@ -84,6 +86,7 @@ data_SQL = sqla.sql.text("""
         """)
 
 xmp_data = pandas.read_sql(data_SQL, session_db, params={})
+logging.info(xmp_data)
 xmp_data = xmp_data.set_index('cluster_session_id')
 val = xmp_data['cluster_session_id']
 logging.info(val)
