@@ -75,7 +75,7 @@ freeze = sys.argv[7]
 lr = sys.argv[8]
 momentum = sys.argv[9]
 optimizer = sys.argv[10]
-classification = bool(sys.argv[11])
+classification = sys.argv[11]
 test = sys.argv[12]
 
 logging.basicConfig(filename='logs/' + custom_name + '.log', 

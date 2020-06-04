@@ -162,7 +162,7 @@ class ModelBuilder:
         self.model.train() #set model to training mode
         self.to_device(self.model) #put model on GPU
 
-        if self.classification == True:
+        if self.classification == 'True':
             criterion = nn.CrossEntropyLoss() #declare after all params are on device
         else: #regression
             criterion = nn.MSELoss() 
@@ -195,7 +195,7 @@ class ModelBuilder:
                     try:
                         labels = labels.to(self.device)
 
-                        if self.classification == True:
+                        if self.classification == 'True':
                             labels = torch.cuda.LongTensor(labels) if torch.cuda.is_available() else torch.LongTensor(labels)
                         else:
                             labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
@@ -210,7 +210,7 @@ class ModelBuilder:
                         running_loss += loss.cpu().sum().item() #send loss tensor to cpu, then grab the value out of it
                         indices.append(index)
 
-                        if self.classification == True:
+                        if self.classification == 'True':
                             max_vals, prediction = torch.max(output.data, 1) 
                             corr = (prediction == labels).cpu().sum().item()
                             num_correct += corr #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
@@ -246,7 +246,7 @@ class ModelBuilder:
             training_loss[epoch] = running_loss/num_pictures
             db_tuple['te_loss'] = training_loss[epoch]
 
-            if self.classification == True:
+            if self.classification == 'True':
                 training_accuracy[epoch] = 100 * (num_correct/num_pictures)
                 db_tuple['te_accuracy'] = training_accuracy[epoch]
                 logging.info('training loss: {}\ntraining accuracy: {}'.format(
@@ -269,7 +269,7 @@ class ModelBuilder:
                 torch.save(self.model.state_dict(), self.custom_name)
                 sys.exit(1)
 
-        if self.classification == True:
+        if self.classification == 'True':
             plt.figure(0)
             plt.plot([i for i in range(epochs)], training_accuracy)
             plt.xlabel('epochs')

@@ -79,13 +79,15 @@ result = session_db.execute(session_table.insert().values(session_db_tuple))
 data_SQL = sqla.sql.text("""
         SELECT cluster_session_id
         FROM cluster_sessions
-        ORDER BY data_collection_time
+        ORDER BY data_collection_time DESC
         LIMIT 1;
         """)
 
 xmp_data = pandas.read_sql(data_SQL, session_db, params={})
-logging.info(set(xmp_data))
-c_s_id = list(set(xmp_data))[1]
+xmp_data = xmp_data.set_index('cluster_session_id')
+val = xmp_data['cluster_session_id']
+logging.info(val)
+c_s_id = val
 
 results_db, results_table = connections.make_db_connection('cluster_results')
 conn = results_db.connect()
