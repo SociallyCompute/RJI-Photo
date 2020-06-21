@@ -65,15 +65,16 @@ logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBU
 epsilon = 150.5
 #total number of similar pictures to consider the picture a "core point" in DBSCAN
 minimum_points = 2
+
 im_mat, nm_list = build_image_matrix(config.MISSOURIAN_IMAGE_PATH)
 labels, clusters = cluster_dbscan(im_mat, epsilon, minimum_points)
 
 session_db_tuple = {}
-session_db, session_table = connections.make_db_connection('cluster_sessions')
 session_db_tuple['distance_between_points'] = epsilon
 session_db_tuple['minimum_points'] = minimum_points
 session_db_tuple['num_clusters'] = clusters
 
+session_db, session_table = connections.make_db_connection('cluster_sessions')
 result = session_db.execute(session_table.insert().values(session_db_tuple))
 
 session_db, session_table = connections.make_db_connection('cluster_sessions')
@@ -100,9 +101,9 @@ conn.execute(
     results_table.insert(),
     [
         dict(
-            cluster_session_id=c_s_id.item(),
+            cluster_session_id=c_s_id.item() if isinstance(labels[i], np.int64) else labels[i],
             photo_path=nm_list[i],
-            cluster_number=labels[i].item(),
+            cluster_number=labels[i].item() if isinstance(labels[i], np.int64) else labels[i],
         )
         for i in range(len(labels))
     ],
