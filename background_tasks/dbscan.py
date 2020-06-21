@@ -88,9 +88,11 @@ data_SQL = sqla.sql.text("""
 xmp_data = pandas.read_sql(data_SQL, session_db, params={})
 logging.info(xmp_data)
 xmp_data = xmp_data.set_index('cluster_session_id')
-val = xmp_data['cluster_session_id']
-logging.info(val)
-c_s_id = val
+# val = xmp_data['cluster_session_id']
+indices = xmp_data.index
+index_list = list(indices)
+logging.info(index_list[-1])
+c_s_id = index_list[-1]
 
 results_db, results_table = connections.make_db_connection('cluster_results')
 conn = results_db.connect()
