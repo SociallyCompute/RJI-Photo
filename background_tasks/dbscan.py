@@ -100,9 +100,9 @@ conn.execute(
     results_table.insert(),
     [
         dict(
-            cluster_session_id=c_s_id,
+            cluster_session_id=c_s_id.item(),
             photo_path=nm_list[i],
-            cluster_number=labels[i],
+            cluster_number=labels[i].item(),
         )
         for i in range(len(labels))
     ],

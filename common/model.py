@@ -208,14 +208,14 @@ class ModelBuilder:
                         loss.backward() #compute new gradients
                         optimizer.step() #update gradients
                         running_loss += loss.cpu().sum().item() #send loss tensor to cpu, then grab the value out of it
-                        indices.append(index)
+                        indices.append(index.flatten().tolist())
 
                         if self.classification == 'True':
                             max_vals, prediction = torch.max(output.data, 1) 
                             corr = (prediction == labels).cpu().sum().item()
                             num_correct += corr #gets tensor from comparing predictions and labels, sends to cpu, sums tensor, grabs value out of it
                             logging.info('epoch:{} batch: {} accuracy: {} loss: {} total num_correct: {}'.format(epoch, 
-                                i, (100* (corr/self.batch)), loss.cpu().item(), num_correct))
+                                i, (100 * (corr/self.batch)), loss.cpu().item(), num_correct))
                         else:
                             logging.info('epoch:{} batch: {} loss: {} total num_correct: {}'.format(epoch, 
                                 i, loss.cpu().item(), num_correct))
