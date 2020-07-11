@@ -97,6 +97,11 @@ c_s_id = index_list[-1]
 
 results_db, results_table = connections.make_db_connection('cluster_results')
 conn = results_db.connect()
+labels_count = len(labels)
+nm_list_count = len(nm_list)
+print("labels_count: {}\nnm_list_count: {}".format(labels_count, nm_list_count))
+print(labels)
+print("============")
 conn.execute(
     results_table.insert(),
     [
@@ -105,7 +110,7 @@ conn.execute(
             photo_path=nm_list[i],
             cluster_number=labels[i].item() if isinstance(labels[i], np.int64) else labels[i],
         )
-        for i in range(len(labels))
+        for i in range(labels_count)
     ],
 )
 
