@@ -106,9 +106,9 @@ conn.execute(
     results_table.insert(),
     [
         dict(
-            cluster_session_id=c_s_id.item() if isinstance(labels[i], np.int64) else labels[i],
+            cluster_session_id=int(c_s_id), #.astype(int), #.item() if isinstance(labels[i], np.int64) else c_s_id,
             photo_path=nm_list[i],
-            cluster_number=labels[i].item() if isinstance(labels[i], np.int64) else labels[i],
+            cluster_number=int(labels[i]), #.astype(int), #.item() if isinstance(labels[i], np.int64) else labels[i],
         )
         for i in range(labels_count)
     ],
