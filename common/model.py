@@ -3,6 +3,7 @@ import logging, os.path, sys, torch, warnings
 import matplotlib.pyplot as plt
 import sqlalchemy as sqla
 import torch.optim as optim
+import numpy as np
 
 from os import path
 from PIL import ImageFile
@@ -235,7 +236,7 @@ class ModelBuilder:
             db_tuple = {}
             db, train_table = connections.make_db_connection('training')
             db_tuple['te_dataset'] = self.dataset
-            db_tuple['te_learning_rate'] = float(learning_rate[0])
+            db_tuple['te_learning_rate'] = float(learning_rate[0]) if isinstance(learning_rate, np.ndarray) else float(learning_rate)
             db_tuple['te_momentum'] = mo
             db_tuple['te_model'] = self.model_name
             db_tuple['te_epoch'] = epoch
