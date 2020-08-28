@@ -1,4 +1,5 @@
 from sklearn.cluster import DBSCAN
+from sklearn.decomposition import PCA
 from sklearn import metrics
 import numpy as np
 import math, pandas
@@ -33,12 +34,15 @@ def build_image_matrix(image_path):
         ])
     image_list = []
     name_list = []
+    pca = PCA(n_components=30)
     for root, _, files in os.walk(image_path, topdown=True):
         for name in files:
             path = os.path.join(root, name)
             logging.info(name)
             if name.endswith('.JPG'):
-                image_list.append(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))).flatten())
+                pca_red_img = pca.fit_transform(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))))
+                # image_list.append(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))).flatten())
+                image_list.append(pca_red_img.flatten())
                 name_list.append(name)
     image_matrix = np.vstack(image_list) #done to comply with n_samples x n_features of DBSCAN
     # logging.info(image_matrix)

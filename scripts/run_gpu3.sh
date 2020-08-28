@@ -25,7 +25,7 @@ echo "### Starting at: $(date) ###"
 # module load cudnn/cudnn-7.1.4-cuda-9.0.176
 
 # Science goes here:
-modelname='June4_ava_30ep_MINI512_resnet_adam_regression'
+modelname='August25_ava_30ep_MINI512_resnet_adam_regression'
 dataset='ava'
 epochs='30'
 batch='512'

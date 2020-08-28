@@ -236,7 +236,7 @@ class ModelBuilder:
             db_tuple = {}
             db, train_table = connections.make_db_connection('training')
             db_tuple['te_dataset'] = self.dataset
-            db_tuple['te_learning_rate'] = float(learning_rate[0]) if isinstance(learning_rate, np.ndarray) else float(learning_rate)
+            db_tuple['te_learning_rate'] = float(learning_rate[0]) if isinstance(learning_rate, (np.ndarray, list)) else float(learning_rate)
             db_tuple['te_momentum'] = mo
             db_tuple['te_model'] = self.model_name
             db_tuple['te_epoch'] = epoch

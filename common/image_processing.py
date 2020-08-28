@@ -101,6 +101,50 @@ def get_ava_quality_labels(limit_num_pictures):
     return pic_label_dict
 
 
+def get_chosen_ava_quality_labels(limit_num_pictures, content_id):
+    """ Read .txt files from AVA dataset and write a dictionary mapping an image to a label
+    
+    :rtype: (dict: path->label) dictionary mapping string path to a specific image to int label
+    """
+    pic_label_dict = {}
+    mu = [0, 0, 0, 0, 0, 0, 0, 0]
+    std_dev = [0, 0, 0, 0, 0, 0, 0, 0]
+
+    f = open(config.AVA_QUALITY_LABELS_FILE, "r")
+    for i, line in enumerate(f):
+        if limit_num_pictures:
+            if i >= limit_num_pictures:
+                logging.info('Reached the developer specified line limit')
+                break
+        line_array = line.split()
+        if int(line_array[12]) == content_id or int(line_array[13]) == content_id:
+            picture_name = line_array[1]
+            aesthetic_values = [int(i) for i in ((line_array[2:])[:10])]
+            for i in range(0, 8): #8 is chosen because we have 8 groupings (1,2,3)/(2,3,4)/.../(8,9,10) 
+                total = (aesthetic_values[i]*1) + (aesthetic_values[i+1]*2) + (aesthetic_values[i+2]*3)
+                n = (aesthetic_values[i]) + (aesthetic_values[i+1]) + (aesthetic_values[i+2])
+                #print(aesthetic_values[i])
+                #print(aesthetic_values[i+1])
+                #print(aesthetic_values[i+2])
+                if n != 0:
+                    mu[i] = (total/n)
+                    sum_n = (((1-mu[i])**2) * aesthetic_values[i]) + (((2-mu[i])**2) * aesthetic_values[i+1]) + (((3-mu[i])**2) * aesthetic_values[i+2])
+                    std_dev[i] = math.sqrt(sum_n/n)
+                else:
+                    mu[i] = 0
+                    std_dev[i] = 0
+                
+                # aesthetic_values[i] = int(aesthetic_values[i])
+            # pic_label_dict[picture_name] = np.asarray(aesthetic_values).argmax()
+            med = median(std_dev)
+            red_mu = [mu[i] if std_dev[i] <= med else 0 for i in range(0, len(std_dev))]
+            index, value = max(enumerate(red_mu), key=operator.itemgetter(1))
+            # pic_label_dict[picture_name] = np.mean(np.asarray(aesthetic_values))
+            pic_label_dict[picture_name] = np.asarray(value + index)
+    # logging.info('label dictionary completed')
+    return pic_label_dict
+
+
 def get_ava_content_labels(limit_num_pictures):
     """ Similar to get_ava_labels but for classification purposes
     
