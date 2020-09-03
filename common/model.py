@@ -199,7 +199,7 @@ class ModelBuilder:
                         if self.classification == 'True':
                             labels = torch.cuda.LongTensor(labels) if torch.cuda.is_available() else torch.LongTensor(labels)
                         else:
-                            labels = torch.cuda.FloatTensor(labels) if torch.cuda.is_available() else torch.FloatTensor(labels)
+                            labels = torch.cuda.FloatTensor(labels.float()) if torch.cuda.is_available() else torch.FloatTensor(labels.float())
 
                         data = data.to(self.device)
 
@@ -209,7 +209,15 @@ class ModelBuilder:
                         loss.backward() #compute new gradients
                         optimizer.step() #update gradients
                         running_loss += loss.cpu().sum().item() #send loss tensor to cpu, then grab the value out of it
-                        indices.append(index.flatten().tolist())
+                        index_list = index.flatten().tolist()
+
+                        #ensure each index_list is the batch size to correctly insert Postgres arrays
+                        if len(index_list) != self.batch:
+                            diff = self.batch - len(index_list)
+                            for i in range(diff):
+                                index_list.append(-1)
+                        
+                        indices.append(index_list)
 
                         if self.classification == 'True':
                             max_vals, prediction = torch.max(output.data, 1) 

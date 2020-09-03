@@ -14,6 +14,8 @@ from sqlalchemy.orm import Session
 import sqlalchemy as sqla
 import pandas
 
+from torch import squeeze
+
 from torchvision import datasets, transforms
 
 sys.path.append(os.path.split(sys.path[0])[0])
@@ -26,27 +28,35 @@ def build_image_matrix(image_path):
     _transform = transforms.Compose([
             transforms.Resize(256),
             transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize(
-                mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225]
-            )
+            transforms.ToTensor()
+            # transforms.Normalize(
+            #     mean=[0.485, 0.456, 0.406],
+            #     std=[0.229, 0.224, 0.225]
+            # )
         ])
     image_list = []
     name_list = []
-    pca = PCA(n_components=30)
+    pca = PCA(n_components='mle')
     for root, _, files in os.walk(image_path, topdown=True):
         for name in files:
             path = os.path.join(root, name)
             logging.info(name)
             if name.endswith('.JPG'):
-                pca_red_img = pca.fit_transform(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))))
+                #saving image as greyscale so we can save as 2 dimensions rather than 3 for RGB
+                pil_img = Image.open(str(os.path.join(root,name))).convert('LA')
+                tra = squeeze(_transform(pil_img)) #get rid of dimensions with 1 -> resizing to 224 x 224 instead of 1 x 224 x 224
+                # print(tra.shape)
+                # pca_red_img = pca.fit_transform(np.array(tra))
                 # image_list.append(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))).flatten())
-                image_list.append(pca_red_img.flatten())
+                # image_list.append(pca_red_img.flatten())
+
+                image_list.append(np.array(tra).flatten())
                 name_list.append(name)
     image_matrix = np.vstack(image_list) #done to comply with n_samples x n_features of DBSCAN
+    pca_reduced = pca.fit_transform(image_matrix)
     # logging.info(image_matrix)
-    return image_matrix, name_list
+    print(pca.n_components_)
+    return pca_reduced, name_list
 
 def cluster_dbscan(image_matrix, eps, minPts):
     #need to ensure image_matrix is (n_samples, n_features)
@@ -66,7 +76,7 @@ def cluster_dbscan(image_matrix, eps, minPts):
 
 logging.basicConfig(filename='logs/dbscan.log', filemode='w', level=logging.DEBUG)
 #how close each picture is to each other (lower is closer, higher is farther)
-epsilon = 150.5
+epsilon = 20
 #total number of similar pictures to consider the picture a "core point" in DBSCAN
 minimum_points = 2
 
