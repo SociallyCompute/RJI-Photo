@@ -74,6 +74,20 @@ class ConvolutionalNSS:
         right_img = img[half_width:, :, :]
         return (left_img, right_img)
 
+    @staticmethod
+    def luminance_calculation(image):
+        """
+        Calculate luminance pixel by pixel
+
+        :param image: (ndarray) image to calculate from 3 channel image to 1 channel matrix
+        """
+        width, height, channel = image.shape
+        lum_matrix = np.zeros((width, height))
+        for i in width:
+            for j in height:
+                lum_matrix[i][j] = (0.2126*image[i][j][0] + 0.7152*image[i][j][1] + 0.0722*image[i][j][2])
+        return lum_matrix
+
     def _generate_blank_mask(self):
         """
         Generate a mask to travel over each image. Defined as a perfect square
