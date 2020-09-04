@@ -250,7 +250,7 @@ class ModelBuilder:
             db_tuple['te_epoch'] = epoch
             db_tuple['te_batch_size'] = self.batch
             db_tuple['te_optimizer'] = 'adam'
-            db_tuple['te_indices'] = indices
+            # db_tuple['te_indices'] = indices
             indices = []
             training_loss[epoch] = running_loss/num_pictures
             db_tuple['te_loss'] = training_loss[epoch]
