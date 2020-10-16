@@ -1,6 +1,8 @@
 from PIL import Image
 import os
 import numpy as np
+import logging
+from multiprocessing import Pool
 
 class ConvolutionalNSS:
     """
@@ -31,12 +33,60 @@ class ConvolutionalNSS:
         static to generalize for any use to get an nparray from an image path
 
         :param img_path: (String) full path to image
-        :param rgb: (String) identify if RGB image by setting to 'RGB'. Otherwise assumed black/white
+        :param rgb: OPTIONAL (String) identify if RGB image by setting to 'RGB'. Otherwise assumed black/white
         :rtype img_arr: (ndarray) matrix describing image
         """
         img = Image.open(img_path)
         img.convert(rgb) if rgb == 'RGB' else img.convert('LA')
         return np.array(img)
+
+    @staticmethod
+    def horizontal_image_split(img):
+        """
+        Split provided image into two of the same sized sub-images one on top of the other
+
+        :param img: (ndarray) image matrix to split
+        :rtype imgs: (ndarray, ndarray) returned tuple of split images
+        """
+        if img.ndims == 3:
+            width, height, channels = img.shape
+        else:
+            width, height = img.shape
+        half_height = (height/2)
+        top_img = img[:, 0:half_height, :]
+        bot_img = img[:, half_height:, :]
+        return (top_img, bot_img)
+
+    @staticmethod
+    def vertical_image_split(img):
+        """
+        Split the provided image into two of the same sized sub-images one to the left of the other
+
+        :param img: (ndarray) image matrix to split
+        :rtype imgs: (ndarray, ndarray) returned tuple of split images
+        """
+        if img.ndims == 3:
+            width, height, channels = img.shape
+        else:
+            width, height = img.shape
+        half_width = (width/2)
+        left_img = img[0:half_width, :, :]
+        right_img = img[half_width:, :, :]
+        return (left_img, right_img)
+
+    @staticmethod
+    def luminance_calculation(image):
+        """
+        Calculate luminance pixel by pixel
+
+        :param image: (ndarray) image to calculate from 3 channel image to 1 channel matrix
+        """
+        width, height, channel = image.shape
+        lum_matrix = np.zeros((width, height))
+        for i in width:
+            for j in height:
+                lum_matrix[i][j] = (0.2126*image[i][j][0] + 0.7152*image[i][j][1] + 0.0722*image[i][j][2])
+        return lum_matrix
 
     def _generate_blank_mask(self):
         """
@@ -87,13 +137,14 @@ class ConvolutionalNSS:
             height = self.image_dims[1] if self.image_dims[1] < height else height
         return (width, height)
 
-    def generate_convolution_image(self, img):
+    def generate_convolution_image(self, img, mask=self.mask):
         """
         travel across the image and create a convolutional image. Start with center of mask
         in top left of image and travel across where last convolution is center on top right.
         Restart from 2nd row on left all the way down to bottom right.
 
         :param img: (ndarray) numpy array describing image
+        :param mask: OPTIONAL (ndarray) numpy array representing a mask. Default to object mask
         :rtype conv_img: (ndarray) numpy array describing convolution performed on image
         """
         sum_total = 0
@@ -107,7 +158,7 @@ class ConvolutionalNSS:
                         for x in range(mask_dim):
                             for y in range(mask_dim):
                                 if (img[i])[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y] is not None:
-                                    sum_total += (self.mask[x][y] * (img[i])[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y])
+                                    sum_total += (mask[x][y] * (img[i])[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y])
                         conv_img[i][j][k] = sum_total
         else:
             width, height = img.shape
@@ -116,18 +167,40 @@ class ConvolutionalNSS:
                     for x in range(mask_dim):
                         for y in range(mask_dim):
                             if img[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y] is not None:
-                                sum_total += (self.mask[x][y] * img[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y])
+                                sum_total += (mask[x][y] * img[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y])
                     conv_img[j][k] = sum_total
 
         return conv_img
 
-    def generate_convolution_image_list(self):
+    def generate_convolution_image_list(self, num_sub_images=1):
         """
         Build the list of convolution mappings
 
+        :param num_sub_images: OPTIONAL (int) number of subimages to split into. Default is 1 (no splitting). Otherwise must be even number
         :rtype conv_list: (list) contains convolutional mappings of each of the images specified by image_path_list
         """
         conv_list = []
         for im_path in self.image_path_list:
-            conv_list.append(self.generate_convolution_image(generate_nparray_from_path(im_path, 'RGB')))
+            if num_sub_images != 1 and num_sub_images % 2 != 0:
+                logging.warning('Invalid number of sub images. Value must be 1 or even')
+                conv_list.append(self.generate_convolution_image(generate_nparray_from_path(im_path, 'RGB')))
+            elif num_sub_images == 1:
+                conv_list.append(self.generate_convolution_image(generate_nparray_from_path(im_path, 'RGB')))
+            else:
+                sub_list = []
+                for i in range(num_sub_images):
+                    if i % 2 == 0:
+                        v_tup = vertical_image_split(generate_nparray_from_path(im_path, 'RGB'))
+                    else:
+                        h_tup = horizontal_image_split(generate_nparray_from_path(im_path, 'RGB'))
+                    sub_list.extend([v_tup[0], v_tup[1], h_tup[0], h_tup[1]])
+                
+                pool = Pool()
+                conv_list.extend(pool.map(self._concurrent_generate_conv_image_list(sub_list)))
         return conv_list
+
+    def _concurrent_generate_conv_image_list(self, image):
+        """
+        Concurrent image for generating convolutional images
+        """
+        return self.generate_convolution_image(image)
