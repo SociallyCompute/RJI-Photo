@@ -10,6 +10,7 @@ from os import path
 from PIL import Image, ImageFile
 from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
+from skimage import feature
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 warnings.filterwarnings('ignore')
@@ -230,3 +231,7 @@ def build_dataloaders(model, class_dict):
     model.model.to(model.device)
     logging.info('ResNet50 is running on {}'.format(model.device))
     return train_loader, test_loader
+
+def canny_edge_detection(image, sigma=None):
+    gray_image = np.dot(image[...,:3], [0.2989, 0.5870, 0.1140]) if image.ndim == 3 else image
+    return features.canny(gray_image)

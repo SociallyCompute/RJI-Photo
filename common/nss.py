@@ -22,9 +22,9 @@ class ConvolutionalNSS:
         self.root = root
         self.mask_dim = mask_dim if mask_dim % 2 == 0 else 3
         self.mask_center = (mask_dim/2, mask_dim/2)
-        self.mask = _generate_blank_mask()
-        self.image_path_list = _generate_image_paths_list()
-        self.image_dims = generate_image_dims(image_path_list[0])
+        self.mask = self._gaussian_kernel()
+        self.image_path_list = self._generate_image_paths_list()
+        self.image_dims = self.generate_image_dims(self.image_path_list[0])
 
     @staticmethod
     def generate_nparray_from_path(img_path, rgb=None):
@@ -49,9 +49,9 @@ class ConvolutionalNSS:
         :rtype imgs: (ndarray, ndarray) returned tuple of split images
         """
         if img.ndims == 3:
-            width, height, channels = img.shape
+            _, height, _ = img.shape #width, height, channels
         else:
-            width, height = img.shape
+            _, height = img.shape #width
         half_height = (height/2)
         top_img = img[:, 0:half_height, :]
         bot_img = img[:, half_height:, :]
@@ -66,9 +66,9 @@ class ConvolutionalNSS:
         :rtype imgs: (ndarray, ndarray) returned tuple of split images
         """
         if img.ndims == 3:
-            width, height, channels = img.shape
+            width, _, _ = img.shape #width, height, channels
         else:
-            width, height = img.shape
+            width, _ = img.shape #width, height
         half_width = (width/2)
         left_img = img[0:half_width, :, :]
         right_img = img[half_width:, :, :]
@@ -81,7 +81,7 @@ class ConvolutionalNSS:
 
         :param image: (ndarray) image to calculate from 3 channel image to 1 channel matrix
         """
-        width, height, channel = image.shape
+        width, height, _ = image.shape #width, height, channel
         lum_matrix = np.zeros((width, height))
         for i in width:
             for j in height:
@@ -104,6 +104,10 @@ class ConvolutionalNSS:
         np_arr = np.asarray(t2)
         return np_arr
 
+    def _gaussian_kernel(self):
+        self.mask_dim = 3
+        return((1/16) * np.array([[1,2,1],[2,4,2],[1,2,1]]))
+
     def _generate_image_paths_list(self):
         """
         Simply take the root path and recursively iterate through adding
@@ -118,8 +122,8 @@ class ConvolutionalNSS:
                 for fname in sorted(fnames):
                     path = os.path.join(r, fname)
                     if path.lower().endswith(('.png', '.jpg')):
-                        image_path_list.append(path)
-        return image_path_list
+                        self.image_path_list.append(path)
+        return self.image_path_list
 
     def generate_image_dims(self, img_path):
         """
@@ -137,7 +141,7 @@ class ConvolutionalNSS:
             height = self.image_dims[1] if self.image_dims[1] < height else height
         return (width, height)
 
-    def generate_convolution_image(self, img, mask=self.mask):
+    def generate_convolution_image(self, img, mask=None):
         """
         travel across the image and create a convolutional image. Start with center of mask
         in top left of image and travel across where last convolution is center on top right.
@@ -147,6 +151,9 @@ class ConvolutionalNSS:
         :param mask: OPTIONAL (ndarray) numpy array representing a mask. Default to object mask
         :rtype conv_img: (ndarray) numpy array describing convolution performed on image
         """
+        if mask is None:
+            mask = self.mask
+
         sum_total = 0
         conv_img = np.zeros(img.shape)
 
@@ -155,8 +162,8 @@ class ConvolutionalNSS:
                 width, height = img[i].shape
                 for j in range(width):
                     for k in range(height):
-                        for x in range(mask_dim):
-                            for y in range(mask_dim):
+                        for x in range(self.mask_dim):
+                            for y in range(self.mask_dim):
                                 if (img[i])[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y] is not None:
                                     sum_total += (mask[x][y] * (img[i])[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y])
                         conv_img[i][j][k] = sum_total
@@ -164,8 +171,8 @@ class ConvolutionalNSS:
             width, height = img.shape
             for j in range(width):
                 for k in range(height):
-                    for x in range(mask_dim):
-                        for y in range(mask_dim):
+                    for x in range(self.mask_dim):
+                        for y in range(self.mask_dim):
                             if img[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y] is not None:
                                 sum_total += (mask[x][y] * img[(j-self.mask_center[0])+x][(k-self.mask_center[1])+y])
                     conv_img[j][k] = sum_total
@@ -183,20 +190,20 @@ class ConvolutionalNSS:
         for im_path in self.image_path_list:
             if num_sub_images != 1 and num_sub_images % 2 != 0:
                 logging.warning('Invalid number of sub images. Value must be 1 or even')
-                conv_list.append(self.generate_convolution_image(generate_nparray_from_path(im_path, 'RGB')))
+                conv_list.append(self.generate_convolution_image(self.generate_nparray_from_path(im_path, 'RGB')))
             elif num_sub_images == 1:
-                conv_list.append(self.generate_convolution_image(generate_nparray_from_path(im_path, 'RGB')))
+                conv_list.append(self.generate_convolution_image(self.generate_nparray_from_path(im_path, 'RGB')))
             else:
                 sub_list = []
                 for i in range(num_sub_images):
                     if i % 2 == 0:
-                        v_tup = vertical_image_split(generate_nparray_from_path(im_path, 'RGB'))
+                        v_tup = self.vertical_image_split(self.generate_nparray_from_path(im_path, 'RGB'))
                     else:
-                        h_tup = horizontal_image_split(generate_nparray_from_path(im_path, 'RGB'))
+                        h_tup = self.horizontal_image_split(self.generate_nparray_from_path(im_path, 'RGB'))
                     sub_list.extend([v_tup[0], v_tup[1], h_tup[0], h_tup[1]])
                 
                 pool = Pool()
-                conv_list.extend(pool.map(self._concurrent_generate_conv_image_list(sub_list)))
+                conv_list.extend(pool.map(self._concurrent_generate_conv_image_list, sub_list))
         return conv_list
 
     def _concurrent_generate_conv_image_list(self, image):

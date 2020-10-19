@@ -23,6 +23,7 @@ sys.path.append(os.path.split(sys.path[0])[0])
 from common import config
 from common import misc
 from common import connections
+from common import image_processing
 
 def build_image_matrix(image_path):
     _transform = transforms.Compose([
@@ -45,12 +46,7 @@ def build_image_matrix(image_path):
                 #saving image as greyscale so we can save as 2 dimensions rather than 3 for RGB
                 pil_img = Image.open(str(os.path.join(root,name))).convert('LA')
                 tra = squeeze(_transform(pil_img)) #get rid of dimensions with 1 -> resizing to 224 x 224 instead of 1 x 224 x 224
-                # print(tra.shape)
-                # pca_red_img = pca.fit_transform(np.array(tra))
-                # image_list.append(np.array(_transform(Image.open(str(os.path.join(root, name))).convert('RGB'))).flatten())
-                # image_list.append(pca_red_img.flatten())
-
-                image_list.append(np.array(tra).flatten())
+                image_list.append(image_processing.canny_edge_detection(np.array(tra)).flatten())
                 name_list.append(name)
     image_matrix = np.vstack(image_list) #done to comply with n_samples x n_features of DBSCAN
     pca_reduced = pca.fit_transform(image_matrix)
