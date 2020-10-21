@@ -13,11 +13,37 @@ from torch import nn
 from torch import optim
 from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
+from torch.utils.data import Dataset, Dataloader
 
 # no one likes irrelevant warnings
 import warnings  
 import os
 warnings.filterwarnings('ignore')
+
+"""
+https://pytorch.org/tutorials/recipes/recipes/custom_dataset_transforms_loader.html
+"""
+class AVAImagesDataset(Dataset):
+    def __init__(self, labels_file, root_dir, transform=None):
+        self.ava_frame = pandas.read_csv(labels_file, sep=" ", header=None)
+        self.root_dir = root_dir
+        self.tranform = transform
+
+    def __len__(self):
+        return len(self.ava_frame)
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        img_name = os.path.join(self.root_dir, self.ava_frame.iloc[idx, 0])
+        image = io.imread(img_name)
+        labels = np.array([self.ava_frame[idx, 2:11]])
+        labels = labels.astype('float').reshape(-1, 2)
+        sample = {'image': image, 'labels': labels}
+        if self.transform:
+            sample = self.transform(sample)
+        return sample
 
 """
 AdjustedDataset
