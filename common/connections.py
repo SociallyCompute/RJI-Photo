@@ -8,86 +8,7 @@ from sqlalchemy.orm import relationship
 
 import sys, os
 sys.path.append(os.path.split(sys.path[0])[0])
-from common import config 
-
-# class ClusterResults(Base):
-#     __tablename__ = 'cluster_results'
-
-#     cluster_result_id = Column(BigInteger, primary_key=True)
-#     cluster_session_id = Column(ForeignKey('cluster_session.cluster_session_id'))
-#     photo_path = Column(String)
-#     cluster_number = Column(Integer)
-#     date_collection_time = Column(TIMESTAMP)
-
-#     cluster_session = relationship("ClusterSession", back_populates="cluster_results")
-
-# class ClusterSession(Base):
-#     __tablename__ = 'cluster_session'
-
-#     cluster_session_id = Column(BigInteger, primary_key=True)
-#     distance_between_points = Column(Float)
-#     minimum_points = Column(Integer)
-#     data_collection_time = Column(TIMESTAMP)
-
-#     cluster_results = relationship("ClusterResults", back_populates="cluster_session")
-
-# class Evaluation(Base):
-#     __tablename__ = 'evaluation'
-
-#     photo_id = Column(BigInteger, primary_key=True)
-#     photo_path = Column(String)
-#     model_score_1 = Column(Float)
-#     model_score_2 = Column(Float)
-#     model_score_3 = Column(Float)
-#     model_score_4 = Column(Float)
-#     model_score_5 = Column(Float)
-#     model_score_6 = Column(Float)
-#     model_score_7 = Column(Float)
-#     model_score_8 = Column(Float)
-#     model_score_9 = Column(Float)
-#     model_score_10 = Column(Float)
-#     data_collection_time = Column(TIMESTAMP)
-#     training_epoch_id = Column(Integer)
-#     model_scores = Column(Float)
-
-# class Training(Base):
-#     __tablename__ = 'training'
-
-#     training_epoch_id = Column(BigInteger, primary_key=True)
-#     te_dataset = Column(String)
-#     te_learning_rate = Column(Float)
-#     te_momentum = Column(Float)
-#     te_accuracy = Column(Float)
-#     te_model = Column(String)
-#     te_epoch = Column(Integer)
-#     te_batch_size = Column(Integer)
-#     te_optimizer = Column(String)
-#     te_indices = Column(Integer)
-#     data_collection_time = Column(TIMESTAMP)
-#     te_loss = Column(Float)
-
-# class XmpColorClasses(Base):
-#     __tablename__ = 'xmp_color_classes'
-
-#     xmp_color_class_id = Column(BigInteger, primary_key=True)
-#     photo_path = Column(String)
-#     color_class = Column(Integer)
-#     os_walk_index = Column(Integer)
-#     data_collection_date = Column(TIMESTAMP)
-
-
-# def make_db_connection():
-#     logging.info("Connecting to database: {}".format(config.DB_STR))
-#     dbschema = 'rji'
-#     db = s.create_engine(config.DB_STR, poolclass=s.pool.NullPool, pool_pre_ping=True,
-#         connect_args={'options': '-csearch_path={}'.format(dbschema)})
-
-#     Base = automap_base()
-
-#     Base.prepare()
-#     logging.info("Database connection successful")
-#     return db
-
+from common import config, datasets, connections 
 
 def make_db_connection(table_name):
     """ Makes a connection to the database used to store each of the testing values. Allows for 
@@ -112,3 +33,42 @@ def make_db_connection(table_name):
 
     logging.info("Database connection successful")
     return db, r_table
+
+def insert_xmp_color_class():
+    """ 
+        Write string containing Missourian labels to .txt files                
+        TODO: BEFORE USE NEED TO UPDATE PER NEW PATHS
+    """
+    logging.basicConfig(filename='fill_db.log', filemode='w', level=logging.DEBUG)
+    db, xmp_table = connections.make_db_connection('xmp_color_classes')
+    i = 0
+    logging.info('path: {}'.format(config.MISSOURIAN_IMAGE_PATH))
+    for root, _, files in os.walk(config.MISSOURIAN_IMAGE_PATH, topdown=True):
+        logging.info('root: {}\nfiles: {}'.format(root, files))
+        for name in files:
+            logging.info('name: {}\ntype: {}'.format(name, type(name)))
+            if not name.endswith('.JPG') and not name.endswith('.PNG'):
+                continue
+            try:
+                with open(os.path.join(root, name), 'rb') as f:
+                    database_tuple = {}
+                    img_str = str(f.read())
+                    xmp_start = img_str.find('photomechanic:ColorClass')
+                    xmp_end = img_str.find('photomechanic:Tagged')
+                    if xmp_start != xmp_end and xmp_start != -1:
+                        xmp_str = img_str[xmp_start:xmp_end]
+                        database_tuple['color_class'] = int(xmp_str[26])
+                        database_tuple['photo_path'] = str(os.path.join(root, name))
+                        database_tuple['os_walk_index'] = i
+                    else:
+                        database_tuple['color_class'] = 0
+                        database_tuple['photo_path'] = str(os.path.join(root, name))
+                        database_tuple['os_walk_index'] = i
+                    i+=1
+                    result = db.execute(xmp_table.insert().values(database_tuple))
+            except Exception as e:
+                logging.info('Ran into error for {}\n...\nMoving on.\n'.format(e))
+
+    logging.info('Finished writing xmp color classes to database')
+    # labels_file.close()
+    # none_file.close()

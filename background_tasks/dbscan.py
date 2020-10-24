@@ -21,7 +21,6 @@ from torchvision import datasets, transforms
 sys.path.append(os.path.split(sys.path[0])[0])
 
 from common import config
-from common import misc
 from common import connections
 from common import image_processing
 
