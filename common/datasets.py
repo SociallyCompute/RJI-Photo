@@ -13,46 +13,42 @@ from torch import nn
 from torch import optim
 from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
+from torch.utils.data import Dataset, Dataloader
 
 # no one likes irrelevant warnings
 import warnings  
 import os
 warnings.filterwarnings('ignore')
 
-class ImageFolderWithPaths(datasets.ImageFolder):
-    """Custom dataset that includes image file paths. Extends
-    torchvision.datasets.ImageFolder
-    """
-    # override the __getitem__ method. this is the method that dataloader calls
-    def __getitem__(self, index):
-        # this is what ImageFolder normally returns 
-        original_tuple = super(ImageFolderWithPaths, self).__getitem__(index)
-        # the image file path
-        path = self.imgs[index][0]
-        # make a new tuple that includes original and the path
-        tuple_with_path = (original_tuple + (path,))
-        #print(tuple_with_path)
-        return tuple_with_path
+"""
+October 22, 2020
+https://pytorch.org/tutorials/recipes/recipes/custom_dataset_transforms_loader.html
+"""
+class AVAImagesDataset(Dataset):
+    def __init__(self, csv_file, root_dir, transform=None):
+        self.ava_frame = pd.read_csv(csv_file, sep=" ", header=None)
+        self.root_dir = root_dir
+        self.transform = transform
 
-class ImageFolderWithPathsAndRatings(datasets.ImageFolder):
-    """Custom dataset that includes image file paths. Extends
-    torchvision.datasets.ImageFolder
-    """
-    # override the __getitem__ method. this is the method that dataloader calls
-    def __getitem__(self, index):
-        # this is what ImageFolder normally returns 
-        original_tuple = super(ImageFolderWithPathsAndRatings, self).__getitem__(index)
-        # the image file path
-        path = self.imgs[index][0]
-        # make a new tuple that includes original and the path
-        tuple_with_path = (original_tuple + (path,))
-#         return tuple_with_path
-        # set rating
-        try:
-            tuple_with_path_and_rating = (tuple_with_path + (ratings[index],))
-        except:
-            tuple_with_path_and_rating = (tuple_with_path + (torch.FloatTensor([0]),))
-        return tuple_with_path_and_rating
+    def __len__(self):
+        return len(self.ava_frame)
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        img_name = os.path.join(self.root_dir, str(self.ava_frame.iloc[idx, 0]) + '.jpg')
+        if not os.path.isfile(img_name):
+            return None
+        image = Image.open(img_name).convert('RGB')
+        ratings = np.array([self.ava_frame.iloc[idx, 2:12]])
+        ratings = ratings.astype('float').reshape(-1, 10)
+        if self.transform:
+            image = self.transform(image)
+            ratings = torch.from_numpy(ratings)
+        sample = {'image': image, 'ratings': ratings}
+
+        return sample
 
 """
 AdjustedDataset
@@ -111,7 +107,7 @@ class AdjustedDataset(datasets.DatasetFolder):
             sample = self.transform(sample)#.to(self.device)
         if self.target_transform is not None:
             target = self.target_transform(target)#.to(self.device)
-        return sample, target
+        return sample, target, index
 
     
     def make_dataset(self, root, class_to_idx):
@@ -134,7 +130,27 @@ class AdjustedDataset(datasets.DatasetFolder):
                     and self.dataset == 'ava') or (path.endswith('.JPG'))):
                     
                     item = (path, class_to_idx[fname.split('.')[0]])
-                    images.append(item)
+    lass AVAImagesDataset(Dataset):
+    def __init__(self, labels_file, root_dir, transform=None):
+        self.ava_frame = pandas.read_csv(labels_file, sep=" ", header=None)
+        self.root_dir = root_dir
+        self.tranform = transform
+
+    def __len__(self):
+        return len(self.ava_frame)
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        img_name = os.path.join(self.root_dir, self.ava_frame.iloc[idx, 0])
+        image = io.imread(img_name)
+        labels = np.array([self.ava_frame[idx, 2:11]])
+        labels = labels.astype('float').reshape(-1, 2)
+        sample = {'image': image, 'labels': labels}
+        if self.transform:
+            sample = self.transform(sample)
+        return sample                images.append(item)
 
         return images
 
