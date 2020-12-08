@@ -32,14 +32,21 @@ class AVAImagesDataset(Dataset):
         if not os.path.isfile(img_name):
             return None
         image = Image.open(img_name).convert('RGB')
-        ratings = np.array([self.ava_frame.iloc[idx, 2:12]])
-        ratings = ratings.astype('float').reshape(-1, 10)
-        # print(ratings)
+        # classes = np.array([self.ava_frame.iloc[idx, 2:12]])
+        classes_txt = self.ava_frame.iloc[idx, 12:14]
+        classes = np.zeros((66))
+        # print(classes_txt)
+        for c in classes_txt:
+            # print(c)
+            if c != 0:
+                classes[(int(c) - 1)] = 1
+        classes = classes.astype('float').reshape(-1, 66)
+        # print(classes)
         if self.transform:
             image = self.transform(image)
-            ratings = torch.from_numpy(ratings)
-            # print(ratings)
-        sample = {'image': image, 'ratings': ratings}
+            classes = torch.from_numpy(classes)
+            # print(classes)
+        sample = {'image': image, 'classes': classes}
 
         return sample
 
@@ -61,7 +68,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
         # Iterate over data.
         for batch in dataloader:
             inputs = batch['image'].to(device)
-            labels = torch.flatten(batch['ratings'].to(device), start_dim=1)
+            labels = torch.flatten(batch['classes'].to(device), start_dim=1)
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -92,9 +99,9 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
             "train", epoch_loss, epoch_acc))
 
         # deep copy the model
-        # if phase == 'val' and epoch_acc > best_acc:
-        #     best_acc = epoch_acc
-        #     best_model_wts = copy.deepcopy(model.state_dict())
+        if epoch_acc > best_acc:
+            best_acc = epoch_acc
+            best_model_wts = copy.deepcopy(model.state_dict())
 
         print()
 
@@ -129,7 +136,7 @@ def visualize_model(model, num_images=6):
     with torch.no_grad():
         for i, batch in enumerate(dataloader):
             inputs = batch['image'].to(device)
-            labels = batch['ratings'].to(device)
+            labels = batch['classes'].to(device)
 
             outputs = model(inputs)
             _, preds = torch.max(outputs, 1)
@@ -138,7 +145,7 @@ def visualize_model(model, num_images=6):
                 images_so_far += 1
                 ax = plt.subplot(num_images//2, 2, images_so_far)
                 ax.axis('off')
-                ax.set_title('predicted: {}'.format(preds[j]))
+                ax.set_title('predicted: {}'.format(preds[j] + 1))
                 imshow(inputs.cpu().data[j])
 
                 if images_so_far == num_images:
@@ -166,30 +173,37 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 # Get a batch of training data
 batch = next(iter(dataloader))
-# print(batch['ratings'])
+# print(batch['classes'])
 
 # Make a grid from batch
 out = torchvision.utils.make_grid(batch['image'])
 
 model_ft = models.resnet50(pretrained=True)
+for param in model_ft.parameters():
+    param.requires_grad = False
 num_ftrs = model_ft.fc.in_features
 # Here the size of each output sample is set to 2.
 # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
-model_ft.fc = nn.Linear(num_ftrs, 10)
+# model_ft.fc = nn.Linear(num_ftrs, 10)
+model_ft.fc = nn.Linear(num_ftrs, 66)
+
+model_ft.load_state_dict(torch.load("Dec1_r50_10ep_classifier.pt"))
+for param in model_ft.parameters():
+    param.requires_grad = True
 
 model_ft = model_ft.to(device)
 
 criterion = nn.CrossEntropyLoss()
 
 # Observe that all parameters are being optimized
-optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.001, momentum=0.9)
+optimizer_ft = optim.SGD(model_ft.parameters(), lr=0.01, momentum=0.9)
 
 # Decay LR by a factor of 0.1 every 7 epochs
 exp_lr_scheduler = lr_scheduler.StepLR(optimizer_ft, step_size=7, gamma=0.1)
 
-model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=5)
+model_ft = train_model(model_ft, criterion, optimizer_ft, exp_lr_scheduler, num_epochs=50)
+torch.save(model_ft.state_dict(), "Dec1_r50_25ep_full_classifier.pt")
 
 visualize_model(model_ft)
-
 
 imshow(out, title="class list")

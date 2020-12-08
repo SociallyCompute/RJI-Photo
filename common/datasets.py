@@ -13,7 +13,7 @@ from torch import nn
 from torch import optim
 from torch.utils.data.sampler import SubsetRandomSampler
 from torchvision import datasets, transforms
-from torch.utils.data import Dataset, Dataloader
+from torch.utils.data import Dataset
 
 # no one likes irrelevant warnings
 import warnings  
@@ -130,38 +130,15 @@ class AdjustedDataset(datasets.DatasetFolder):
                     and self.dataset == 'ava') or (path.endswith('.JPG'))):
                     
                     item = (path, class_to_idx[fname.split('.')[0]])
-    lass AVAImagesDataset(Dataset):
-    def __init__(self, labels_file, root_dir, transform=None):
-        self.ava_frame = pandas.read_csv(labels_file, sep=" ", header=None)
-        self.root_dir = root_dir
-        self.tranform = transform
 
-    def __len__(self):
-        return len(self.ava_frame)
-
-    def __getitem__(self, idx):
-        if torch.is_tensor(idx):
-            idx = idx.tolist()
-
-        img_name = os.path.join(self.root_dir, self.ava_frame.iloc[idx, 0])
-        image = io.imread(img_name)
-        labels = np.array([self.ava_frame[idx, 2:11]])
-        labels = labels.astype('float').reshape(-1, 2)
-        sample = {'image': image, 'labels': labels}
-        if self.transform:
-            sample = self.transform(sample)
-        return sample                images.append(item)
-
-        return images
-
-    """
-    pil_loader
-        Input:
-            full_path: (string) path to image for loading
-        Output:
-            RGB PIL image type
-    """
-    def pil_loader(self, full_path):
-        image = Image.open(full_path)
-        image = image.convert('RGB')
-        return image
+"""
+pil_loader
+    Input:
+        full_path: (string) path to image for loading
+    Output:
+        RGB PIL image type
+"""
+def pil_loader(self, full_path):
+    image = Image.open(full_path)
+    image = image.convert('RGB')
+    return image

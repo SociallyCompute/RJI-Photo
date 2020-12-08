@@ -160,4 +160,4 @@ def build_dataloaders(model, class_dict):
 
 def canny_edge_detection(image, sigma=None):
     gray_image = np.dot(image[...,:3], [0.2989, 0.5870, 0.1140]) if image.ndim == 3 else image
-    return features.canny(gray_image)
+    return feature.canny(gray_image)
