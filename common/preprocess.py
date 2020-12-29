@@ -13,9 +13,13 @@ def convert_dataset():
     labels = labels.set_index(1)
     print(labels)
     for _,f in enumerate(os.listdir(path_to_images)):
-        idx = int(f.split('.')[0])
-        img_array = np.array(Image.open(path_to_images + '/' + f))
-        lab_array = np.array((labels.loc[idx])[1:11])
-        np.savez('/media/matt/New Volume/ava/np_files/' + str(idx), x=img_array, y=lab_array)
+        try:
+            idx = int(f.split('.')[0])
+            img_array = np.array(Image.open(path_to_images + '/' + f))
+            lab_array = np.array((labels.loc[idx])[1:11])
+            np.savez('/media/matt/New Volume/ava/np_files/' + str(idx), x=img_array, y=lab_array)
+        except Exception as ex:
+            print(f)
+            print(ex)
 
 convert_dataset()
