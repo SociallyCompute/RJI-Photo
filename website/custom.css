@@ -1,0 +1,16 @@
+.header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.row{
+    width: 100%;
+}
+
+.item{
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
