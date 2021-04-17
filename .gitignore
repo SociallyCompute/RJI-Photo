@@ -7,6 +7,7 @@ libraries/
 
 connect.sh
 db_config.py
+models/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -16,6 +17,7 @@ __pycache__/
 
 # Ignore model classes because they are huge
 *.pt
+*.pth
 
 # VSCode
 .vscode/
