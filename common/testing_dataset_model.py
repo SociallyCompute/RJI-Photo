@@ -17,48 +17,6 @@ from torchvision import transforms, utils, models
 plt.ion()
 
 """
-AVA classification
-"""
-# class AVAImagesDataset(Dataset):
-#     def __init__(self, csv_file, root_dir, transform=None):
-#         self.ava_frame = pd.read_csv(csv_file, sep=" ", header=None)
-#         self.root_dir = root_dir
-#         self.transform = transform
-
-#     def __len__(self):
-#         return len(self.ava_frame)
-
-#     def __getitem__(self, idx):
-#         if torch.is_tensor(idx):
-#             idx = idx.tolist()
-
-#         # img_name = os.path.join(self.root_dir, str(self.ava_frame.iloc[idx, 0]) + '.jpg')
-#         pre_string = '20170918_nurevabullyingprevention_nc_00' if (idx+1) < 10 else '20170918_nurevabullyingprevention_nc_0'
-#         img_name = os.path.join(self.root_dir, pre_string + str(idx+1) + '.JPG')
-        
-#         if not os.path.isfile(img_name):
-#             print(img_name + ' does not exist!')
-#             return None
-#         image = Image.open(img_name).convert('RGB')
-#         classes = np.array([self.ava_frame.iloc[idx, 2:12]])
-#         # classes_txt = self.ava_frame.iloc[idx, 12:14]
-#         # classes = np.zeros((66))
-#         # print(classes_txt)
-#         # for c in classes_txt:
-#             # print(c)
-#             # if c != 0:
-#                 # classes[(int(c) - 1)] = 1
-#         classes = classes.astype('float').reshape(-1, 10)
-#         # print(classes)
-#         if self.transform:
-#             image = self.transform(image)
-#             classes = torch.from_numpy(classes)
-#             # print(classes)
-#         sample = {'image': image, 'classes': classes}
-
-#         return sample
-
-"""
 AVA Regression
 """
 class AVAImagesDataset(Dataset):
