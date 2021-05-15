@@ -3,11 +3,23 @@
 
 *.out
 
+libraries/
+
+connect.sh
+db_config.py
+model_files/
+groupings/
+graphs/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 *.pyc
+
+# Ignore model classes because they are huge
+*.pt
+*.pth
 
 # VSCode
 .vscode/
