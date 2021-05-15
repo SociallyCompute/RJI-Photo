@@ -7,7 +7,9 @@ libraries/
 
 connect.sh
 db_config.py
-models/
+model_files/
+groupings/
+graphs/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -66,6 +66,13 @@ function addButtons(){
 
 //build the full page, rows and buttons
 function buildPage(){
+    $.ajax({
+        type: "POST",
+        url: "images.py",
+        data: { param: text}
+      }).done(function( o ) {
+         // do something
+      });
     var i;
     for(i=0;i < 10; i++){
         addRow(i);
