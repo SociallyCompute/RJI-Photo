@@ -12,6 +12,7 @@ import os, sys
 sys.path.append(os.path.split(sys.path[0])[0])
 from database import inserting
 from model import architecture
+from config_files import paths
 
 plt.ion()
 
@@ -65,7 +66,7 @@ def train_model(model,save_filepath,training_loader,validation_loader):
         # shows average loss
         # print('[%d, %5d] train loss: %.6f val loss: %.6f' % (epoch + 1, i + 1, train_loss/training_len, val_loss/validation_len))
         # shows total loss
-        print('[%d, %5d] train loss: %.6f val loss: %.6f' % (epoch + 1, i + 1, train_loss, val_loss))
+        tqdm.write('[%d, %5d] train loss: %.6f val loss: %.6f' % (epoch + 1, i + 1, train_loss, val_loss))
         loss_id = inserting.insert_loss(model_id, epoch, train_loss, val_loss)
     
     torch.save(model, save_filepath)
@@ -99,6 +100,6 @@ if __name__ == "__main__":
     validation_dataset = get_np_dataset('/media/matt/New Volume/ava/np_regress_files/',1024)
     validation_loader = DataLoader(dataset=validation_dataset,batch_size=batch_size)
 
-    PATH = 'model_files/modifiedResNet.pt'
+    PATH = paths.MODEL_PATH
     train_model(model,PATH,training_loader,validation_loader)
 
