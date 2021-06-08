@@ -1,6 +1,8 @@
 # background error logs
 *.err
 
+venv/
+
 *.out
 
 libraries/
