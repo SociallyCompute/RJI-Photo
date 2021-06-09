@@ -1,5 +1,4 @@
 import logging
-from sqlalchemy.sql import select
 from sqlalchemy import inspect
 
 import os, sys
@@ -41,9 +40,11 @@ def insert_loss(modelid, epoch, train_loss, val_loss):
 
 def insert_photos(photo_fname, ranking):
     db, table = connections.make_db_connection('photos')
+    model_id = selecting.get_modelid()
     result = db.execute(table.insert().values(
         photo_fname = str(photo_fname),
-        ranking = int(ranking)
+        ranking = int(ranking),
+        model_id = int(model_id)
     ))
 
     if not result:

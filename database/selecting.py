@@ -7,6 +7,7 @@ sys.path.append(os.path.split(sys.path[0])[0])
 from database import inserting
 from database import connections
 
+
 def get_modelid():
     db, table = connections.make_db_connection('models')
     s = select([table.c.model_id])
@@ -18,6 +19,7 @@ def get_modelid():
     db.dispose()
     return (result[-1])[0]
 
+
 def get_lossid():
     db, table = connections.make_db_connection('losses')
     s = select([table.c.loss_id])
@@ -28,13 +30,25 @@ def get_lossid():
     db.dispose()
     return result[-1]
 
+
 def get_photoid():
     db, table = connections.make_db_connection('photos')
     s = select([table.c.photo_id])
     result = db.execute(s).fetchall()
     print((result[-1])[0])
     if not result:
-        logging.info('Model ID Retrieval Failed')
-        raise Exception('Model ID Retrieval Failed')
+        logging.info('Photo ID Retrieval Failed')
+        raise Exception('Photo ID Retrieval Failed')
     db.dispose()
     return (result[-1])[0]
+
+
+def get_photos(id=None, limit=None):
+    db, table = connections.make_db_connection('photos')
+    s = select([table]).limit(limit) if id is None else select([table]).where(table.c.photo_id == int(id))
+    result = db.execute(s).fetchall()
+    if not result:
+        logging.info('Photos Retrieval Failed')
+        raise Exception('Photo Retrieval Failed')
+    db.dispose()
+    return result
