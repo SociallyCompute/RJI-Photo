@@ -84,10 +84,11 @@ def load_logged_in_user():
 @login_required
 def logout():
     logout_user()
-    # if session['was_once_logged_in']:
-    #     del session['was_once_logged_in']
+    if session['user_id']:
+        del session['user_id']
+    if session['was_once_logged_in']:
+        del session['was_once_logged_in']
     flash('You have successfully logged out')
-    # return render_template('image_scores/index.html')
     return redirect(url_for('index'))
 
 
