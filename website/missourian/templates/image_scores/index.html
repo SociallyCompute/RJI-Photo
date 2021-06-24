@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Images{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<article class="photo">
+  {% for photo in photos.items %}
+        <div>
+          <h1>{{ names[loop.index-1] }}</h1>
+          <div class="about">Ranked on {{ photo['create_date'].strftime('%Y-%m-%d') }}</div>
+          <p class="body">{{ photo['ranking'] }}</p>
+            <img src="{{photo['photo_fname']}}" width="200em">
+        </div>
+  {% endfor %}
+</article>
+<hr>
+<!-- Pagination Links-->
+<div class="text-right">
+    <a href="{{ url_for('index', page=photos.prev_num) }}"
+       class="btn btn-outline-dark
+       {% if photos.page == 1 %}disabled{% endif %}">
+        &laquo;
+    </a><!-- Loop through the number of pages to display a link for each-->
+    {% for page_num in photos.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}{% if page_num %}
+<!-- Check for the active page and set the link to "Active"-->
+            {% if photos.page == page_num %}
+            <a href="{{ url_for('index', page=page_num) }}"
+               class="btn btn-dark">
+                {{ page_num }}
+            </a>
+            {% else %}
+            <a href="{{ url_for('index', page=page_num) }}"
+               class="btn btn-outline-dark">
+                {{ page_num }}
+            </a>
+            {% endif %}
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}    <a href="{{ url_for('index', page=photos.next_num) }}"
+       class="btn btn-outline-dark
+       {% if photos.page == photos.pages %}disabled{% endif %}">
+        &raquo;
+    </a>
+</div>
+<p class="text-right mt-3">
+   Showing page {{ photos.page }} of {{ photos.pages }}
+</p>
+{% endblock %}

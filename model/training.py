@@ -19,6 +19,8 @@ plt.ion()
 """
 NEW Train method
 """
+
+
 def train_model(model,save_filepath,training_loader,validation_loader):
 
     training_len = len(training_loader.dataset)
@@ -71,6 +73,7 @@ def train_model(model,save_filepath,training_loader,validation_loader):
     
     torch.save(model, save_filepath)
 
+
 def get_np_dataset(data_filepath, idx):
     dataset_list = []
     for i,f in enumerate(os.listdir(data_filepath), idx):
@@ -88,6 +91,7 @@ def get_np_dataset(data_filepath, idx):
 
     dataset = ConcatDataset(dataset_list)
     return dataset
+
 
 if __name__ == "__main__":
     batch_size = 32
