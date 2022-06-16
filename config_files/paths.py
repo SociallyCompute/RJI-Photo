@@ -1,5 +1,5 @@
 AVA_IMAGE_PATH = '/media/matt/New Volume/ava/ava-compressed/images/'
 MISSOURIAN_IMAGE_PATH = '/media/matt/New Volume/missourian_pics/2017/Fall/Dump/Compton, Nate/20170824_MUfootballpractice_NC'
-AVA_QUALITY_LABELS_FILE = '/media/matt/New Volume/ava/AVA.txt'
-AVA_CONTENT_LABELS_FILE = '/media/matt/New Volume/ava/tags.txt'
-MODEL_PATH = '/media/matt/New Volume/modifiedResNetMay17.pt'
+AVA_QUALITY_LABELS_FILE = '/media/matt/foo-fighter/reyndolds/images4AVA/AVA_datasetAVA.txt'
+AVA_CONTENT_LABELS_FILE = '/media/matt/foo-fighter/reyndolds/images4AVA/AVA_datasettags.txt'
+MODEL_PATH = '/media/matt/foo-fighter/modifiedResNetMay17.pt'
