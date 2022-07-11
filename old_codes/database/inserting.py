@@ -1,10 +1,10 @@
 import logging
-from sqlalchemy import inspect
 
 import os, sys
 sys.path.append(os.path.split(sys.path[0])[0])
-from database import selecting
-from database import connections
+from old_codes.database import selecting
+from old_codes.database import connections
+
 
 def insert_model(model_name,epochs,start_lr,m_type,num_outputs,loss_fn, filepath):
     db, table = connections.make_db_connection('models')

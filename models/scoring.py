@@ -1,4 +1,3 @@
-from logging import root
 import numpy as np
 import torch
 from torchvision import transforms
@@ -6,9 +5,10 @@ from PIL import Image
 
 import os, sys
 sys.path.append(os.path.split(sys.path[0])[0])
-from database import inserting
-from model import architecture
-from config_files import paths
+from old_codes.database import inserting
+from models import architecture
+from old_codes.config_files import paths
+
 
 def score_individual_img(img_path):
     with Image.open(str(img_path)) as img:

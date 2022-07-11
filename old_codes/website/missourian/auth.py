@@ -1,4 +1,3 @@
-import functools
 from flask import Blueprint, flash, g, redirect, render_template, request, session, url_for
 from flask_login import LoginManager, logout_user, login_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -6,7 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import os
 import sys
 sys.path.append(os.path.split(sys.path[0])[0])
-from website.missourian.tables import Users, Base
+from old_codes.website.missourian.tables import Users, Base
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 login_manager = LoginManager()

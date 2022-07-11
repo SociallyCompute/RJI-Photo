@@ -1,0 +1,29 @@
+model_params:
+  name: 'VanillaVAE'
+  in_channels: 3
+  latent_dim: 64
+
+
+data_params:
+  dir_path: "/media/matt/4TBInternal/zzFootball/20160910_MUvsEasternMichigan/For_Upload/"
+  train_batch_size: 16
+  val_batch_size:  16
+  crop_size: [128,72]
+  num_workers: 4
+
+
+exp_params:
+  LR: 0.005
+  weight_decay: 0.0
+  scheduler_gamma: 0.95
+  kld_weight: 0.00025
+  manual_seed: 1265
+  retain_first_backpass: True
+
+trainer_params:
+  gpus: [0]
+  max_epochs: 100
+
+logging_params:
+  save_dir: "logs/"
+  name: "VanillaVAE"

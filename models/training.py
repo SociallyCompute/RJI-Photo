@@ -1,18 +1,16 @@
 import torch
 import numpy as np
 import torch.nn as nn
-from torch.optim import lr_scheduler
 from torch.utils.data import DataLoader, TensorDataset, ConcatDataset
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score
 
 from tqdm import tqdm
 
 import os, sys
 sys.path.append(os.path.split(sys.path[0])[0])
-from database import inserting
-from model import architecture
-from config_files import paths
+from old_codes.database import inserting
+from models import architecture
+from old_codes.config_files import paths
 
 plt.ion()
 

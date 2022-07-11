@@ -3,7 +3,7 @@ import sys
 
 from flask import Flask
 sys.path.append(os.path.split(sys.path[0])[0])
-from config_files import db_config
+from old_codes.config_files import db_config
 
 
 def create_app(test_config=None):

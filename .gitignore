@@ -19,7 +19,7 @@ __pycache__/
 *$py.class
 *.pyc
 
-# Ignore model classes because they are huge
+# Ignore models classes because they are huge
 *.pt
 *.pth
 

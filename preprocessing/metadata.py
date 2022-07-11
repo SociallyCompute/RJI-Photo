@@ -30,13 +30,13 @@ class MetaDataReader(object):
             return files
         if not isfile(path):
             raise FileNotFoundError('File not found')
-        if path.endswith(('.png', '.PNG')):
+        if str(path).endswith(('.png', '.PNG')):
             img = Image.open(path)
             img.load()
             exif = img.info
             img.close()
             return exif
-        elif path.endswith(('.jpg', '.JPG')):
+        elif str(path).endswith(('.jpg', '.JPG')):
             with open(path, 'rb') as f:
                 img = f.read()
             s = str(img).find('photomechanic:ColorClass')

@@ -5,7 +5,7 @@ from sqlalchemy.ext.automap import automap_base
 
 import sys, os
 sys.path.append(os.path.split(sys.path[0])[0])
-from config_files import db_config
+from old_codes.config_files import db_config
 
 def make_db_connection(table_name):
     """ Makes a connection to the database used to store each of the testing values. Allows for 

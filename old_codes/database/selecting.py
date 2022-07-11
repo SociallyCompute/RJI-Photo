@@ -1,11 +1,9 @@
 import logging
 from sqlalchemy.sql import select
-from sqlalchemy import inspect
 
 import os, sys
 sys.path.append(os.path.split(sys.path[0])[0])
-from database import inserting
-from database import connections
+from old_codes.database import connections
 
 
 def get_modelid():

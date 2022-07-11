@@ -1,18 +1,17 @@
 from sklearn.metrics import silhouette_score
 from sklearn.cluster import KMeans
 
-from PIL import Image, ImageFile
+from PIL import Image
 import logging
 import os.path
-from os import path
 import sys
 
 import numpy as np
 
-from torchvision import datasets, transforms
+from torchvision import transforms
 
 sys.path.append(os.path.split(sys.path[0])[0])
-from config_files import paths
+from old_codes.config_files import paths
 from preprocessing import feature_extraction
 
 def build_image_matrix(image_path):
