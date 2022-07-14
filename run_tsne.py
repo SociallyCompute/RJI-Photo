@@ -49,7 +49,12 @@ data = MissourianImageDataset(
 )
 data.setup()
 
+# print(len(data.train_dataloader()))
+# print(len(data.val_dataloader()))
+# print(len(data.test_dataloader()))
+
 test_dataloader = data.test_dataloader()
+# print(len(test_dataloader))
 
 paths = [str(p) for p in test_dataloader.dataset.imgs]
 
@@ -78,7 +83,7 @@ df_dict = {
 df = pds.DataFrame(df_dict)
 
 # TODO Fix this to be non-static and based on the model
-df.to_csv("df3dimv4.csv")
+df.to_csv("df3dimv5.csv")
 
 fig = plt.figure(figsize=(12, 12))
 ax = fig.add_subplot(projection='3d')
