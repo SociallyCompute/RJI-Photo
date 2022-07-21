@@ -6,7 +6,7 @@ model_params:
   beta: 16
   loss_type: 'B'
   gamma: 10.0
-  max_capacity: 25
+  max_capacity: 35
   Capacity_max_iter: 10000
 
 data_params:
@@ -20,14 +20,19 @@ data_params:
 exp_params:
   LR: 0.0025
   weight_decay: 0.0
-  scheduler_gamma: 0.97
+  scheduler_gamma: 0.98
   kld_weight: 0.00025
   manual_seed: 1265
   retain_first_backpass: True
 
 trainer_params:
-  gpus: [0]
-  max_epochs: 25
+#  gpus: [0]
+  accumulate_grad_batches: 4
+  auto_lr_find: True
+  auto_scale_batch_size: True
+  accelerator: 'gpu'
+  devices: 1
+  max_epochs: 50
 
 logging_params:
   save_dir: "logs/"

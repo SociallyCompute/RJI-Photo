@@ -30,10 +30,8 @@ tb_logger = TensorBoardLogger(save_dir=config['logging_params']['save_dir'],
 seed_everything(config['exp_params']['manual_seed'], True)
 
 model = vae_models[config['model_params']['name']](**config['model_params'], params=config['exp_params'])
-# experiment = VAEXperiment(model,
-#                           config['exp_params'])
 
-data = MissourianImageDataset(**config["data_params"], pin_memory=len(config['trainer_params']['gpus']) != 0)
+data = MissourianImageDataset(**config["data_params"], pin_memory=len(config['trainer_params']['accelerator']) != 'cpu')
 
 data.setup()
 runner = Trainer(logger=tb_logger,
@@ -49,6 +47,9 @@ runner = Trainer(logger=tb_logger,
 
 Path("{}/Samples".format(tb_logger.log_dir)).mkdir(exist_ok=True, parents=True)
 Path("{}/Reconstructions".format(tb_logger.log_dir)).mkdir(exist_ok=True, parents=True)
+
+print("======= Tuning {} =======".format(config['model_params']['name']))
+runner.tune(model=model, datamodule=data)
 
 print("======= Training {} =======".format(config['model_params']['name']))
 runner.fit(model=model, datamodule=data)

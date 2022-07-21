@@ -83,7 +83,7 @@ df_dict = {
 df = pds.DataFrame(df_dict)
 
 # TODO Fix this to be non-static and based on the model
-df.to_csv("df3dimv5.csv")
+df.to_csv("csvs/df3dimv6.csv")
 
 fig = plt.figure(figsize=(12, 12))
 ax = fig.add_subplot(projection='3d')

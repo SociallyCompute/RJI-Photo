@@ -38,6 +38,8 @@ class BetaVAE(BaseVAE):
         self.C_max = torch.Tensor([max_capacity])
         self.C_stop_iter = capacity_max_iter
 
+        self.learning_rate = self.params['LR']
+
         self.params['latent_dim'] = self.latent_dim
         self.params['beta'] = self.beta
         self.params['gamma'] = self.gamma
@@ -145,7 +147,7 @@ class BetaVAE(BaseVAE):
 
     def reparameterize(self, mu: Tensor, logvar: Tensor) -> Tensor:
         """
-        Will a single z be enough ti compute the expectation
+        Will a single z be enough to compute the expectation
         for the loss??
         :param mu: (Tensor) Mean of the latent Gaussian
         :param logvar: (Tensor) Standard deviation of the latent Gaussian
@@ -275,7 +277,7 @@ class BetaVAE(BaseVAE):
         scheds = []
 
         optimizer = optim.Adam(self.parameters(),
-                               lr=self.params['LR'],
+                               lr=self.learning_rate,
                                weight_decay=self.params['weight_decay'])
         optims.append(optimizer)
         # Check if more than 1 optimizer is required (Used for adversarial training)
