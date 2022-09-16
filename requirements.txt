@@ -51,7 +51,7 @@ jupyterlab==3.0.15
 jupyterlab-pygments==0.1.2
 jupyterlab-server==2.5.1
 kiwisolver==1.2.0
-Mako==1.1.4
+Mako==1.2.2
 Markdown==3.3.7
 MarkupSafe==2.0.0
 matplotlib==3.3.2
